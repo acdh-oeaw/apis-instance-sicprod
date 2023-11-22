@@ -14,7 +14,7 @@ FEATURED_COLLECTION_NAME = "FEATURED"
 BIRTH_REL_NAME = "geboren in"
 DEATH_REL_NAME = "verstorben in"
 APIS_LOCATED_IN_ATTR = ["located in"]
-APIS_BASE_URI = "https://sicprod.acdh.oeaw.ac.at/"
+#APIS_BASE_URI = "https://sicprod.acdh.oeaw.ac.at/"
 # APIS_OEBL_BIO_COLLECTION = "ÖBL Biographie"
 
 APIS_SKOSMOS = {
