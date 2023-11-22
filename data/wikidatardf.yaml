@@ -1,0 +1,24 @@
+PlaceFromWikidata:
+  model: apis_ontology.Place
+  filter_sparql: |
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    ASK {
+      ?subj wdt:P625 ?obj
+    }
+  attributes:
+    # lon
+    - sparql: |
+        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+        SELECT ?longitude
+        WHERE {
+          ?subject wdt:P625 ?geo1 .
+          BIND(REPLACE(str(?geo1), "Point\\((\\d+\\.\\d+).*$", "$1") as ?longitude)
+          }
+    # lat
+    - sparql: |
+        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+        SELECT ?latitude
+        WHERE {
+          ?subject wdt:P625 ?geo1 .
+          BIND(REPLACE(str(?geo1), "Point\\((\\d+\\.\\d+) (\\d+\\.\\d+).*$", "$2") as ?latitude)
+          }

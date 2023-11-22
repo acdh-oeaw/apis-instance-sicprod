@@ -1,0 +1,73 @@
+{% extends "webpage/base.html" %}
+{% load static %}
+
+{% block content %}
+<script src="https://unpkg.com/htmx.org@1.9.0"></script>
+<style>
+li.htmx-swapping {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+</style>
+<div class="container">
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{ tempentityclassform.media }}
+{{ temptripleform.media }}
+<div class="px-4 py-5 my-5 text-center">
+<h1>{{ reference }}</h1>
+on {{ reference.referenced_object }}
+</div>
+<details>
+	<summary>bibtex</summary>
+	<p>{{ reference.bibtexjson }}</p>
+</details>
+
+<hr/>
+
+Referenced by:
+<ul>
+{% for ref in similar_references %}
+<li>
+{% with ref.referenced_object as obj %}
+{% if obj.get_absolute_url %}<a href="{{ obj.get_absolute_url }}">{{ obj }}</a>{% else %}{{ obj }}{% endif %}
+(<a href="{{ ref.get_absolute_url }}">{{ ref.id }}</a>)
+<a
+  hx-delete="{% url "apis_bibsonomy:referencedelete" ref.id %}"
+  hx-confirm="Are your sure you want to delete reference {{ reference }} for {{ obj }}"
+  hx-target="closest li"
+  hx-swap="outerHTML swap:1s"
+  class="block mr-2 hover:text-gray-600"
+  href="{% url "apis_bibsonomy:referencedelete" ref.id %}?redirect={% url "apis_bibsonomy:referencedetail" reference.id %}">Delete</a>
+</li>
+{% endwith %}
+{% endfor %}
+</ul>
+
+<hr/>
+<div class="row">
+<div class="col">
+<form action="" method="post">
+	{% csrf_token %}
+	<label for="{{ tempentityclassform.ReferenceToObject.id_for_label }}" class="form-label">{{ tempentityclassform.ReferenceToObject.label }}</label>
+	{{ tempentityclassform.ReferenceToObject }}
+
+	<button type="submit" class="btn btn-primary mt-3"/>Add</button>
+</form>
+</div>
+
+<div class="col">
+<form action="" method="post">
+	{% csrf_token %}
+	<label for="{{ temptripleform.ReferenceToObject.id_for_label }}" class="form-label">{{ temptripleform.ReferenceToObject.label }}</label>
+	{{ temptripleform.ReferenceToObject }}
+	<button type="submit" class="btn btn-primary mt-3"/>Add</button>
+</form>
+</div>
+</div>
+
+<script>
+document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+})
+</script>
+{% endblock content %}

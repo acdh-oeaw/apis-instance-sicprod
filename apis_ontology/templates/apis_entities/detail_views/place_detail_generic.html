@@ -1,0 +1,21 @@
+{% extends "apis_entities/detail_views/detail_generic.html" %}
+{% block info-table %}
+{{ block.super }}
+<table class="table table-hover table-bordered">
+  {% if object.latitude and object.longitude %}
+  <td id="map" style="height: 300px">
+  </td>
+  <script>
+  var map = L.map('map').setView([{{ object.latitude|floatformat:"4u" }}, {{ object.longitude|floatformat:"4u" }}], 13);
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  
+  L.marker([{{ object.latitude|floatformat:"4u"}}, {{ object.longitude|floatformat:"4u"}}]).addTo(map)
+  .bindPopup('{{ object }}')
+  .openPopup();
+  </script>
+  {% endif %}
+</table>
+{% endblock %}

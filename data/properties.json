@@ -1,0 +1,511 @@
+[
+    {
+        "id": 1,
+        "name": "bewohnt",
+        "name_reverse": "hat als Bewohner",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "besitzt",
+        "name_reverse": "ist im Besitz von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "hat Korrespondenz mit",
+        "name_reverse": "hat Korrespondenz mit",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "hat Familienbeziehung zu",
+        "name_reverse": "hat Familienbeziehung zu",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 5,
+        "name": "hat Ehe mit",
+        "name_reverse": "hat Ehe mit",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 6,
+        "name": "war anwesend bei",
+        "name_reverse": "hatte anwesende Person",
+        "obj": [
+            "Court"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 7,
+        "name": "empfiehlt",
+        "name_reverse": "wird empfohlen von",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 8,
+        "name": "hat Gesch\u00e4ftsbeziehung zu",
+        "name_reverse": "hat Gesch\u00e4ftsbeziehung zu",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 9,
+        "name": "ist Mitglied von",
+        "name_reverse": "hat Mitglied",
+        "obj": [
+            "Institution"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 10,
+        "name": "nimmt teil an",
+        "name_reverse": "hat als Teilnehmer",
+        "obj": [
+            "Event"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 11,
+        "name": "wird ausbezahlt an",
+        "name_reverse": "erhält",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Salary"
+        ]
+    },
+    {
+        "id": 12,
+        "name": "ist an",
+        "name_reverse": "hat Funktion",
+        "obj": [
+            "Court",
+            "Institution"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 13,
+        "name": "wird ausgeübt von",
+        "name_reverse": "hat Funktion inne",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 14,
+        "name": "ist Teil von",
+        "name_reverse": "hat als Teil",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Place"
+        ]
+    },
+    {
+        "id": 15,
+        "name": "führt durch",
+        "name_reverse": "wird durchgeführt von",
+        "obj": [
+            "Salary"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 143,
+        "name": "ist Bruder/Schwester von",
+        "name_reverse": "ist Bruder/Schwester von",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 144,
+        "name": "ist Kind von",
+        "name_reverse": "ist Elternteil von",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 145,
+        "name": "weist an",
+        "name_reverse": "wird angewiesen von",
+        "obj": [
+            "Salary"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 146,
+        "name": "ist geboren in",
+        "name_reverse": "ist Geburtsort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 147,
+        "name": "ist gestorben in",
+        "name_reverse": "ist Sterbeort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 148,
+        "name": "ging hervor aus",
+        "name_reverse": "war Vorg\u00e4nger von",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 149,
+        "name": "ist untergeordnet",
+        "name_reverse": "hat untergeordnete Funktion",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 150,
+        "name": "ist gelegen in",
+        "name_reverse": "inkludiert",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 151,
+        "name": "findet statt in",
+        "name_reverse": "ist Austragungsort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Event"
+        ]
+    },
+    {
+        "id": 152,
+        "name": "wird ausbezahlt an",
+        "name_reverse": "erhält",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Salary"
+        ]
+    },
+    {
+        "id": 473,
+        "name": "ist t\u00e4tig in",
+        "name_reverse": "ist T\u00e4tigkeitsort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 474,
+        "name": "h\u00e4lt sich auf in",
+        "name_reverse": "ist Aufenthaltsort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 475,
+        "name": "ist Vormund von",
+        "name_reverse": "ist M\u00fcndel von",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 476,
+        "name": "ist t\u00e4tig an",
+        "name_reverse": "hat t\u00e4tige Person",
+        "obj": [
+            "Institution"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 477,
+        "name": "ist Pfr\u00fcndner von",
+        "name_reverse": "hat Pfr\u00fcndner",
+        "obj": [
+            "Institution"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 478,
+        "name": "ausge\u00fcbt in",
+        "name_reverse": "ist Aus\u00fcbungsort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 1978,
+        "name": "ist im Dienst von",
+        "name_reverse": "beschäftigt",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 2421,
+        "name": "hat Heimatort in",
+        "name_reverse": "ist Heimatort von",
+        "obj": [
+            "Place"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 2422,
+        "name": "ist verpf\u00e4ndet an",
+        "name_reverse": "besitzt als Pfand",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 2423,
+        "name": "geh\u00f6rt zu",
+        "name_reverse": "zust\u00e4ndig f\u00fcr",
+        "obj": [
+            "Institution"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 2424,
+        "name": "weist an",
+        "name_reverse": "wird angewiesen von",
+        "obj": [
+            "Salary"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 2425,
+        "name": "wird angewiesen von",
+        "name_reverse": "weist an",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Salary"
+        ]
+    },
+    {
+        "id": 2455,
+        "name": "verkauft Besitz an",
+        "name_reverse": "kauft Besitz von",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 2456,
+        "name": "hat Streit mit",
+        "name_reverse": "hat Streit mit",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 3760,
+        "name": "f\u00fchrt durch",
+        "name_reverse": "wird durchgef\u00fchrt von",
+        "obj": [
+            "Salary"
+        ],
+        "subj": [
+            "Function",
+            "Person"
+        ]
+    },
+    {
+        "id": 3761,
+        "name": "nimmt entgegen",
+        "name_reverse": "wird entgegengenommen von",
+        "obj": [
+            "Salary"
+        ],
+        "subj": [
+            "Function",
+            "Person"
+        ]
+    },
+    {
+        "id": 4290,
+        "name": "b\u00fcrgt f\u00fcr",
+        "name_reverse": "hat als B\u00fcrgen",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 4578,
+        "name": "ist m\u00f6glicherweise identisch mit",
+        "name_reverse": "ist m\u00f6glicherweise identisch mit",
+        "obj": [
+            "Person"
+        ],
+        "subj": [
+            "Person"
+        ]
+    },
+    {
+        "id": 6846,
+        "name": "steht in Verbindung mit",
+        "name_reverse": "steht in Verbindung mit",
+        "obj": [
+            "Institution"
+        ],
+        "subj": [
+            "Institution"
+        ]
+    },
+    {
+        "id": 6861,
+        "name": "ist verbunden mit",
+        "name_reverse": "ist verbunden mit",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Function"
+        ]
+    },
+    {
+        "id": 6865,
+        "name": "ist m\u00f6glicherweise spezifiziert als",
+        "name_reverse": "ist m\u00f6glicherweise verallgemeinert als",
+        "obj": [
+            "Function"
+        ],
+        "subj": [
+            "Function"
+        ]
+    }
+]

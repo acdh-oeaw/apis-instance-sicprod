@@ -1,0 +1,25 @@
+{% extends "webpage/base.html" %}
+{% load static %}
+{% load webpage_extras %}
+
+{% block content %}
+  <div class="jumbotron p-0"
+       style="min-height: 400px;
+              background-image: url('{{ PROJECT_TITLE_IMG }}')"></div>
+  <div class="container">
+    <div class="card card-index">
+      <div class="card-body">
+        <h1 class="text-center title-index">Sigmund of Tyrol's Court</h1>
+        <p class="text-center text-muted paragraph-index">Prosopographical Database</p>
+        <hr class="hr-index" />
+        <p class="text-justify"></p>
+        <div class="text-right">
+          <a href="/apis/entities/entity/person/list/"
+             class="btn btn-lg btn-index pulse pull-right">explore</a>
+        </div>
+        <hr />
+      </div>
+    </div>
+  {% endblock %}
+
+</div>
