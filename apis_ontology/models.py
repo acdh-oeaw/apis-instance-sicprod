@@ -11,7 +11,7 @@ class LegacyStuffMixin(models.Model):
     notes = models.TextField(blank=True, null=True)
     published = models.BooleanField(default=False)
     collection = models.ManyToManyField("apis_metainfo.Collection")
-    metadata = models.JSONField(null=True, blank=True)
+    metadata = models.JSONField(null=True, blank=True, editable=False)
 
     class Meta:
         abstract = True
