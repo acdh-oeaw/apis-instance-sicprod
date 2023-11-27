@@ -42,3 +42,16 @@ def add_to_public_collection(sender, instance, action, **kwargs):
                 collection.tempentityclass_set.add(instance)
             except Collection.DoesNotExist:
                 pass
+
+
+@receiver(post_merge_with)
+def create_merge_metadata(sender, instance, entities, **kwargs):
+    for entity in entities:
+        md = instance.metadata or {}
+        entstr = f"{entity.name}, {entity.first_name} (ID: {entity.id})"
+        if "Legacy name (merge)" in md:
+            md["Legacy name (merge)"].append(entstr)
+        else:
+            md["Legacy name (merge)"] = [entstr]
+        instance.metadata = md
+        instance.save()
