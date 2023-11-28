@@ -16,6 +16,11 @@ class LegacyStuffMixin(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        if self.name != "":
+            return "{} (ID: {})".format(self.name, self.id)
+        return "(ID: {})".format(self.id)
+
 
 @reversion.register(follow=["rootobject_ptr"])
 class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
@@ -27,6 +32,11 @@ class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     GENDER_CHOICES = (("männlich", "männlich"), ("weiblich", "weiblich"), ("unbekannt", "unbekannt"), )
     gender = models.CharField(max_length=9, choices=GENDER_CHOICES, blank=True, verbose_name = "Geschlecht", help_text = "Geschlecht der Person.")
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Feld um alternative Namen anzugeben.")
+
+
+    def __str__(self):
+        return "{}, {} (ID: {})".format(self.name, self.first_name, self.id)
+
 
 
 @reversion.register(follow=["rootobject_ptr"])
