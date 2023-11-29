@@ -166,6 +166,9 @@ APIS_ENTITIES = {
             "id",
             "kind",
         ],
+        "list_filters": {
+            "name": {"method": name_alternative_name_filter},
+        },
         "detail_view_exclude": detail_view_exclude,
     },
     "Work": {
