@@ -51,10 +51,8 @@ MAIN_TEXT_NAME = "ÖBL Haupttext"
 
 LANGUAGE_CODE = "de"
 
-INSTALLED_APPS.remove("apis_ontology")
 INSTALLED_APPS += ["apis_bibsonomy"]
 INSTALLED_APPS += ["matomo"]
-INSTALLED_APPS.insert(0, "apis_ontology")
 MATOMO_URL = "https://matomo.acdh.oeaw.ac.at/"
 MATOMO_SITE_ID = 242
 
