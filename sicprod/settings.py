@@ -32,13 +32,6 @@ APIS_BIBSONOMY = [{
 }]
 APIS_BIBSONOMY_FIELDS = ['self']
 
-ALLOWED_HOSTS = re.sub(
-    r"https?://",
-    "",
-    os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,sicprod.acdh-dev.oeaw.ac.at"),
-).split(",")
-# You need to allow '10.0.0.0/8' for service health checks.
-
 REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
     # "rest_framework.permissions.DjangoModelPermissions",
     "rest_framework.permissions.IsAuthenticated",
@@ -53,11 +46,6 @@ DEV_VERSION = False
 
 SPECTACULAR_SETTINGS["COMPONENT_SPLIT_REQUEST"] = True
 SPECTACULAR_SETTINGS["COMPONENT_NO_READ_ONLY_REQUIRED"] = True
-
-DATABASES = {}
-
-#DATABASES["default"] = dj_database_url.parse(os.environ['DATABASE_LOCAL'], conn_max_age=600)
-DATABASES["default"] = dj_database_url.config(conn_max_age=600)
 
 MAIN_TEXT_NAME = "ÖBL Haupttext"
 
