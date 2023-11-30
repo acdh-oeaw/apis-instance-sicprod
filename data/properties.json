@@ -55,17 +55,6 @@
         ]
     },
     {
-        "id": 6,
-        "name": "war anwesend bei",
-        "name_reverse": "hatte anwesende Person",
-        "obj": [
-            "Court"
-        ],
-        "subj": [
-            "Person"
-        ]
-    },
-    {
         "id": 7,
         "name": "empfiehlt",
         "name_reverse": "wird empfohlen von",
@@ -118,18 +107,6 @@
         ],
         "subj": [
             "Salary"
-        ]
-    },
-    {
-        "id": 12,
-        "name": "ist an",
-        "name_reverse": "hat Funktion",
-        "obj": [
-            "Court",
-            "Institution"
-        ],
-        "subj": [
-            "Function"
         ]
     },
     {
