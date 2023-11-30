@@ -21,10 +21,10 @@ class Command(BaseCommand):
             prop.save()
             prop.obj_class.clear()
             for obj in p["obj"]:
-                prop.obj_class.add(ContentType.objects.get(model=obj))
+                prop.obj_class.add(ContentType.objects.get(model=obj.lower()))
             prop.subj_class.clear()
             for subj in p["subj"]:
-                prop.subj_class.add(ContentType.objects.get(model=subj))
+                prop.subj_class.add(ContentType.objects.get(model=subj.lower()))
             if created:
                 print(f"Created {prop}")
             else:
