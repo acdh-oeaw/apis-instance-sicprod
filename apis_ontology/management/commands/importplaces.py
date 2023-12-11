@@ -4,6 +4,7 @@ import time
 
 from django.core.management.base import BaseCommand
 from apis_core.utils import rdf
+from apis_core.apis_metainfo.models import Uri
 
 from apis_ontology.models import Place
 
@@ -20,7 +21,6 @@ class Command(BaseCommand):
 
         for p in Place.objects.all(): #[Place.objects.first()]:
             if res := re.search(pattern, p.references):
-                print(p)
                 uri = f"https://www.wikidata.org/wiki/Special:EntityData/{res.group(1)}.rdf?flavor=simple"
                 try:
                     model, data = rdf.get_modelname_and_dict_from_uri(uri, configfile)
@@ -32,8 +32,10 @@ class Command(BaseCommand):
                         p.latitude = data['latitude']
                     else:
                         print(f"Latitude already set for {p}")
+                    u, _ = Uri.objects.get_or_create(uri=f"http://www.wikidata.org/entity/{res.group(1)}")
+                    p.uri_set.add(u)
                     p.save()
-                except Exception:
-                    print(f"not found {p}")
+                except Exception as e:
+                    print(f"not found {p}: {e}")
                     pass
                 time.sleep(1)
