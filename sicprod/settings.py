@@ -52,11 +52,13 @@ MAIN_TEXT_NAME = "ÖBL Haupttext"
 LANGUAGE_CODE = "de"
 
 INSTALLED_APPS += ["apis_bibsonomy"]
-INSTALLED_APPS += ["matomo"]
 INSTALLED_APPS.remove("apis_ontology")
 INSTALLED_APPS = ["apis_ontology"] + INSTALLED_APPS
-MATOMO_URL = "https://matomo.acdh.oeaw.ac.at/"
-MATOMO_SITE_ID = 242
+INSTALLED_APPS = ["django_acdhch_functions"] + INSTALLED_APPS
+PROJECT_METADATA = {
+        "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
+        "matomo_id": 242
+}
 
 #STATICFILES_DIRS = [BASE_DIR + "/member_images"]
 
