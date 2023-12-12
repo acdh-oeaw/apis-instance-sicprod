@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load matomo_tags %}
+{% load django_acdhch_functions %}
 
 {% block content %}
 <div class="jumbotron p-0"
@@ -23,5 +23,5 @@
 {% endblock content %}
 
 {% block scriptHeader %}
-{% tracking_code %}
+{% matomo %}
 {% endblock scriptHeader %}
