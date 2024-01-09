@@ -7,7 +7,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from apis_bibsonomy.models import Reference
 from apis_core.apis_metainfo.models import Collection
-from apis_core.apis_entities.models import TempEntityClass
 
 import logging
 
@@ -32,16 +31,17 @@ def copy_references(sender, instance, duplicate, **kwargs):
         ref.save()
 
 
-@receiver(m2m_changed, sender=TempEntityClass.collection.through)
-def add_to_public_collection(sender, instance, action, **kwargs):
+@receiver(m2m_changed)
+def add_to_public_collection(sender, instance, action, reverse, model, **kwargs):
     if action == "post_add":
-        if isinstance(instance, TempEntityClass):
-            logger.info("Adding {instance} to `published` collection")
-            try:
-                collection = Collection.objects.get(name="published")
-                collection.tempentityclass_set.add(instance)
-            except Collection.DoesNotExist:
-                pass
+        logger.info("Adding {instance} to `published` collection")
+        try:
+            collection = Collection.objects.get(name="published")
+            modelname = instance._meta.model.__name__.lower()
+            if cset := getattr(collection, f"{modelname}_set"):
+                cset.add(instance)
+        except Collection.DoesNotExist:
+            pass
 
 
 @receiver(post_merge_with)
