@@ -219,7 +219,11 @@ APIS_VIEW_PASSES_TEST = apis_view_passes_test
 def apis_list_view_object_filter(view, queryset):
     if view.request.user.is_authenticated:
         return queryset
-    return queryset.filter(collection__name__contains="published")
+    if hasattr(queryset.model, 'collection'):
+        return queryset.filter(collection__name__contains="published")
+    #TODO: this should filter all the other models that do not
+    # have a collection attached!
+    return queryset
 
 
 APIS_LIST_VIEWS_ALLOWED = True
