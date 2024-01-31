@@ -32,15 +32,6 @@ APIS_BIBSONOMY = [{
 }]
 APIS_BIBSONOMY_FIELDS = ['self']
 
-REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
-    # "rest_framework.permissions.DjangoModelPermissions",
-    "rest_framework.permissions.IsAuthenticated",
-    # "rest_framework.permissions.DjangoObjectPermissions",
-    # use IsAuthenticated for every logged in user to have global edit rights
-)
-
-# HAYSTACK_DEFAULT_OPERATOR = "OR"
-
 DEBUG = True
 DEV_VERSION = False
 
@@ -228,3 +219,5 @@ def apis_list_view_object_filter(view, queryset):
 
 APIS_LIST_VIEWS_ALLOWED = True
 APIS_LIST_VIEW_OBJECT_FILTER = apis_list_view_object_filter
+
+REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
