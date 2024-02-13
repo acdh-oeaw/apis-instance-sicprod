@@ -74,6 +74,10 @@ def genderchoices():
     from apis_ontology.models import Person
     return Person.GENDER_CHOICES + (("empty", "Nicht gesetzt"),)
 
+def personform():
+    from apis_ontology.forms import PersonForm
+    return PersonForm
+
 detail_view_exclude = ["references", "notes", "published", "review"]
 
 APIS_ENTITIES = {
@@ -119,6 +123,7 @@ APIS_ENTITIES = {
         "relations_per_page": 100,
         "merge": True,
         "search": ["name", "first_name", "alternative_label"],
+        "form": personform,
         "form_order": [
             "first_name",
             "name",
