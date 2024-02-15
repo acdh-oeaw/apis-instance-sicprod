@@ -2,6 +2,11 @@
 {% load bibsonomy_templatetags %}
 {% load apiscore %}
 
+{% block scriptHeader %}
+{{ block.super }}
+{% include 'apis_bibsonomy/apis_bibsonomy_include.html' %}
+{% endblock scriptHeader %}
+
 {% block object-actions %}
 {% link_to_reference_on obj=object modal=True %}
 {% endblock object-actions %}
@@ -38,12 +43,10 @@ function GetFormAjax(FormName , ObjectID , ButtonText) {
                 },
             })
         })            //$(".form.ajax_form").unbind()
-        {% if apis_bibsonomy %}
         reinitialize_bibsonomy_tooltips();
 	$('*[data-toggle="modal"]').each(function(){
 	    htmx.process(this);
 	});
-        {% endif %}
     };
     if (!$.ApisForms) {
         $.ApisForms = {}
