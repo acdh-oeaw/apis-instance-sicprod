@@ -1,26 +1,16 @@
-{% extends "apis_entities/edit_generic.html" %}
+{% extends "apis_core/apis_entities/abstractentity_form.html" %}
 {% load bibsonomy_templatetags %}
+{% load apiscore %}
 
-{% block card-header-content %}
-<h1>
-{% link_to_reference_on obj=instance modal=True %}
-  <a href="{{ instance.get_listview_url }}">
-    <small>{{ entity_type }}s</small>
-  </a>
-  <strong>{{ instance }}</strong> <a href="{{ instance.get_absolute_url }}">
-    <span class="material-symbols-outlined">visibility</span>
-  </a>
-  <a href="/entity/{{ instance.id }}">
-    <span class="material-symbols-outlined">database</span>
-  </a>
-</h1>
-{% endblock %}
-
+{% block object-actions %}
+{% link_to_reference_on obj=object modal=True %}
+{% endblock object-actions %}
 
 {% block scripts %}
 {{ block.super }}
 
-{% if instance %}
+{% if object %}
+{% with object|opts as opts %}
 <script type="text/javascript">
 function GetFormAjax(FormName , ObjectID , ButtonText) {
     function add_form(data) {
@@ -59,9 +49,9 @@ function GetFormAjax(FormName , ObjectID , ButtonText) {
         $.ApisForms = {}
     };
     if (ObjectID === undefined) {
-        if ($.ApisForms[FormName+'_'+'{{entity_type}}']) {
-            var new_data = $.ApisForms[FormName+'_'+'{{entity_type}}']
-            new_data.form = new_data.form.replace('##ENT_PK##', {{instance.pk}});
+        if ($.ApisForms[FormName+'_'+'{{opts.verbose_name}}']) {
+            var new_data = $.ApisForms[FormName+'_'+'{{opts.verbose_name}}']
+            new_data.form = new_data.form.replace('##ENT_PK##', {{object.pk}});
             add_form(new_data);
             return;
         };
@@ -79,17 +69,17 @@ function GetFormAjax(FormName , ObjectID , ButtonText) {
             },
             data: {
                 'FormName':FormName,
-                'SiteID':{{instance.pk}},
+                'SiteID':{{object.pk}},
                 'ObjectID':ObjectID,
                 'ButtonText':ButtonText,
-                'entity_type': '{{entity_type}}',
+                'entity_type': '{{opts.verbose_name}}',
             },
             success: function(data) {
                 add_form(data);
                 if (!ObjectID) {
-                    $.ApisForms[FormName+'_'+'{{entity_type}}'] = data;
-                    $.ApisForms[FormName+'_'+'{{entity_type}}'].form = $.ApisForms[FormName+'_'+'{{entity_type}}'].form
-                    .replace('/{{instance.pk}}/', '/##ENT_PK##/');
+                    $.ApisForms[FormName+'_'+'{{opts.verbose_name}}'] = data;
+                    $.ApisForms[FormName+'_'+'{{opts.verbose_name}}'].form = $.ApisForms[FormName+'_'+'{{opts.verbose_name}}'].form
+                    .replace('/{{object.pk}}/', '/##ENT_PK##/');
                 };
             },
             error: function(error) {
@@ -99,6 +89,7 @@ function GetFormAjax(FormName , ObjectID , ButtonText) {
     );
 }
 </script>
+{% endwith %}
 {% endif %}
 <script>
 var native_reinitialize_bibsonomy_tooltips = reinitialize_bibsonomy_tooltips;
