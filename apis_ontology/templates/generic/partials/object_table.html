@@ -1,6 +1,28 @@
-{% extends "apis_entities/detail_views/detail_generic.html" %}
-{% block info-table %}
-{{ block.super }}
+{% load apisgeneric %}
+{% load bibsonomy_templatetags %}
+<table class="table table-hover">
+  {% block objecttable %}
+  {% modeldict object as d %}
+  {% for key, value in d.items %}
+  {% with "references notes published review rootobject_ptr" as list %}
+  {% if key.name not in list.split %}
+    <tr>
+      <th>{{ key.verbose_name }}</th>
+      <td>{{ value }}</td>
+    </tr>
+  {% endif %}
+  {% endwith %}
+  {% endfor %}
+  <tr>
+    <th>References</th>
+    <td>{% link_to_reference_on obj=object modal=True %}</td>
+  </tr>
+  <tr>
+    <th>URIs</th>
+    <td>{{ object.uri_set.all | join:", " | urlize}}</td>
+  </tr>
+  {% endblock objecttable %}
+</table>
 <table class="table table-hover table-bordered">
   {% if object.latitude and object.longitude %}
   <td id="map" style="height: 300px">
@@ -18,4 +40,3 @@
   </script>
   {% endif %}
 </table>
-{% endblock %}
