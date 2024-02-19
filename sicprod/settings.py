@@ -4,7 +4,6 @@ import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-REDMINE_ID = "20870"
 APIS_BASE_URI = "https://sicprod.acdh.oeaw.ac.at/"
 
 APIS_BIBSONOMY = [{
@@ -29,37 +28,6 @@ PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
 }
-
-detail_view_exclude = ["references", "notes", "published", "review"]
-
-APIS_ENTITIES = {
-    "Salary": {
-        "detail_view_exclude": detail_view_exclude,
-
-    },
-    "Function": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Court": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Place": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Person": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Institution": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Work": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-    "Event": {
-        "detail_view_exclude": detail_view_exclude,
-    },
-}
-
 
 BIBSONOMY_REFERENCE_SIMILARITY = ['bibs_url', 'pages_start', 'pages_end', 'folio']
 ROOT_URLCONF = "sicprod.urls"
