@@ -14,7 +14,7 @@ apis-bibsonomy = { git = "https://github.com/acdh-oeaw/apis-bibsonomy.git", tag 
 apis-acdhch-default-settings = "0.1.24"
 psycopg2 = "^2.9.6"
 django-acdhch-functions = "^0.1.2"
-django-action-logger = "^0.1.4"
+django-action-logger = "^0.1.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
