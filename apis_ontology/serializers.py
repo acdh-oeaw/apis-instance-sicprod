@@ -1,29 +1,45 @@
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer, GenericHyperlinkedIdentityField
-from apis_core.apis_relations.models import Triple
-from django.db.models import Q
+from apis_core.apis_relations.models import TempTriple
+from django.contrib.contenttypes.models import ContentType
 
 
 class SimpleObjectSerializer(serializers.Serializer):
-    uri = GenericHyperlinkedIdentityField(view_name="foo")
+    id = serializers.IntegerField()
     name = serializers.CharField()
 
 
-class TripleSerializer(serializers.ModelSerializer):
-    obj = SimpleObjectSerializer()
-    subj = SimpleObjectSerializer()
-    prop = SimpleObjectSerializer()
-
+class TempTripleSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Triple
-        exclude = ["id"]
+        model = TempTriple
+        fields = ['start_date_written', 'end_date_written']
+
+    def __init__(self, *args, **kwargs):
+        self.reverse = kwargs.pop("reverse", False)
+        super().__init__(*args, **kwargs)
+
+    def get_fields(self):
+        fields = super().get_fields()
+        fields["to"] = serializers.SerializerMethodField(method_name="get_to")
+        fields["name"] = serializers.SerializerMethodField(method_name="get_name")
+        return fields
+
+    def get_to(self, obj):
+        if self.reverse:
+            return SimpleObjectSerializer(obj.subj).data
+        return SimpleObjectSerializer(obj.obj).data
+
+    def get_name(self, obj):
+        if self.reverse:
+            return obj.prop.name_reverse
+        return obj.prop.name
 
 
 class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
     retrieve = False
 
     class Meta:
-        fields = "__all__"
+        fields = ["url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
 
     def get_fields(self):
         fields = super().get_fields()
@@ -32,6 +48,17 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
         return fields
 
     def get_relations(self, obj):
-        relations = Triple.objects.filter(Q(obj=obj)|Q(subj=obj))
-        serializer = TripleSerializer(relations, many=True, context=self.context)
-        return serializer.data
+        forward_relations = TempTriple.objects.filter(subj=obj).prefetch_related("subj", "obj", "prop")
+        reverse_relations = TempTriple.objects.filter(obj=obj).prefetch_related("subj", "obj", "prop")
+        relations = {}
+        for relation in forward_relations:
+            reltype = ContentType.objects.get_for_model(relation.obj).model
+            if reltype not in relations:
+                relations[reltype] = []
+            relations[reltype].append(TempTripleSerializer(relation).data)
+        for relation in reverse_relations:
+            reltype = ContentType.objects.get_for_model(relation.obj).model
+            if reltype not in relations:
+                relations[reltype] = []
+            relations[reltype].append(TempTripleSerializer(relation, reverse=True).data)
+        return relations
