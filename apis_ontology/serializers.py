@@ -32,7 +32,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
     def get_name(self, obj):
         if self.reverse:
             return obj.prop.name_reverse
-        return obj.prop.name
+        return obj.prop.name_forward
 
 
 class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
