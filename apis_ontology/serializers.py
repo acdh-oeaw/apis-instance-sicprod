@@ -57,7 +57,7 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
                 relations[reltype] = []
             relations[reltype].append(TempTripleSerializer(relation).data)
         for relation in reverse_relations:
-            reltype = ContentType.objects.get_for_model(relation.obj).model
+            reltype = ContentType.objects.get_for_model(relation.subj).model
             if reltype not in relations:
                 relations[reltype] = []
             relations[reltype].append(TempTripleSerializer(relation, reverse=True).data)
