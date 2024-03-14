@@ -1,8 +1,9 @@
 from django.db.models import Q
-from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE
+from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE, AbstractEntityFilterSetForm
+from collections import OrderedDict
 
 
-SICPROD_FILTERS_EXCLUDE = ABSTRACT_ENTITY_FILTERS_EXCLUDE + ["metadata"]
+SICPROD_FILTERS_EXCLUDE = ABSTRACT_ENTITY_FILTERS_EXCLUDE + ["metadata", "deprecated_name"]
 
 
 def name_first_name_alternative_name_filter(queryset, name, value):
@@ -29,9 +30,20 @@ def filter_status(queryset, name, value):
     return queryset.filter(status__icontains=value)
 
 
+class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
+    columns_exclude = SICPROD_FILTERS_EXCLUDE
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields = OrderedDict(self.fields)
+        self.fields.move_to_end("name", False)
+        self.fields.move_to_end("columns", False)
+
+
 class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
     class Meta(AbstractEntityFilterSet.Meta):
         exclude = SICPROD_FILTERS_EXCLUDE
+        form = SicprodLegacyStuffFilterSetForm
 
 
 class SalaryFilterSet(LegacyStuffMixinFilterSet):
