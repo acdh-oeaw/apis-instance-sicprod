@@ -4,7 +4,7 @@
   {% block objecttable %}
   {% modeldict object as d %}
   {% for key, value in d.items %}
-  {% with "references notes published review rootobject_ptr" as list %}
+  {% with "references notes published review rootobject_ptr deprecated_name" as list %}
   {% if key.name not in list.split %}
     <tr>
       <th>{{ key.verbose_name }}</th>

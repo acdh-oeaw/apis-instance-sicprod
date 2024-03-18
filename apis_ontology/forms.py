@@ -3,6 +3,9 @@ from apis_ontology.models import Person
 
 
 class LegacyStuffMixinForm(GenericModelForm):
+    class Meta(GenericModelForm.Meta):
+        exclude = ["deprecated_name"]
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -12,9 +15,9 @@ class LegacyStuffMixinForm(GenericModelForm):
 class PersonForm(LegacyStuffMixinForm):
     field_order = ["first_name", "name", "start_date_written", "end_date_written", "status", "collection", "gender"]
 
-    class Meta(GenericModelForm.Meta):
+    class Meta(LegacyStuffMixinForm.Meta):
         model = Person
-        exclude = ["published"]
+        exclude = ["published", "deprecated_name"]
 
 
 class PlaceForm(LegacyStuffMixinForm):
