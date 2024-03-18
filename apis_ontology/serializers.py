@@ -12,7 +12,7 @@ class SimpleObjectSerializer(serializers.Serializer):
 class TempTripleSerializer(serializers.ModelSerializer):
     class Meta:
         model = TempTriple
-        fields = ['start_date_written', 'end_date_written']
+        fields = ['start_date_written', 'end_date_written', 'start_start_date', 'start_end_date', 'end_start_date', 'end_end_date', 'notes']
 
     def __init__(self, *args, **kwargs):
         self.reverse = kwargs.pop("reverse", False)
