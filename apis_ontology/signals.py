@@ -2,11 +2,11 @@ from apis_core.apis_entities.signals import post_merge_with
 from apis_core.apis_metainfo.signals import post_duplicate
 
 from django.dispatch import receiver
-from django.db.models.signals import m2m_changed
+#from django.db.models.signals import m2m_changed
 from django.contrib.contenttypes.models import ContentType
 
 from apis_bibsonomy.models import Reference
-from apis_core.apis_metainfo.models import Collection
+#from apis_core.apis_metainfo.models import Collection
 
 import logging
 
@@ -31,17 +31,17 @@ def copy_references(sender, instance, duplicate, **kwargs):
         ref.save()
 
 
-@receiver(m2m_changed)
-def add_to_public_collection(sender, instance, action, reverse, model, **kwargs):
-    if action == "post_add":
-        logger.info("Adding {instance} to `published` collection")
-        try:
-            collection = Collection.objects.get(name="published")
-            modelname = instance._meta.model.__name__.lower()
-            if cset := getattr(collection, f"{modelname}_set"):
-                cset.add(instance)
-        except Collection.DoesNotExist:
-            pass
+#@receiver(m2m_changed)
+#def add_to_public_collection(sender, instance, action, reverse, model, **kwargs):
+#    if action == "post_add":
+#        logger.info("Adding {instance} to `published` collection")
+#        try:
+#            collection = Collection.objects.get(name="published")
+#            modelname = instance._meta.model.__name__.lower()
+#            if cset := getattr(collection, f"{modelname}_set"):
+#                cset.add(instance)
+#        except Collection.DoesNotExist:
+#            pass
 
 
 @receiver(post_merge_with)

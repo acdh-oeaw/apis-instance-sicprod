@@ -1,5 +1,8 @@
+import django_filters
 from django.db.models import Q
+from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE, AbstractEntityFilterSetForm
+from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from collections import OrderedDict
 
 
@@ -30,6 +33,14 @@ def filter_status(queryset, name, value):
     return queryset.filter(status__icontains=value)
 
 
+def collection_method(queryset, name, value):
+    if value:
+        content_type = ContentType.objects.get_for_model(queryset.model)
+        scco = SkosCollectionContentObject.objects.filter(content_type=content_type, collection__in=value).values("object_id")
+        return queryset.filter(id__in=scco)
+    return queryset
+
+
 class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
     columns_exclude = SICPROD_FILTERS_EXCLUDE
 
@@ -41,6 +52,12 @@ class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
 
 
 class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
+    collection = django_filters.ModelMultipleChoiceFilter(
+        queryset=SkosCollection.objects.all().order_by("name"),
+        label="Collections",
+        method=collection_method,
+    )
+
     class Meta(AbstractEntityFilterSet.Meta):
         exclude = SICPROD_FILTERS_EXCLUDE
         form = SicprodLegacyStuffFilterSetForm

@@ -14,6 +14,9 @@
   {% endwith %}
   {% endfor %}
   <tr>
+    <th>Collections</th>
+    <td>{% for col in object.sicprod_collections %}{{ col }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+  <tr>
     <th>References</th>
     <td>{% link_to_reference_on obj=object modal=True %}</td>
   </tr>
