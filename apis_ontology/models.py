@@ -1,7 +1,9 @@
 import reversion
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.core.models import LegacyDateMixin
+from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 
 
 class LegacyStuffMixin(models.Model):
@@ -21,6 +23,12 @@ class LegacyStuffMixin(models.Model):
         if self.name != "":
             return "{} (ID: {})".format(self.name, self.id)
         return "(ID: {})".format(self.id)
+
+    def sicprod_collections(self):
+        parent = SkosCollection.objects.get(name="sicprod")
+        content_type = ContentType.objects.get_for_model(self)
+        sccos = SkosCollectionContentObject.objects.filter(collection__parent=parent, content_type=content_type, object_id=self.pk).values_list("collection")
+        return SkosCollection.objects.filter(id__in=sccos)
 
 
 @reversion.register(follow=["rootobject_ptr"])

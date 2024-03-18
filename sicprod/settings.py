@@ -42,9 +42,10 @@ def apis_view_passes_test(view) -> bool:
     if view.request.user.is_authenticated:
         return True
     obj = view.get_object()
-    if hasattr(obj, 'collection'):
-        return bool(obj.collection.filter(name="published"))
-    return False
+    from apis_core.collections.models import SkosCollectionContentObject
+    from django.contrib.contenttypes.models import ContentType
+    ct = ContentType.objects.get_for_model(obj)
+    return SkosCollectionContentObject.objects.filter(content_type=ct, object_id=obj.id, collection__name="published").exists()
 
 
 # we have to set this, otherwise there is an error
@@ -55,11 +56,11 @@ APIS_VIEW_PASSES_TEST = apis_view_passes_test
 def apis_list_view_object_filter(view, queryset):
     if view.request.user.is_authenticated:
         return queryset
-    if hasattr(queryset.model, 'collection'):
-        return queryset.filter(collection__name__contains="published")
-    #TODO: this should filter all the other models that do not
-    # have a collection attached!
-    return queryset
+    from apis_core.collections.models import SkosCollectionContentObject
+    from django.contrib.contenttypes.models import ContentType
+    ct = ContentType.objects.get_for_model(queryset.model)
+    sccos = SkosCollectionContentObject.objects.filter(content_type=ct, collection__name="published").values_list("object_id")
+    return queryset.filter(pk__in=sccos)
 
 
 APIS_LIST_VIEWS_ALLOWED = True
