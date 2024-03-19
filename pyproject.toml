@@ -9,7 +9,7 @@ packages = [{include = "apis_ontology"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-apis-core = { git = "https://github.com/acdh-oeaw/apis-core-rdf.git", tag = "v0.15.1" }
+apis-core = { git = "https://github.com/acdh-oeaw/apis-core-rdf.git", tag = "v0.15.2" }
 apis-bibsonomy = { git = "https://github.com/acdh-oeaw/apis-bibsonomy.git", tag = "v0.8.1" }
 apis-acdhch-default-settings = "0.1.24"
 psycopg2 = "^2.9.6"
