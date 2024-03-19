@@ -1,12 +1,28 @@
+import json
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
 from apis_core.apis_relations.models import TempTriple
 from django.contrib.contenttypes.models import ContentType
+from apis_bibsonomy.models import Reference
 
 
 class SimpleObjectSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
+
+
+class ReferenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reference
+        fields = ["pages_start", "pages_end", "folio"]
+
+    def get_fields(self):
+        fields = super().get_fields()
+        fields["bibtex"] = serializers.SerializerMethodField(method_name="get_bibtex")
+        return fields
+
+    def get_bibtex(self, obj):
+        return json.loads(obj.bibtex)
 
 
 class TempTripleSerializer(serializers.ModelSerializer):
@@ -22,6 +38,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
         fields = super().get_fields()
         fields["to"] = serializers.SerializerMethodField(method_name="get_to")
         fields["name"] = serializers.SerializerMethodField(method_name="get_name")
+        fields["references"] = serializers.SerializerMethodField(method_name="get_references")
         return fields
 
     def get_to(self, obj):
@@ -34,6 +51,11 @@ class TempTripleSerializer(serializers.ModelSerializer):
             return obj.prop.name_reverse
         return obj.prop.name_forward
 
+    def get_references(self, obj):
+        ct = ContentType.objects.get_for_model(obj)
+        references = Reference.objects.filter(content_type=ct, object_id=obj.id)
+        return ReferenceSerializer(references, many=True).data
+
 
 class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
     retrieve = False
@@ -45,6 +67,7 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
         fields = super().get_fields()
         if self.context["view"].action == "retrieve":
             fields["relations"] = serializers.SerializerMethodField(method_name="get_relations")
+            fields["references"] = serializers.SerializerMethodField(method_name="get_references")
         return fields
 
     def get_relations(self, obj):
@@ -62,3 +85,8 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
                 relations[reltype] = []
             relations[reltype].append(TempTripleSerializer(relation, reverse=True).data)
         return relations
+
+    def get_references(self, obj):
+        ct = ContentType.objects.get_for_model(obj)
+        references = Reference.objects.filter(content_type=ct, object_id=obj.id)
+        return ReferenceSerializer(references, many=True).data
