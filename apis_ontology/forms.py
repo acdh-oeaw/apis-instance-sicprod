@@ -8,6 +8,8 @@ from django.contrib.contenttypes.models import ContentType
 class MyModelMultipleChoiceField(forms.ModelMultipleChoiceField):
     pass
 
+from apis_core.generic.forms.widgets import NewlineSeparatedListWidget
+
 
 class LegacyStuffMixinForm(GenericModelForm):
     collections = MyModelMultipleChoiceField(queryset=SkosCollection.objects.filter(parent=SkosCollection.objects.get(name="sicprod")), required=False)
@@ -26,6 +28,7 @@ class LegacyStuffMixinForm(GenericModelForm):
             self.fields["collections"].initial = [2, 5]
 
         #self.fields["collection"].initial = [1, 4]
+        self.fields["alternative_label"].widget = NewlineSeparatedListWidget(attrs={"class": "mb-1"})
 
     def save(self, *args, **kwargs):
         obj = super().save(*args, **kwargs)
