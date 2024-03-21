@@ -1,6 +1,8 @@
 from apis_core.generic.forms import GenericModelForm
 from apis_ontology.models import Person
 
+from apis_core.generic.forms.widgets import NewlineSeparatedListWidget
+
 
 class LegacyStuffMixinForm(GenericModelForm):
     class Meta(GenericModelForm.Meta):
@@ -10,6 +12,7 @@ class LegacyStuffMixinForm(GenericModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["collection"].initial = [1, 4]
+        self.fields["alternative_label"].widget = NewlineSeparatedListWidget(attrs={"class": "mb-1"})
 
 
 class PersonForm(LegacyStuffMixinForm):
