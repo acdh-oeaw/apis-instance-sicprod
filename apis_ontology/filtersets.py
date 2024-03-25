@@ -53,7 +53,7 @@ class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
 
 class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
     collection = django_filters.ModelMultipleChoiceFilter(
-        queryset=SkosCollection.objects.all().order_by("name"),
+        queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
         label="Collections",
         method=collection_method,
     )
