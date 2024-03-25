@@ -25,7 +25,7 @@ class LegacyStuffMixinForm(GenericModelForm):
         else:
             self.fields["collections"].initial = [2, 5]
 
-        self.fields["collection"].initial = [1, 4]
+        #self.fields["collection"].initial = [1, 4]
 
     def save(self, *args, **kwargs):
         obj = super().save(*args, **kwargs)
