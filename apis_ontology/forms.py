@@ -38,7 +38,7 @@ class LegacyStuffMixinForm(GenericModelForm):
 
 
 class PersonForm(LegacyStuffMixinForm):
-    field_order = ["first_name", "name", "start_date_written", "end_date_written", "status", "collection", "gender"]
+    field_order = ["first_name", "name", "start_date_written", "end_date_written", "status", "collection", "gender", "alternative_label"]
 
     class Meta(LegacyStuffMixinForm.Meta):
         model = Person
