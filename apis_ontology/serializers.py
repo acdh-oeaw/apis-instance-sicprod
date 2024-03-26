@@ -39,7 +39,13 @@ class TempTripleSerializer(serializers.ModelSerializer):
         fields["to"] = serializers.SerializerMethodField(method_name="get_to")
         fields["name"] = serializers.SerializerMethodField(method_name="get_name")
         fields["references"] = serializers.SerializerMethodField(method_name="get_references")
+        fields["family_relation"] = serializers.SerializerMethodField(method_name="get_family_relation")
         return fields
+
+    def get_family_relation(self, obj):
+        if self.get_name(obj) in ["hat Ehe mit", "ist Bruder/Schwester von", "hat Familienbeziehung zu", "ist Kind von", "ist Elternteil von"]:
+            return True
+        return False
 
     def get_to(self, obj):
         if self.reverse:
