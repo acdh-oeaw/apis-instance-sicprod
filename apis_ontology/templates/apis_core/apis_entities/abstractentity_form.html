@@ -11,6 +11,11 @@
 {% link_to_reference_on obj=object modal=True %}
 {% endblock object-actions %}
 
+{% block col-one %}
+{% include "relations/partials/relations_multiple_cards.html" %}
+{{ block.super }}
+{% endblock col-one %}
+
 {% block scripts %}
 {{ block.super }}
 

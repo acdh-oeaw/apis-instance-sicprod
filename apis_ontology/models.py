@@ -102,3 +102,24 @@ class Salary(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     typ = models.CharField(max_length=9, choices=TYP_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Gehalts.")
     REPETITIONTYPE_CHOICES = (("einfach", "einfach"), ("wiederholend", "wiederholend"), )
     repetitionType = models.CharField(max_length=12, choices=REPETITIONTYPE_CHOICES, blank=True, verbose_name = "Typ Wiederholungen", help_text = "Typ des Gehalts.")
+
+
+from apis_core.relations.models import Relation
+
+
+class FamilyRelation(Relation):
+    subj_model = [Person]
+    obj_model = [Person]
+
+    notes = models.CharField(blank=True, null=True)
+
+
+class BusinessRelation(Relation):
+    subj_model = [Person, Institution]
+    obj_model = [Person, Institution]
+
+
+class ParentOf(Relation):
+    subj_model = Person
+    obj_model = Person
+    _reverse_name = "child of"
