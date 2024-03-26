@@ -26,6 +26,7 @@ INSTALLED_APPS = ["apis_ontology"] + INSTALLED_APPS
 INSTALLED_APPS = ["django_acdhch_functions"] + INSTALLED_APPS
 INSTALLED_APPS += ["django_action_logger"]
 INSTALLED_APPS += ["apis_core.collections"]
+INSTALLED_APPS += ["apis_core.relations"]
 PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
