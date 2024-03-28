@@ -41,11 +41,13 @@ ROOT_URLCONF = "sicprod.urls"
 def apis_view_passes_test(view) -> bool:
     if view.request.user.is_authenticated:
         return True
-    obj = view.get_object()
-    from apis_core.collections.models import SkosCollectionContentObject
-    from django.contrib.contenttypes.models import ContentType
-    ct = ContentType.objects.get_for_model(obj)
-    return SkosCollectionContentObject.objects.filter(content_type=ct, object_id=obj.id, collection__name="published").exists()
+    if view.permission_action_required == "view":
+        obj = view.get_object()
+        from apis_core.collections.models import SkosCollectionContentObject
+        from django.contrib.contenttypes.models import ContentType
+        ct = ContentType.objects.get_for_model(obj)
+        return SkosCollectionContentObject.objects.filter(content_type=ct, object_id=obj.id, collection__name="published").exists()
+    return False
 
 
 # we have to set this, otherwise there is an error
