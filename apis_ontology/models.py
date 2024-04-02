@@ -14,7 +14,6 @@ class LegacyStuffMixin(models.Model):
     published = models.BooleanField(default=False)
     collection = models.ManyToManyField("apis_metainfo.Collection", editable=False)
     metadata = models.JSONField(null=True, blank=True, editable=False)
-    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
 
     class Meta:
         abstract = True
@@ -38,6 +37,7 @@ class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     Generated from model xml
     """
     first_name = models.CharField(max_length=1024, blank=True, null=True, verbose_name = "Vorname", help_text = "Vorname der Person.")
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     GENDER_CHOICES = (("männlich", "männlich"), ("weiblich", "weiblich"), ("unbekannt", "unbekannt"), )
     gender = models.CharField(max_length=9, choices=GENDER_CHOICES, blank=True, verbose_name = "Geschlecht", help_text = "Geschlecht der Person.")
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternative Namen", help_text = "Feld um alternative Namen anzugeben.")
@@ -54,6 +54,7 @@ class Function(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     Eine Funktion kann von einer Person an einer Institution oder einem Hof ausgeübt werden kann.
     Generated from model xml
     """
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Andere Namen für die Funktion.")
 
 
@@ -63,6 +64,7 @@ class Place(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     Orte in SiCProD, Subklasse von crm:E53_Place.
     Generated from model xml
     """
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name für einen Ort.")
     TYPE_CHOICES = (("Stadt", "Stadt"), ("Dorf/Nachbarschaft/Gemein/Siedlung/Weiler", "Dorf/Nachbarschaft/Gemein/Siedlung/Weiler"), ("Burg/Schloss", "Burg/Schloss"), ("Land/Herrschaftskomplex", "Land/Herrschaftskomplex"), ("Landschaft/Region", "Landschaft/Region"), ("Lehen", "Lehen"), ("Haus/Hof", "Haus/Hof"), ("Gericht", "Gericht"), ("Kloster", "Kloster"), ("Gewässer", "Gewässer"), ("Grundherrschaft", "Grundherrschaft"), ("Hofmark", "Hofmark"), ("Tal", "Tal"), ("Berg", "Berg"), ("Bergrevier", "Bergrevier"), ("Pflege", "Pflege"), ("(Land-)Vogtei", "(Land-)Vogtei"), ("Propstei", "Propstei"), )
     type = models.CharField(max_length=41, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Ortes.")
@@ -76,6 +78,7 @@ class Institution(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     SiCProD Institution, Subklasse von crm:E74_Group. Wird für alle Institutionen benutzt die kein Hof sind
     Generated from model xml
     """
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name der Institution.")
     TYPE_CHOICES = (("Kanzlei", "Kanzlei"), ("Hofkapelle", "Hofkapelle"), ("Küche", "Küche"), ("(Dom-)Kapitel", "(Dom-)Kapitel"), ("Universität", "Universität"), ("Kloster", "Kloster"), ("Frauenzimmer", "Frauenzimmer"), ("Bistum", "Bistum"), ("Pfarrei", "Pfarrei"), )
     type = models.CharField(max_length=13, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art der institution.")
@@ -87,6 +90,7 @@ class Event(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     SiCProD Ereignis, Subklasse von crm:E5_Event.
     Generated from model xml
     """
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name.")
     TYPE_CHOICES = (("Hochzeit", "Hochzeit"), ("Landtag", "Landtag"), ("Fest/Turnier", "Fest/Turnier"), ("Schlacht", "Schlacht"), ("Gesandtschaft/Reise", "Gesandtschaft/Reise"), ("Taufe", "Taufe"), ("Amtseinsetzung", "Amtseinsetzung"), ("Reichstag", "Reichstag"), )
     type = models.CharField(max_length=19, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Typ des Ereignisses.")
@@ -98,6 +102,7 @@ class Salary(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     Ein Gehalt ist die Menge an Geld die eine Person als Gegenleistung erhalten hat. Das Gehalt muss keine wiederkehrende Zahlung sein.
     Generated from model xml
     """
+    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     TYP_CHOICES = (("Sold", "Sold"), ("Zehrung", "Zehrung"), ("Provision", "Provision"), ("Kredit", "Kredit"), ("Sonstiges", "Sonstiges"), ("Burghut", "Burghut"), ("Botenlohn", "Botenlohn"), )
     typ = models.CharField(max_length=9, choices=TYP_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Gehalts.")
     REPETITIONTYPE_CHOICES = (("einfach", "einfach"), ("wiederholend", "wiederholend"), )
