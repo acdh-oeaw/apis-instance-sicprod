@@ -40,7 +40,7 @@ class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     first_name = models.CharField(max_length=1024, blank=True, null=True, verbose_name = "Vorname", help_text = "Vorname der Person.")
     GENDER_CHOICES = (("männlich", "männlich"), ("weiblich", "weiblich"), ("unbekannt", "unbekannt"), )
     gender = models.CharField(max_length=9, choices=GENDER_CHOICES, blank=True, verbose_name = "Geschlecht", help_text = "Geschlecht der Person.")
-    alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Feld um alternative Namen anzugeben.")
+    alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternative Namen", help_text = "Feld um alternative Namen anzugeben.")
 
 
     def __str__(self):
