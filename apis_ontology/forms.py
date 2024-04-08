@@ -28,7 +28,8 @@ class LegacyStuffMixinForm(GenericModelForm):
             self.fields["collections"].initial = [2, 5]
 
         #self.fields["collection"].initial = [1, 4]
-        self.fields["alternative_label"].widget = NewlineSeparatedListWidget(attrs={"class": "mb-1"})
+        if "alternative_label" in self.fields:
+            self.fields["alternative_label"].widget = NewlineSeparatedListWidget(attrs={"class": "mb-1"})
 
     def save(self, *args, **kwargs):
         obj = super().save(*args, **kwargs)
