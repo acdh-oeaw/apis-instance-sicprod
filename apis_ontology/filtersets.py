@@ -41,6 +41,14 @@ def collection_method(queryset, name, value):
     return queryset
 
 
+def collection_method_exclude(queryset, name, value):
+    if value:
+        content_type = ContentType.objects.get_for_model(queryset.model)
+        scco = SkosCollectionContentObject.objects.filter(content_type=content_type, collection__in=value).values("object_id")
+        return queryset.exclude(id__in=scco)
+    return queryset
+
+
 class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
     columns_exclude = SICPROD_FILTERS_EXCLUDE
 
@@ -56,6 +64,11 @@ class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
         queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
         label="Collections",
         method=collection_method,
+    )
+    collection_exclude = django_filters.ModelMultipleChoiceFilter(
+        queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
+        label="Collections Exclude",
+        method=collection_method_exclude,
     )
 
     class Meta(AbstractEntityFilterSet.Meta):
