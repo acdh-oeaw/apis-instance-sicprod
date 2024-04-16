@@ -71,6 +71,11 @@ class TempTripleSerializer(serializers.ModelSerializer):
 
 
 class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
+    class Meta:
+        fields = ["name"]
+
+
+class PersonSerializer(GenericHyperlinkedModelSerializer):
     retrieve = False
 
     class Meta:
