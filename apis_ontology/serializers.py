@@ -8,7 +8,14 @@ from apis_bibsonomy.models import Reference
 
 class SimpleObjectSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    name = serializers.CharField()
+    name = serializers.SerializerMethodField(method_name="get_name")
+
+    def get_name(self, obj):
+        if hasattr(obj, "first_name") and hasattr(obj, "name"):
+            return f"{obj.first_name} {obj.name}"
+        if hasattr(obj, "name"):
+            return obj.name
+        return str(obj)
 
 
 class ReferenceSerializer(serializers.ModelSerializer):
