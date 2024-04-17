@@ -55,3 +55,15 @@ class PlaceForm(LegacyStuffMixinForm):
 
 class InstitutionForm(LegacyStuffMixinForm):
     field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
+
+
+class EventForm(LegacyStuffMixinForm):
+    field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
+
+
+class FunctionForm(LegacyStuffMixinForm):
+    field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
+
+
+class SalaryForm(LegacyStuffMixinForm):
+    field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
