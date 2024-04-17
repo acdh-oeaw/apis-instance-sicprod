@@ -75,12 +75,7 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
         fields = ["name"]
 
 
-class PersonSerializer(GenericHyperlinkedModelSerializer):
-    retrieve = False
-
-    class Meta:
-        fields = ["url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
-
+class SicprodSerializer(GenericHyperlinkedModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
         if self.context["view"].action == "retrieve":
@@ -108,3 +103,33 @@ class PersonSerializer(GenericHyperlinkedModelSerializer):
         ct = ContentType.objects.get_for_model(obj)
         references = Reference.objects.filter(content_type=ct, object_id=obj.id)
         return ReferenceSerializer(references, many=True).data
+
+
+class EventSerializer(SicprodSerializer):
+    class Meta:
+        fields = ["name", "start_date_written", "end_date_written", "type"]
+
+
+class FunctionSerializer(SicprodSerializer):
+    class Meta:
+        fields = ["name", "start_date_written", "end_date_written", "alternative_label"]
+
+
+class InstitutionSerializer(SicprodSerializer):
+    class Meta:
+        fields = ["name", "start_date_written", "end_date_written", "type", "alternative_label"]
+
+
+class PersonSerializer(SicprodSerializer):
+    class Meta:
+        fields = ["url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
+
+
+class PlaceSerializer(SicprodSerializer):
+    class Meta:
+        fields = ["name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
+
+
+class SalarySerializer(SicprodSerializer):
+    class Meta:
+        fields = ["name", "start_date_written", "end_date_written", "typ", "repetitionType"]
