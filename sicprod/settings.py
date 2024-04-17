@@ -100,3 +100,7 @@ APIS_ENTITIES = {
         "Place": {"relations_per_page": 100},
         "Salary": {"relations_per_page": 100},
         }
+
+INSTALLED_APPS += ["corsheaders"]
+MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware"] + MIDDLEWARE
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://sicprod-frontend.acdh-ch-dev.oeaw.ac.at"]
