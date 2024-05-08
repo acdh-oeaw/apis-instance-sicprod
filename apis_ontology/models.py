@@ -1,9 +1,9 @@
-import reversion
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.core.models import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
+from apis_core.history.models import VersionMixin
 
 
 class LegacyStuffMixin(models.Model):
@@ -30,8 +30,7 @@ class LegacyStuffMixin(models.Model):
         return SkosCollection.objects.filter(id__in=sccos)
 
 
-@reversion.register(follow=["rootobject_ptr"])
-class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Person, eine Subklasse von crm:E21_Person.
     Generated from model xml
@@ -47,9 +46,7 @@ class Person(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
         return "{}, {} (ID: {})".format(self.name, self.first_name, self.id)
 
 
-
-@reversion.register(follow=["rootobject_ptr"])
-class Function(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Eine Funktion kann von einer Person an einer Institution oder einem Hof ausgeübt werden kann.
     Generated from model xml
@@ -58,8 +55,7 @@ class Function(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Andere Namen für die Funktion.")
 
 
-@reversion.register(follow=["rootobject_ptr"])
-class Place(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Orte in SiCProD, Subklasse von crm:E53_Place.
     Generated from model xml
@@ -72,8 +68,7 @@ class Place(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     longitude = models.FloatField(null=True, blank=True, verbose_name = "Längengrad", help_text = "Längengrad des Ortes. Bei Polygonen wird die Mitte verwendet.")
 
 
-@reversion.register(follow=["rootobject_ptr"])
-class Institution(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Institution, Subklasse von crm:E74_Group. Wird für alle Institutionen benutzt die kein Hof sind
     Generated from model xml
@@ -84,8 +79,7 @@ class Institution(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     type = models.CharField(max_length=13, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art der institution.")
 
 
-@reversion.register(follow=["rootobject_ptr"])
-class Event(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Ereignis, Subklasse von crm:E5_Event.
     Generated from model xml
@@ -96,8 +90,7 @@ class Event(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     type = models.CharField(max_length=19, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Typ des Ereignisses.")
 
 
-@reversion.register(follow=["rootobject_ptr"])
-class Salary(LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Ein Gehalt ist die Menge an Geld die eine Person als Gegenleistung erhalten hat. Das Gehalt muss keine wiederkehrende Zahlung sein.
     Generated from model xml
