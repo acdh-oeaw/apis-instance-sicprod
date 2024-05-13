@@ -107,29 +107,29 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
 
 class EventSerializer(SicprodSerializer):
     class Meta:
-        fields = ["name", "start_date_written", "end_date_written", "type"]
+        fields = ["id", "name", "start_date_written", "end_date_written", "type"]
 
 
 class FunctionSerializer(SicprodSerializer):
     class Meta:
-        fields = ["name", "start_date_written", "end_date_written", "alternative_label"]
+        fields = ["id", "name", "start_date_written", "end_date_written", "alternative_label"]
 
 
 class InstitutionSerializer(SicprodSerializer):
     class Meta:
-        fields = ["name", "start_date_written", "end_date_written", "type", "alternative_label"]
+        fields = ["id", "name", "start_date_written", "end_date_written", "type", "alternative_label"]
 
 
 class PersonSerializer(SicprodSerializer):
     class Meta:
-        fields = ["url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
+        fields = ["id", "url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
 
 
 class PlaceSerializer(SicprodSerializer):
     class Meta:
-        fields = ["name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
+        fields = ["id", "name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
 
 
 class SalarySerializer(SicprodSerializer):
     class Meta:
-        fields = ["name", "start_date_written", "end_date_written", "typ", "repetitionType"]
+        fields = ["id", "name", "start_date_written", "end_date_written", "typ", "repetitionType"]
