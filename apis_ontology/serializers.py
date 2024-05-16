@@ -9,6 +9,7 @@ from apis_bibsonomy.models import Reference
 class SimpleObjectSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.SerializerMethodField(method_name="get_name")
+    type = serializers.SerializerMethodField(method_name="get_type")
 
     def get_name(self, obj):
         if hasattr(obj, "first_name") and hasattr(obj, "name"):
@@ -16,6 +17,9 @@ class SimpleObjectSerializer(serializers.Serializer):
         if hasattr(obj, "name"):
             return obj.name
         return str(obj)
+
+    def get_type(self, obj):
+        return ContentType.objects.get_for_model(obj).model
 
 
 class ReferenceSerializer(serializers.ModelSerializer):
@@ -37,10 +41,6 @@ class TempTripleSerializer(serializers.ModelSerializer):
         model = TempTriple
         fields = ['start_date_written', 'end_date_written', 'start_date', 'end_date', 'notes']
 
-    def __init__(self, *args, **kwargs):
-        self.reverse = kwargs.pop("reverse", False)
-        super().__init__(*args, **kwargs)
-
     def get_fields(self):
         fields = super().get_fields()
         fields["to"] = serializers.SerializerMethodField(method_name="get_to")
@@ -55,12 +55,12 @@ class TempTripleSerializer(serializers.ModelSerializer):
         return False
 
     def get_to(self, obj):
-        if self.reverse:
+        if self.context["obj"] == obj.obj:
             return SimpleObjectSerializer(obj.subj).data
         return SimpleObjectSerializer(obj.obj).data
 
     def get_name(self, obj):
-        if self.reverse:
+        if self.context["obj"] == obj.obj:
             return obj.prop.name_reverse
         return obj.prop.name_forward
 
@@ -79,24 +79,20 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
         if self.context["view"].action == "retrieve":
-            fields["relations"] = serializers.SerializerMethodField(method_name="get_relations")
+            fields["relation_types"] = serializers.SerializerMethodField(method_name="get_relation_types")
             fields["references"] = serializers.SerializerMethodField(method_name="get_references")
         return fields
 
-    def get_relations(self, obj):
-        forward_relations = TempTriple.objects.filter(subj=obj).prefetch_related("subj", "obj", "prop")
-        reverse_relations = TempTriple.objects.filter(obj=obj).prefetch_related("subj", "obj", "prop")
-        relations = {}
+    def get_relation_types(self, obj):
+        forward_relations = TempTriple.objects.filter(subj=obj).prefetch_related("subj", "obj")
+        reverse_relations = TempTriple.objects.filter(obj=obj).prefetch_related("subj", "obj")
+        relations = set()
         for relation in forward_relations:
             reltype = ContentType.objects.get_for_model(relation.obj).model
-            if reltype not in relations:
-                relations[reltype] = []
-            relations[reltype].append(TempTripleSerializer(relation).data)
+            relations.add(reltype)
         for relation in reverse_relations:
             reltype = ContentType.objects.get_for_model(relation.subj).model
-            if reltype not in relations:
-                relations[reltype] = []
-            relations[reltype].append(TempTripleSerializer(relation, reverse=True).data)
+            relations.add(reltype)
         return relations
 
     def get_references(self, obj):
