@@ -120,3 +120,33 @@ class InstitutionFilterSet(LegacyStuffMixinFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["name"].method = name_alternative_name_filter
+
+
+# Those are simply there to remove the `metadata` which is a JSONField and makes the django-filter throw up
+class SicprodVersionFilterSet(AbstractEntityFilterSet):
+    class Meta(AbstractEntityFilterSet.Meta):
+        exclude = SICPROD_FILTERS_EXCLUDE
+
+
+class VersionFunctionFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class VersionPlaceFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class VersionPersonFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class VersionInstitutionFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class VersionEventFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class VersionSalaryFilterSet(SicprodVersionFilterSet):
+    pass
