@@ -4,6 +4,8 @@ from drf_spectacular.generators import SchemaGenerator
 from drf_spectacular.generators import EndpointEnumerator
 
 from apis_core.generic.abc import GenericModel
+from apis_core.apis_entities.models import AbstractEntity
+from apis_ontology.api_views import ListEntityRelations
 
 
 # Custom Schema Generator
@@ -32,6 +34,14 @@ from apis_core.generic.abc import GenericModel
 
 
 class CustomEndpointEnumerator(EndpointEnumerator):
+
+    def _generate_relations_endpoints(self, content_type: ContentType):
+        path = reverse("relationslist", args=[content_type, 0])
+        path = path.replace("0", "{id}")
+        regex = path
+        callback = ListEntityRelations(contenttype=content_type).as_view()
+        return (path, regex, "GET", callback)
+
     def _generate_content_type_endpoint(self, content_type: ContentType, method: str = "list"):
         """Create a endpoint tuple, usable by the SchemaGenerator of DRF spectacular"""
         path = reverse("apis_core:generic:genericmodelapi-list", args=[content_type])
@@ -67,6 +77,10 @@ class CustomEndpointEnumerator(EndpointEnumerator):
             ):
                 api_endpoints.append(self._generate_content_type_endpoint(content_type))
                 api_endpoints.append(self._generate_content_type_endpoint(content_type, "detail"))
+            if content_type.model_class() is not None and issubclass(
+                content_type.model_class(), AbstractEntity
+            ):
+                api_endpoints.append(self._generate_relations_endpoints(content_type))
         return api_endpoints
 
 
