@@ -28,16 +28,34 @@ class SicprodModelViewSet(ModelViewSet):
     We override the generic ModelViewSet so we can add the facet
     information to the -list output
     """
-    facet_attributes = ["gender", "type"]
+    facet_attributes = ["gender", "type", "related_persons", "related_functions", "related_places", "related_institutions", "related_events", "related_salaries"]
 
     def generate_facet_data(self):
         facets = {}
         for el in self.filter_queryset(self.get_queryset()):
             for attribute in self.facet_attributes:
-                val = getattr(el, attribute, None)
-                if val is not None:
+                values = getattr(el, attribute, [])
+                if isinstance(values, str):
+                    values = [values]
+                if values == None:
+                    values = []
+
+                for value in values:
                     facets[attribute] = facets.get(attribute, {})
-                    facets[attribute][val] = facets[attribute].get(val, 0) + 1
+                    match value:
+                        case dict():
+                            facetdict = facets[attribute].get(value["id"], {"name": value["name"], "count": 0 })
+                            facetdict["count"] += 1
+                            facets[attribute][value["id"]] = facetdict
+                        case str():
+                            id = value or "emtpy"
+                            facetdict = facets[attribute].get(id, {"name": value, "count": 0})
+                            facetdict["count"] += 1
+                            facets[attribute][id] = facetdict
+                        case None:
+                            pass
+                        case other:
+                            print(f"Unusable value for facetlist: {other}")
         return {"facets": facets}
 
     def list(self, request, *args, **kwargs):
