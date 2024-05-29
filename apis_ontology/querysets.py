@@ -2,6 +2,12 @@ from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef, Value
 from django.db.models.functions import JSONObject, Concat
 from apis_ontology.models import Person, Function, Place, Institution, Event, Salary
+from apis_core.apis_metainfo.models import RootObject
+
+
+def PersonListViewQueryset(queryset):
+    ro_subquery = RootObject.objects.filter(triple_set_from_obj__subj_id=OuterRef("pk")).values("id")
+    return queryset.annotate(related=ArraySubquery(ro_subquery))
 
 
 def SalaryViewSetQueryset(queryset):

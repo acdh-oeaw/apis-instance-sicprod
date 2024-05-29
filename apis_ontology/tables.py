@@ -1,6 +1,7 @@
 import django_tables2 as tables
 from django_tables2.utils import A
 from apis_core.apis_entities.tables import AbstractEntityTable
+from apis_core.apis_metainfo.models import RootObject
 
 
 class FunctionTable(AbstractEntityTable):
@@ -18,3 +19,8 @@ class PersonTable(AbstractEntityTable):
 
     name = tables.LinkColumn()
     first_name = tables.LinkColumn()
+    related = tables.Column(empty_values=[])
+
+    def render_related(self, record):
+        rel_objs = map(str, RootObject.objects_inheritance.filter(id__in=record.related).select_subclasses())
+        return ", ".join(rel_objs)
