@@ -4,6 +4,8 @@ from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
 from apis_core.apis_relations.models import TempTriple
 from django.contrib.contenttypes.models import ContentType
 from apis_bibsonomy.models import Reference
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 
 class SimpleObjectSerializer(serializers.Serializer):
@@ -54,6 +56,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
             return True
         return False
 
+    @extend_schema_field(OpenApiTypes.OBJECT)
     def get_to(self, obj):
         if self.context["obj"] == obj.obj:
             return SimpleObjectSerializer(obj.subj).data
