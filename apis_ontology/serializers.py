@@ -34,6 +34,7 @@ class ReferenceSerializer(serializers.ModelSerializer):
         fields["bibtex"] = serializers.SerializerMethodField(method_name="get_bibtex")
         return fields
 
+    @extend_schema_field(OpenApiTypes.OBJECT)
     def get_bibtex(self, obj):
         return json.loads(obj.bibtex)
 
