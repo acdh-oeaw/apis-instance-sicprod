@@ -51,6 +51,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
         fields["family_relation"] = serializers.SerializerMethodField(method_name="get_family_relation")
         return fields
 
+    @extend_schema_field(OpenApiTypes.BOOL)
     def get_family_relation(self, obj):
         if self.get_name(obj) in ["hat Ehe mit", "ist Bruder/Schwester von", "hat Familienbeziehung zu", "ist Kind von", "ist Elternteil von"]:
             return True
@@ -67,6 +68,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
             return obj.prop.name_reverse
         return obj.prop.name_forward
 
+    @extend_schema_field(ReferenceSerializer(many=True))
     def get_references(self, obj):
         ct = ContentType.objects.get_for_model(obj)
         references = Reference.objects.filter(content_type=ct, object_id=obj.id)
