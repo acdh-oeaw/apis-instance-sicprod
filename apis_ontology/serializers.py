@@ -58,7 +58,7 @@ class TempTripleSerializer(serializers.ModelSerializer):
             return True
         return False
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
+    @extend_schema_field(SimpleObjectSerializer())
     def get_to(self, obj):
         if self.context["obj"] == obj.obj:
             return SimpleObjectSerializer(obj.subj).data
