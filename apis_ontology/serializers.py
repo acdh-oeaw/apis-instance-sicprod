@@ -84,12 +84,12 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
 class SicprodSerializer(GenericHyperlinkedModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
+        fields["relation_types"] = serializers.SerializerMethodField(method_name="get_relation_types")
         if self.context["view"].action == "retrieve":
-            fields["relation_types"] = serializers.SerializerMethodField(method_name="get_relation_types")
             fields["references"] = serializers.SerializerMethodField(method_name="get_references")
         return fields
 
-    def get_relation_types(self, obj):
+    def get_relation_types(self, obj) -> list[str]:
         forward_relations = TempTriple.objects.filter(subj=obj).prefetch_related("subj", "obj")
         reverse_relations = TempTriple.objects.filter(obj=obj).prefetch_related("subj", "obj")
         relations = set()
