@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 @receiver(post_merge_with)
 def merge_references(sender, instance, entities, **kwargs):
     for entity in entities:
-        logger.info("Moving references from {entity} to {instance}")
+        logger.info(f"Moving references from {entity} to {instance}")
         references = Reference.objects.filter(content_type=entity.self_contenttype, object_id=entity.id).update(object_id=instance.id)
 
 
 @receiver(post_duplicate)
 def copy_references(sender, instance, duplicate, **kwargs):
-    logger.info("Copying references from {instance} to {duplicate}")
+    logger.info(f"Copying references from {instance} to {duplicate}")
     content_type = ContentType.objects.get_for_model(instance)
     for ref in Reference.objects.filter(content_type=content_type, object_id=instance.id):
         ref.pk = None
