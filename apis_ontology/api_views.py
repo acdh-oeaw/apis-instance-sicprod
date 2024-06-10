@@ -31,7 +31,7 @@ class SicprodModelViewSet(ModelViewSet):
     facet_attributes = ["gender", "type", "related_persons", "related_functions", "related_places", "related_institutions", "related_events", "related_salaries"]
 
     def generate_facet_data(self):
-        facets = {}
+        facets = {"start": None, "end": None}
         for el in self.filter_queryset(self.get_queryset()):
             for attribute in self.facet_attributes:
                 values = getattr(el, attribute, [])
@@ -56,6 +56,10 @@ class SicprodModelViewSet(ModelViewSet):
                             pass
                         case other:
                             print(f"Unusable value for facetlist: {other}")
+            if start_date := getattr(el, "start_date", None):
+                facets["start"] = min(start_date.year, facets["start"], key=lambda x: x or 1600)
+            if end_date := getattr(el, "end_date", None):
+                facets["end"] = max(end_date.year, facets["end"], key=lambda x: x or 1300)
         return {"facets": facets}
 
     def list(self, request, *args, **kwargs):
