@@ -43,6 +43,9 @@ function GetFormAjax(FormName , ObjectID , ButtonText) {
                 },
             })
         })            //$(".form.ajax_form").unbind()
+	$('#tab_'+data.tab).each(function() {
+	        htmx.process(this);
+	});
         reinitialize_bibsonomy_tooltips();
 	$('*[data-toggle="modal"]').each(function(){
 	    htmx.process(this);
