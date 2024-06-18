@@ -2,11 +2,6 @@
 {% load bibsonomy_templatetags %}
 {% load apiscore %}
 
-{% block scriptHeader %}
-{{ block.super }}
-{% include 'apis_bibsonomy/apis_bibsonomy_include.html' %}
-{% endblock scriptHeader %}
-
 {% block object-actions %}
 {% link_to_reference_on obj=object modal=True %}
 {% endblock object-actions %}
