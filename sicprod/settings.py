@@ -95,12 +95,12 @@ LOGGING = {
 LOG_LIST_NOSTAFF_EXCLUDE_APP_LABELS = ["reversion", "admin", "sessions", "auth"]
 
 APIS_ENTITIES = {
-        "Event": {"relations_per_page": 100},
-        "Function": {"relations_per_page": 100},
-        "Institution": {"relations_per_page": 100},
-        "Person": {"relations_per_page": 100},
-        "Place": {"relations_per_page": 100},
-        "Salary": {"relations_per_page": 100},
+        "Event": {"relations_per_page": 1000},
+        "Function": {"relations_per_page": 1000},
+        "Institution": {"relations_per_page": 1000},
+        "Person": {"relations_per_page": 1000},
+        "Place": {"relations_per_page": 1000},
+        "Salary": {"relations_per_page": 1000},
         }
 
 INSTALLED_APPS += ["corsheaders"]
