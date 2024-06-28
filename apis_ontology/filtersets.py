@@ -1,5 +1,8 @@
 import django_filters
 from django.db.models import Q
+from django.db.models.fields import CharField
+from django.contrib.postgres.expressions import ArraySubquery
+from django import forms
 from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE, AbstractEntityFilterSetForm
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
@@ -181,4 +184,57 @@ class VersionEventFilterSet(SicprodVersionFilterSet):
 
 
 class VersionSalaryFilterSet(SicprodVersionFilterSet):
+    pass
+
+
+class NoValidationMultipleChoiceField(forms.MultipleChoiceField):
+    def validate(self, value):
+        return True
+
+
+class FacetFilter(django_filters.CharFilter):
+    field_class = NoValidationMultipleChoiceField
+
+    def filter(self, qs, value):
+        if not value:
+            return qs
+        modelfields = {field.name: field for field in qs.model._meta.fields}
+        field_type = modelfields.get(self.field_name, qs.query.annotations.get(self.field_name, None))
+        match field_type:
+            case CharField():
+                return qs.filter(**{f"{self.field_name}__in": value})
+            case ArraySubquery():
+                return qs.filter(**{f"{self.field_name}_ids__overlap": value})
+
+
+class FacetFilterSetMixin:
+    facet_attributes = ["gender", "type", "related_persons", "related_functions", "related_places", "related_institutions", "related_events", "related_salaries"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for facet in self.facet_attributes:
+            self.filters[f"facet_{facet}"] = FacetFilter(field_name=facet)
+
+
+class SalaryApiFilterSet(FacetFilterSetMixin, SalaryFilterSet):
+    pass
+
+
+class FunctionApiFilterSet(FacetFilterSetMixin, FunctionFilterSet):
+    pass
+
+
+class PlaceApiFilterSet(FacetFilterSetMixin, PlaceFilterSet):
+    pass
+
+
+class PersonApiFilterSet(FacetFilterSetMixin, PersonFilterSet):
+    pass
+
+
+class InstitutionApiFilterSet(FacetFilterSetMixin, InstitutionFilterSet):
+    pass
+
+
+class EventApiFilterSet(FacetFilterSetMixin, EventFilterSet):
     pass
