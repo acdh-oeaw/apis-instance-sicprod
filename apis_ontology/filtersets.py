@@ -191,6 +191,16 @@ class NoValidationMultipleChoiceField(forms.MultipleChoiceField):
     def validate(self, value):
         return True
 
+    def to_python(self, value):
+        """
+        We want to allow not only `?foo=a&foo=b` for lists, but also
+        `?foo=a,b`, so we split each value by comma and create a new
+        list from the results
+        """
+        values = super().to_python(value)
+        values = [item for value in values for item in value.split(",")]
+        return values
+
 
 class FacetFilter(django_filters.CharFilter):
     field_class = NoValidationMultipleChoiceField
