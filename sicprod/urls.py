@@ -5,7 +5,6 @@ from rest_framework import routers
 from apis_ontology.api_views import ListEntityRelations, SicprodModelViewSet
 
 urlpatterns += [path("", include("django_acdhch_functions.urls")),]
-urlpatterns += [path("logger/", include("django_action_logger.urls")),]
 
 urlpatterns += [path("apis/api/<contenttype:contenttype>/<int:pk>/relations", ListEntityRelations.as_view(), name="relationslist")]
 
