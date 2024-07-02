@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from apis_ontology.api_views import ListEntityRelations, SicprodModelViewSet
+from apis_ontology.views import UserAuditLog
 
 urlpatterns += [path("", include("django_acdhch_functions.urls")),]
 
@@ -13,3 +14,5 @@ urlpatterns += [path("apis/api/<contenttype:contenttype>/<int:pk>/relations", Li
 router = routers.DefaultRouter()
 router.register(r"", SicprodModelViewSet, basename="genericmodelapi")
 urlpatterns.insert(0, path("apis/api/<contenttype:contenttype>/", include(router.urls)))
+
+urlpatterns += [path("auditlog", UserAuditLog.as_view()),]
