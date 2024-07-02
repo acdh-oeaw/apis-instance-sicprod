@@ -5,6 +5,8 @@ from apis_core.core.models import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
 
+from auditlog.registry import auditlog
+
 
 class LegacyStuffMixin(models.Model):
     review = review = models.BooleanField(default=False, help_text="Should be set to True, if the data record holds up quality standards.")
@@ -99,3 +101,11 @@ class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     typ = models.CharField(max_length=9, choices=TYP_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Gehalts.")
     REPETITIONTYPE_CHOICES = (("einfach", "einfach"), ("wiederholend", "wiederholend"), )
     repetitionType = models.CharField(max_length=12, choices=REPETITIONTYPE_CHOICES, blank=True, verbose_name = "Typ Wiederholungen", help_text = "Typ des Gehalts.")
+
+
+auditlog.register(Person, serialize_data=True)
+auditlog.register(Function, serialize_data=True)
+auditlog.register(Place, serialize_data=True)
+auditlog.register(Institution, serialize_data=True)
+auditlog.register(Event, serialize_data=True)
+auditlog.register(Salary, serialize_data=True)

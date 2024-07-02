@@ -27,6 +27,7 @@ INSTALLED_APPS = ["django_acdhch_functions"] + INSTALLED_APPS
 INSTALLED_APPS += ["apis_core.collections"]
 INSTALLED_APPS += ["apis_core.history"]
 INSTALLED_APPS += ["simple_history"]
+INSTALLED_APPS += ["auditlog"]
 PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
@@ -107,3 +108,5 @@ MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware"] + MIDDLEWARE
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://sicprod-frontend.acdh-ch-dev.oeaw.ac.at"]
 
 SPECTACULAR_SETTINGS["DEFAULT_GENERATOR_CLASS"] = 'apis_ontology.generators.SicprodCustomSchemaGenerator'
+
+MIDDLEWARE += ['auditlog.middleware.AuditlogMiddleware']
