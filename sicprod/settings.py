@@ -110,3 +110,5 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://sicprod-frontend.acdh-
 SPECTACULAR_SETTINGS["DEFAULT_GENERATOR_CLASS"] = 'apis_ontology.generators.SicprodCustomSchemaGenerator'
 
 MIDDLEWARE += ['auditlog.middleware.AuditlogMiddleware']
+
+INSTALLED_APPS += ["apis_core.relations"]
