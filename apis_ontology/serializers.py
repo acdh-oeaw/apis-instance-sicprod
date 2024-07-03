@@ -24,7 +24,7 @@ class SimpleObjectSerializer(serializers.Serializer):
         return ContentType.objects.get_for_model(obj).model
 
 
-class ReferenceSerializer(serializers.ModelSerializer):
+class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reference
         fields = ["pages_start", "pages_end", "folio"]
@@ -69,11 +69,11 @@ class TempTripleSerializer(serializers.ModelSerializer):
             return obj.prop.name_reverse
         return obj.prop.name_forward
 
-    @extend_schema_field(ReferenceSerializer(many=True))
+    @extend_schema_field(SimplifiedReferenceSerializer(many=True))
     def get_references(self, obj):
         ct = ContentType.objects.get_for_model(obj)
         references = Reference.objects.filter(content_type=ct, object_id=obj.id)
-        return ReferenceSerializer(references, many=True).data
+        return SimplifiedReferenceSerializer(references, many=True).data
 
 
 class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
@@ -104,7 +104,7 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
     def get_references(self, obj):
         ct = ContentType.objects.get_for_model(obj)
         references = Reference.objects.filter(content_type=ct, object_id=obj.id)
-        return ReferenceSerializer(references, many=True).data
+        return SimplifiedReferenceSerializer(references, many=True).data
 
 
 class EventSerializer(SicprodSerializer):
