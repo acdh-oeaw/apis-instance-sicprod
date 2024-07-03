@@ -126,3 +126,297 @@ auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
 auditlog.register(Event, serialize_data=True)
 auditlog.register(Salary, serialize_data=True)
+
+
+from apis_core.relations.models import Relation
+
+class Bewohnt(Relation):
+    class Meta:
+        verbose_name = "bewohnt"
+    subj_model = Person
+    obj_model = Place
+
+
+class Besitzt(Relation):
+    class Meta:
+        verbose_name = "besitzt"
+    subj_model = Person
+    obj_model = Place
+
+
+class Hat_korrespondenz_mit(Relation):
+    class Meta:
+        verbose_name = "hat Korrespondenz mit"
+    subj_model = Person
+    obj_model = Person
+
+
+class Hat_familienbeziehung_zu(Relation):
+    class Meta:
+        verbose_name = "hat Familienbeziehung zu"
+    subj_model = Person
+    obj_model = Person
+
+
+class Hat_ehe_mit(Relation):
+    class Meta:
+        verbose_name = "hat Ehe mit"
+    subj_model = Person
+    obj_model = Person
+
+
+class Empfiehlt(Relation):
+    class Meta:
+        verbose_name = "empfiehlt"
+    subj_model = Person
+    obj_model = Person
+
+
+class Hat_geschaeftsbeziehung_zu(Relation):
+    class Meta:
+        verbose_name = "hat Geschäftsbeziehung zu"
+    subj_model = Person
+    obj_model = Person
+
+
+class Ist_mitglied_von(Relation):
+    class Meta:
+        verbose_name = "ist Mitglied von"
+    subj_model = Person
+    obj_model = Institution
+
+
+class Nimmt_teil_an(Relation):
+    class Meta:
+        verbose_name = "nimmt teil an"
+    subj_model = Person
+    obj_model = Event
+    foo = models.ForeignKey(Person, on_delete=models.CASCADE)
+
+
+class Wird_ausbezahlt_an(Relation):
+    class Meta:
+        verbose_name = "wird ausbezahlt an"
+    subj_model = Salary
+    obj_model = [Person, Function]
+
+
+class Wird_ausgeuebt_von(Relation):
+    class Meta:
+        verbose_name = "wird ausgeübt von"
+    subj_model = Function
+    obj_model = Person
+
+    @classmethod
+    def reverse_name(cls):
+        return "übt aus"
+
+
+class Ist_teil_von(Relation):
+    class Meta:
+        verbose_name = "ist Teil von"
+    subj_model = Place
+    obj_model = Place
+
+
+class Fuehrt_durch(Relation):
+    class Meta:
+        verbose_name = "führt durch"
+    subj_model = [Institution, Function, Person]
+    obj_model = Salary
+
+
+class Ist_bruder_schwester_von(Relation):
+    class Meta:
+        verbose_name = "ist Bruder/Schwester von"
+    subj_model = Person
+    obj_model = Person
+
+
+class Ist_kind_von(Relation):
+    class Meta:
+        verbose_name = "ist Kind von"
+    subj_model = Person
+    obj_model = Person
+
+
+class Weist_an(Relation):
+    class Meta:
+        verbose_name = "weist an"
+    subj_model = [Person, Institution]
+    obj_model = Salary
+
+
+class Ist_geboren_in(Relation):
+    class Meta:
+        verbose_name = "ist geboren in"
+    subj_model = Person
+    obj_model = Place
+
+
+class Ist_gestorben_in(Relation):
+    class Meta:
+        verbose_name = "ist gestorben in"
+    subj_model = Person
+    obj_model = Place
+
+
+class Ging_hervor_aus(Relation):
+    class Meta:
+        verbose_name = "ging hervor aus"
+    subj_model = Function
+    obj_model = Function
+
+
+class Ist_untergeordnet(Relation):
+    class Meta:
+        verbose_name = "ist untergeordnet"
+    subj_model = Function
+    obj_model = Function
+
+
+class Ist_gelegen_in(Relation):
+    class Meta:
+        verbose_name = "ist gelegen in"
+    subj_model = Institution
+    obj_model = Place
+
+
+class Findet_statt_in(Relation):
+    class Meta:
+        verbose_name = "findet statt in"
+    subj_model = Event
+    obj_model = Place
+
+
+class Ist_taetig_in(Relation):
+    class Meta:
+        verbose_name = "ist tätig in"
+    subj_model = Person
+    obj_model = Place
+
+
+class Haelt_sich_auf_in(Relation):
+    class Meta:
+        verbose_name = "hält sich auf in"
+    subj_model = Person
+    obj_model = Place
+
+
+class Ist_vormund_von(Relation):
+    class Meta:
+        verbose_name = "ist Vormund von"
+    subj_model = Person
+    obj_model = Person
+
+
+class Ist_taetig_an(Relation):
+    class Meta:
+        verbose_name = "ist tätig an"
+    subj_model = Person
+    obj_model = Institution
+
+
+class Ist_pfruendner_von(Relation):
+    class Meta:
+        verbose_name = "ist Pfründner von"
+    subj_model = Person
+    obj_model = Institution
+
+
+class Ausgeuebt_in(Relation):
+    class Meta:
+        verbose_name = "ausgeübt in"
+    subj_model = Function
+    obj_model = Place
+
+
+class Ist_im_dienst_von(Relation):
+    class Meta:
+        verbose_name = "ist im Dienst von"
+    subj_model = Person
+    obj_model = Person
+
+
+class Hat_heimatort_in(Relation):
+    class Meta:
+        verbose_name = "hat Heimatort in"
+    subj_model = Person
+    obj_model = Place
+
+
+class Ist_verpfaendet_an(Relation):
+    class Meta:
+        verbose_name = "ist verpfändet an"
+    subj_model = Institution
+    obj_model = Person
+
+
+class Gehoert_zu(Relation):
+    class Meta:
+        verbose_name = "gehört zu"
+    subj_model = Institution
+    obj_model = Institution
+
+
+class Wird_angewiesen_von(Relation):
+    class Meta:
+        verbose_name = "wird angewiesen von"
+    subj_model = Salary
+    obj_model = Function
+
+
+class Verkauft_besitz_an(Relation):
+    class Meta:
+        verbose_name = "verkauft Besitz an"
+    subj_model = Person
+    obj_model = Person
+
+
+class Hat_streit_mit(Relation):
+    class Meta:
+        verbose_name = "hat Streit mit"
+    subj_model = Person
+    obj_model = Person
+
+
+class Nimmt_entgegen(Relation):
+    class Meta:
+        verbose_name = "nimmt entgegen"
+    subj_model = [Function, Person]
+    obj_model = Salary
+
+
+class Buergt_fuer(Relation):
+    class Meta:
+        verbose_name = "bürgt für"
+    subj_model = Person
+    obj_model = Person
+
+
+class Ist_moeglicherweise_identisch_mit(Relation):
+    class Meta:
+        verbose_name = "ist möglicherweise identisch mit"
+    subj_model = Person
+    obj_model = Person
+
+
+class Steht_in_verbindung_mit(Relation):
+    class Meta:
+        verbose_name = "steht in Verbindung mit"
+    subj_model = Institution
+    obj_model = Institution
+
+
+class Ist_verbunden_mit(Relation):
+    class Meta:
+        verbose_name = "ist verbunden mit"
+    subj_model = Function
+    obj_model = Function
+
+
+class Ist_moeglicherweise_spezifiziert_als(Relation):
+    class Meta:
+        verbose_name = "ist möglicherweise spezifiziert als"
+    subj_model = Function
+    obj_model = Function

@@ -20,6 +20,7 @@ DEV_VERSION = False
 
 LANGUAGE_CODE = "de"
 
+INSTALLED_APPS = ["apis_core.relations"] + INSTALLED_APPS
 INSTALLED_APPS += ["apis_bibsonomy"]
 INSTALLED_APPS.remove("apis_ontology")
 INSTALLED_APPS = ["apis_ontology"] + INSTALLED_APPS
@@ -28,6 +29,7 @@ INSTALLED_APPS += ["apis_core.collections"]
 INSTALLED_APPS += ["apis_core.history"]
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["auditlog"]
+
 PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
@@ -110,3 +112,4 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://sicprod-frontend.acdh-
 SPECTACULAR_SETTINGS["DEFAULT_GENERATOR_CLASS"] = 'apis_ontology.generators.SicprodCustomSchemaGenerator'
 
 MIDDLEWARE += ['auditlog.middleware.AuditlogMiddleware']
+

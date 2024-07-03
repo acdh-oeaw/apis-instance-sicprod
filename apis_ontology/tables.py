@@ -1,6 +1,7 @@
 import django_tables2 as tables
 from django_tables2.utils import A
 from apis_core.apis_entities.tables import AbstractEntityTable
+from apis_core.relations.tables import RelationsListTable
 
 
 class FunctionTable(AbstractEntityTable):
@@ -18,3 +19,10 @@ class PersonTable(AbstractEntityTable):
 
     name = tables.LinkColumn()
     first_name = tables.LinkColumn()
+
+
+class PersonEventRelationsTable(RelationsListTable):
+    bar = tables.Column(empty_values=())
+
+    def render_bar(self, record):
+        return getattr(record, "foo", "bar")
