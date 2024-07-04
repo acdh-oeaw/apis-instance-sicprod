@@ -103,7 +103,7 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
 class ReferencesMixin(serializers.Serializer):
     references = serializers.SerializerMethodField(method_name="get_references")
 
-    @extend_schema_field(ReferenceSerializer(many=True))
+    @extend_schema_field(SimplifiedReferenceSerializer(many=True))
     def get_references(self, obj):
         ct = ContentType.objects.get_for_model(obj)
         references = Reference.objects.filter(content_type=ct, object_id=obj.id)
