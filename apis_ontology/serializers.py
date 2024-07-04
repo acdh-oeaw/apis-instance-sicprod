@@ -85,6 +85,7 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
         fields["relation_types"] = serializers.SerializerMethodField(method_name="get_relation_types")
+        fields["references"] = serializers.SerializerMethodField(method_name="get_references")
         return fields
 
     def get_relation_types(self, obj) -> list[str]:
@@ -99,10 +100,6 @@ class SicprodSerializer(GenericHyperlinkedModelSerializer):
             relations.add(reltype)
         return relations
 
-
-class ReferencesMixin(serializers.Serializer):
-    references = serializers.SerializerMethodField(method_name="get_references")
-
     @extend_schema_field(SimplifiedReferenceSerializer(many=True))
     def get_references(self, obj):
         ct = ContentType.objects.get_for_model(obj)
@@ -110,67 +107,31 @@ class ReferencesMixin(serializers.Serializer):
         return SimplifiedReferenceSerializer(references, many=True).data
 
 
-class EventListSerializer(SicprodSerializer, serializers.ListSerializer):
+class EventSerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "type"]
 
 
-class EventSerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "name", "start_date_written", "end_date_written", "type", "references"]
-        list_serializer_class = EventListSerializer
-
-
-class FunctionListSerializer(SicprodSerializer, serializers.ListSerializer):
+class FunctionSerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "alternative_label"]
 
 
-class FunctionSerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "name", "start_date_written", "end_date_written", "alternative_label", "references"]
-        list_serializer_class = FunctionListSerializer
-
-
-class InstitutionListSerializer(SicprodSerializer, serializers.ListSerializer):
+class InstitutionSerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "alternative_label"]
 
 
-class InstitutionSerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "name", "start_date_written", "end_date_written", "type", "alternative_label", "references"]
-        list_serializer_class = InstitutionListSerializer
-
-
-class PersonListSerializer(SicprodSerializer, serializers.ListSerializer):
+class PersonSerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
 
 
-class PersonSerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label", "references"]
-        list_serializer_class = PersonListSerializer
-
-
-class PlaceListSerializer(SicprodSerializer, serializers.ListSerializer):
+class PlaceSerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
 
 
-class PlaceSerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label", "references"]
-        list_serializer_class = PlaceListSerializer
-
-
-class SalaryListSerializer(SicprodSerializer, serializers.ListSerializer):
+class SalarySerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "typ", "repetitionType"]
-
-
-class SalarySerializer(ReferencesMixin, SicprodSerializer):
-    class Meta:
-        fields = ["id", "name", "start_date_written", "end_date_written", "typ", "repetitionType", "references"]
-        list_serializer_class = SalaryListSerializer
