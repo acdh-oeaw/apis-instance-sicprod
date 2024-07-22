@@ -42,6 +42,8 @@ class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     gender = models.CharField(max_length=9, choices=GENDER_CHOICES, blank=True, verbose_name = "Geschlecht", help_text = "Geschlecht der Person.")
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternative Namen", help_text = "Feld um alternative Namen anzugeben.")
 
+    class Meta:
+        ordering = ["name", "first_name"]
 
     def __str__(self):
         return "{}, {} (ID: {})".format(self.name, self.first_name, self.id)
@@ -54,6 +56,9 @@ class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     name = models.CharField(max_length=255, verbose_name="Name", blank=True)
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Andere Namen für die Funktion.")
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
@@ -68,6 +73,9 @@ class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     latitude = models.FloatField(null=True, blank=True, verbose_name = "Breitengrad", help_text = "Breitengrad des Ortes. Bei Polygonen wird die Mitte verwendet.")
     longitude = models.FloatField(null=True, blank=True, verbose_name = "Längengrad", help_text = "Längengrad des Ortes. Bei Polygonen wird die Mitte verwendet.")
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
@@ -78,6 +86,9 @@ class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntit
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name der Institution.")
     TYPE_CHOICES = (("Kanzlei", "Kanzlei"), ("Hofkapelle", "Hofkapelle"), ("Küche", "Küche"), ("(Dom-)Kapitel", "(Dom-)Kapitel"), ("Universität", "Universität"), ("Kloster", "Kloster"), ("Frauenzimmer", "Frauenzimmer"), ("Bistum", "Bistum"), ("Pfarrei", "Pfarrei"), )
     type = models.CharField(max_length=13, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art der institution.")
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
@@ -90,6 +101,9 @@ class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     TYPE_CHOICES = (("Hochzeit", "Hochzeit"), ("Landtag", "Landtag"), ("Fest/Turnier", "Fest/Turnier"), ("Schlacht", "Schlacht"), ("Gesandtschaft/Reise", "Gesandtschaft/Reise"), ("Taufe", "Taufe"), ("Amtseinsetzung", "Amtseinsetzung"), ("Reichstag", "Reichstag"), )
     type = models.CharField(max_length=19, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Typ des Ereignisses.")
 
+    class Meta:
+        ordering = ["name"]
+
 
 class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
@@ -101,6 +115,9 @@ class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     typ = models.CharField(max_length=9, choices=TYP_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Gehalts.")
     REPETITIONTYPE_CHOICES = (("einfach", "einfach"), ("wiederholend", "wiederholend"), )
     repetitionType = models.CharField(max_length=12, choices=REPETITIONTYPE_CHOICES, blank=True, verbose_name = "Typ Wiederholungen", help_text = "Typ des Gehalts.")
+
+    class Meta:
+        ordering = ["name"]
 
 
 auditlog.register(Person, serialize_data=True)
