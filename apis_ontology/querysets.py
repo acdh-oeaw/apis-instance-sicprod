@@ -11,7 +11,9 @@ def SalaryViewSetQueryset(queryset):
 def LegacyStuffMixinViewSetQueryset(queryset):
     space = Value(" ")
 
-    person_subquery = Person.objects.filter(triple_set_from_obj__subj_id=OuterRef("pk"))
+    person_subquery_a = Person.objects.filter(triple_set_from_obj__subj_id=OuterRef("pk"))
+    person_subquery_b = Person.objects.filter(triple_set_from_subj__obj_id=OuterRef("pk"))
+    person_subquery = person_subquery_a | person_subquery_b
     person_subquery_json = person_subquery.values(json=JSONObject(name=Concat("first_name", space, "name"), id="id"))
     person_subquery_ids = person_subquery.values("id")
 
