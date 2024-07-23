@@ -1,5 +1,5 @@
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import OuterRef, Value
+from django.db.models import OuterRef, Value, Count  # Add Count import
 from django.db.models.functions import JSONObject, Concat
 from apis_ontology.models import Person, Function, Place, Institution, Event, Salary
 
@@ -9,6 +9,7 @@ def SalaryViewSetQueryset(queryset):
 
 
 def LegacyStuffMixinViewSetQueryset(queryset):
+    return queryset
     space = Value(" ")
 
     person_subquery_a = Person.objects.filter(triple_set_from_obj__subj_id=OuterRef("pk"))
@@ -37,17 +38,21 @@ def LegacyStuffMixinViewSetQueryset(queryset):
     salary_subquery_json = salary_subquery.values(json=JSONObject(name="name", id="id"))
     salary_subquery_ids = salary_subquery.values("id")
 
-    return queryset.annotate(
-            related_persons=ArraySubquery(person_subquery_json),
-            related_persons_ids=ArraySubquery(person_subquery_ids),
-            related_functions=ArraySubquery(function_subquery_json),
-            related_functions_ids=ArraySubquery(function_subquery_ids),
-            related_places=ArraySubquery(place_subquery_json),
-            related_places_ids=ArraySubquery(place_subquery_ids),
-            related_institutions=ArraySubquery(institution_subquery_json),
-            related_institutions_ids=ArraySubquery(institution_subquery_ids),
-            related_events=ArraySubquery(event_subquery_json),
-            related_events_ids=ArraySubquery(event_subquery_ids),
-            related_salaries=ArraySubquery(salary_subquery_json),
-            related_salaries_ids=ArraySubquery(salary_subquery_ids),
-            )
+    institution_subquery_facet = Institution.objects.filter(triple_set_from_obj__subj_id=OuterRef("pk")).values("name").annotate(count=Count("name")).values(json=JSONObject(name="name", count="count"))
+
+    return queryset
+    # return queryset.annotate(
+    #         # facet_persons=ArraySubquery(person_subquery_json),
+    #         # facet_persons_ids=ArraySubquery(person_subquery_ids),
+    #         # facet_functions=ArraySubquery(function_subquery_json),
+    #         # facet_functions_ids=ArraySubquery(function_subquery_ids),
+    #         # facet_places=ArraySubquery(place_subquery_json),
+    #         # facet_places_ids=ArraySubquery(place_subquery_ids),
+    #         # facet_institutions=ArraySubquery(institution_subquery_json),
+    #         # facet_institutions_ids=ArraySubquery(institution_subquery_ids),
+    #         # facet_events=ArraySubquery(event_subquery_json),
+    #         # facet_events_ids=ArraySubquery(event_subquery_ids),
+    #         # facet_salaries=ArraySubquery(salary_subquery_json),
+    #         # facet_salaries_ids=ArraySubquery(salary_subquery_ids),
+    #         facet_institutions=ArraySubquery(institution_subquery_facet),
+    #         )
