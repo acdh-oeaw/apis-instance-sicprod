@@ -44,10 +44,15 @@ class SimpleObjectSerializer(serializers.Serializer):
         return ContentType.objects.get_for_model(obj).model
 
 
+FOLIOPATTERN = re.compile(r"\d{1,3}[r|v]")
+
+
 class SimplifiedReferenceSerializer(serializers.ModelSerializer):
+    scan_path = serializers.SerializerMethodField()
+
     class Meta:
         model = Reference
-        fields = ["pages_start", "pages_end", "folio"]
+        fields = ["pages_start", "pages_end", "folio", "scan_path"]
 
     def get_fields(self):
         fields = super().get_fields()
@@ -57,6 +62,19 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_bibtex(self, obj):
         return json.loads(obj.bibtex)
+
+    def get_scan_path(self, obj) -> str:
+        bibtex = json.loads(obj.bibtex)
+        folder = bibtex["title"].replace(" ", "_")
+        filename = ""
+        if obj.folio:
+            if FOLIOPATTERN.match(obj.folio):
+                nr = int(obj.folio[:-1])
+                if obj.folio.endswith("r"):
+                    filename = f"{nr-1:03d}v-{nr:03d}r"
+                if obj.folio.endswith("v"):
+                    filename = f"{nr:03d}v-{nr+1:03d}r"
+        return f"{folder}/{filename}.jpg"
 
 
 class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
