@@ -1,4 +1,5 @@
 import json
+import re
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
 from apis_core.apis_relations.models import TempTriple
@@ -6,6 +7,25 @@ from django.contrib.contenttypes.models import ContentType
 from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
+
+DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
+
+
+class FixDateMixin:
+    def fix_date(self, date):
+        if date:
+            if match := DATEPATTERN.match(date):
+                date = match["day"] + "." + match["month"] + "." + match["year"]
+        return date
+
+    def to_representation(self, instance):
+        """Convert `date` representation."""
+        fields = ["start_date_written", "end_date_written"]
+        ret = super().to_representation(instance)
+        for field in fields:
+            if ret.get(field, None):
+                ret[field] = self.fix_date(ret[field])
+        return ret
 
 
 class SimpleObjectSerializer(serializers.Serializer):
@@ -39,7 +59,7 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
         return json.loads(obj.bibtex)
 
 
-class TempTripleSerializer(serializers.ModelSerializer):
+class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
     class Meta:
         model = TempTriple
         fields = ['start_date_written', 'end_date_written', 'start_date', 'end_date', 'notes']
@@ -81,7 +101,7 @@ class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
         fields = ["name"]
 
 
-class SicprodSerializer(GenericHyperlinkedModelSerializer):
+class SicprodSerializer(FixDateMixin, GenericHyperlinkedModelSerializer):
     def get_fields(self):
         fields = super().get_fields()
         fields["relation_types"] = serializers.SerializerMethodField(method_name="get_relation_types")
