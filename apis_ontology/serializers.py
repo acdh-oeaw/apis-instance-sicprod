@@ -14,8 +14,8 @@ DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
 class FixDateMixin:
     def fix_date(self, date):
         if date:
-            if match := DATEPATTERN.match(date):
-                date = match["day"] + "." + match["month"] + "." + match["year"]
+            if match := DATEPATTERN.search(date):
+                date = date[:match.span()[0]] + match["day"] + "." + match["month"] + "." + match["year"] + date[match.span()[1]:]
         return date
 
     def to_representation(self, instance):
