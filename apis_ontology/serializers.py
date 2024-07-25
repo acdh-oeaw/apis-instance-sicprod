@@ -44,7 +44,7 @@ class SimpleObjectSerializer(serializers.Serializer):
         return ContentType.objects.get_for_model(obj).model
 
 
-FOLIOPATTERN = re.compile(r"\d{1,3}[r|v]")
+FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).?$")
 
 
 class SimplifiedReferenceSerializer(serializers.ModelSerializer):
@@ -68,11 +68,12 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
         folder = bibtex["title"].replace(" ", "_")
         filename = ""
         if obj.folio:
-            if FOLIOPATTERN.match(obj.folio):
-                nr = int(obj.folio[:-1])
-                if obj.folio.endswith("r"):
+            if match := FOLIOPATTERN.match(obj.folio):
+                cleanfolio = match["cleanfolio"]
+                nr = int(cleanfolio[:-1])
+                if cleanfolio.endswith("r"):
                     filename = f"{nr-1:03d}v-{nr:03d}r"
-                if obj.folio.endswith("v"):
+                if cleanfolio.endswith("v"):
                     filename = f"{nr:03d}v-{nr+1:03d}r"
         return f"{folder}/{filename}.jpg"
 
