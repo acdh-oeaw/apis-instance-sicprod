@@ -52,7 +52,7 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reference
-        fields = ["pages_start", "pages_end", "folio", "scan_path"]
+        fields = ["pages_start", "pages_end", "folio", "scan_path", "notes"]
 
     def get_fields(self):
         fields = super().get_fields()
