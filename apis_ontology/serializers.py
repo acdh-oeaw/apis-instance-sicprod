@@ -152,23 +152,43 @@ class EventSerializer(SicprodSerializer):
 
 
 class FunctionSerializer(SicprodSerializer):
+    alternative_label = serializers.SerializerMethodField()
+
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "alternative_label"]
 
+    def get_alternative_label(self, obj) -> list[str]:
+        return obj.alternative_label.split()
+
 
 class InstitutionSerializer(SicprodSerializer):
+    alternative_label = serializers.SerializerMethodField()
+
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "alternative_label"]
 
+    def get_alternative_label(self, obj) -> list[str]:
+        return obj.alternative_label.split()
+
 
 class PersonSerializer(SicprodSerializer):
+    alternative_label = serializers.SerializerMethodField()
+
     class Meta:
         fields = ["id", "url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
 
+    def get_alternative_label(self, obj) -> list[str]:
+        return obj.alternative_label.split()
+
 
 class PlaceSerializer(SicprodSerializer):
+    alternative_label = serializers.SerializerMethodField()
+
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
+
+    def get_alternative_label(self, obj) -> list[str]:
+        return obj.alternative_label.split()
 
 
 class SalarySerializer(SicprodSerializer):
