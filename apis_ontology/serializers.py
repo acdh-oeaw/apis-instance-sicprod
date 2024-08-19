@@ -158,7 +158,7 @@ class FunctionSerializer(SicprodSerializer):
         fields = ["id", "name", "start_date_written", "end_date_written", "alternative_label"]
 
     def get_alternative_label(self, obj) -> list[str]:
-        return obj.alternative_label.split()
+        return obj.alternative_label.splitlines()
 
 
 class InstitutionSerializer(SicprodSerializer):
@@ -168,7 +168,7 @@ class InstitutionSerializer(SicprodSerializer):
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "alternative_label"]
 
     def get_alternative_label(self, obj) -> list[str]:
-        return obj.alternative_label.split()
+        return obj.alternative_label.splitlines()
 
 
 class PersonSerializer(SicprodSerializer):
@@ -178,7 +178,7 @@ class PersonSerializer(SicprodSerializer):
         fields = ["id", "url", "name", "start_date_written", "end_date_written", "status", "first_name", "gender", "alternative_label"]
 
     def get_alternative_label(self, obj) -> list[str]:
-        return obj.alternative_label.split()
+        return obj.alternative_label.splitlines()
 
 
 class PlaceSerializer(SicprodSerializer):
@@ -188,7 +188,7 @@ class PlaceSerializer(SicprodSerializer):
         fields = ["id", "name", "start_date_written", "end_date_written", "type", "longitude", "latitude", "alternative_label"]
 
     def get_alternative_label(self, obj) -> list[str]:
-        return obj.alternative_label.split()
+        return obj.alternative_label.splitlines()
 
 
 class SalarySerializer(SicprodSerializer):
