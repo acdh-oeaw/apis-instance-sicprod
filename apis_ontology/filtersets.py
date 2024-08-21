@@ -79,11 +79,6 @@ class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
 
 
 class SalaryFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_salary", label="Search")
-
-    def search_salary(self, queryset, name, value):
-        return queryset.filter(name__icontains=value)
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["typ"].method = filter_empty_string
@@ -92,11 +87,6 @@ class SalaryFilterSet(LegacyStuffMixinFilterSet):
 
 
 class FunctionFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_function", label="Search")
-
-    def search_function(self, queryset, name, value):
-        return queryset.filter(Q(name__icontains=value)|Q(alternative_label__icontains=value))
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["name"].method = name_alternative_name_filter
@@ -104,11 +94,6 @@ class FunctionFilterSet(LegacyStuffMixinFilterSet):
 
 
 class PlaceFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_place", label="Search")
-
-    def search_place(self, queryset, name, value):
-        return queryset.filter(Q(name__icontains=value)|Q(alternative_label__icontains=value))
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["type"].method = filter_empty_string
@@ -121,11 +106,6 @@ PERSON_FILTERS_EXCLUDE.remove("status")
 
 
 class PersonFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_person", label="Search")
-
-    def search_person(self, queryset, name, value):
-        return queryset.filter(Q(first_name__icontains=value)|Q(name__icontains=value)|Q(alternative_label__icontains=value))
-
     class Meta(LegacyStuffMixinFilterSet.Meta):
         exclude = PERSON_FILTERS_EXCLUDE
 
@@ -139,21 +119,9 @@ class PersonFilterSet(LegacyStuffMixinFilterSet):
 
 
 class InstitutionFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_institution", label="Search")
-
-    def search_institution(self, queryset, name, value):
-        return queryset.filter(Q(name__icontains=value)|Q(alternative_label__icontains=value))
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["name"].method = name_alternative_name_filter
-
-
-class EventFilterSet(LegacyStuffMixinFilterSet):
-    search = django_filters.CharFilter(method="search_event", label="Search")
-
-    def search_event(self, queryset, name, value):
-        return queryset.filter(Q(name__icontains=value)|Q(alternative_label__icontains=value))
 
 
 # Those are simply there to remove the `metadata` which is a JSONField and makes the django-filter throw up
@@ -242,5 +210,5 @@ class InstitutionApiFilterSet(FacetFilterSetMixin, InstitutionFilterSet):
     pass
 
 
-class EventApiFilterSet(FacetFilterSetMixin, EventFilterSet):
+class EventApiFilterSet(FacetFilterSetMixin, LegacyStuffMixinFilterSet):
     pass
