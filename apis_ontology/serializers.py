@@ -1,5 +1,6 @@
 import json
 import re
+import requests
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
 from apis_core.apis_relations.models import TempTriple
@@ -7,8 +8,29 @@ from django.contrib.contenttypes.models import ContentType
 from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
+from functools import cache
 
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
+FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).?$")
+
+
+@cache
+def iiif_titles():
+    titles = requests.get("https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/", headers={"Accept": "application/json"})
+    return titles.json()
+
+
+def get_folio(obj):
+    folio = ""
+    if obj.folio:
+        if match := FOLIOPATTERN.match(obj.folio):
+            cleanfolio = match["cleanfolio"]
+            nr = int(cleanfolio[:-1])
+            if cleanfolio.endswith("r"):
+                folio = f"{nr-1:03d}v-{nr:03d}r"
+            if cleanfolio.endswith("v"):
+                folio = f"{nr:03d}v-{nr+1:03d}r"
+    return folio
 
 
 class FixDateMixin:
@@ -44,15 +66,13 @@ class SimpleObjectSerializer(serializers.Serializer):
         return ContentType.objects.get_for_model(obj).model
 
 
-FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).?$")
-
-
 class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     scan_path = serializers.SerializerMethodField()
+    scandata = serializers.SerializerMethodField()
 
     class Meta:
         model = Reference
-        fields = ["pages_start", "pages_end", "folio", "scan_path", "notes"]
+        fields = ["pages_start", "pages_end", "folio", "scan_path", "notes", "scandata"]
 
     def get_fields(self):
         fields = super().get_fields()
@@ -66,16 +86,18 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     def get_scan_path(self, obj) -> str:
         bibtex = json.loads(obj.bibtex)
         folder = bibtex["title"].replace(" ", "_")
-        filename = ""
-        if obj.folio:
-            if match := FOLIOPATTERN.match(obj.folio):
-                cleanfolio = match["cleanfolio"]
-                nr = int(cleanfolio[:-1])
-                if cleanfolio.endswith("r"):
-                    filename = f"{nr-1:03d}v-{nr:03d}r"
-                if cleanfolio.endswith("v"):
-                    filename = f"{nr:03d}v-{nr+1:03d}r"
+        filename = get_folio(obj)
         return f"{folder}/{filename}.jpg"
+
+    def get_scandata(self, obj) -> dict:
+        scandata = {}
+        bibtex = json.loads(obj.bibtex)
+        title = bibtex["title"].replace(" ", "_").replace("(", "").replace(")", "")
+        if title in iiif_titles():
+            scandata["title"] = title
+            folio = get_folio(obj)
+            scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
+        return scandata
 
 
 class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
