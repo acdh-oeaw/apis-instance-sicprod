@@ -1,13 +1,20 @@
+import django_filters
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework import pagination
-from apis_ontology.serializers import TempTripleSerializer
+from apis_ontology.serializers import TempTripleSerializer, NetworkSerializer
 from apis_core.apis_relations.models import TempTriple
 from apis_core.generic.api_views import ModelViewSet
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from apis_core.utils.helpers import get_content_types_with_allowed_relation_from
+from apis_core.apis_metainfo.models import RootObject
+from apis_core.apis_relations.models import Triple
+from django.contrib.postgres.expressions import ArraySubquery
+from django.db.models import OuterRef
+from django.db.models import Case, When
+from apis_ontology.filtersets import NetworkFilterSet
 import time
 
 
@@ -90,3 +97,16 @@ class SicprodModelViewSet(ModelViewSet):
     """
 
     pagination_class = InjectFacetPagination
+
+
+class Network(ListAPIView):
+    serializer_class = NetworkSerializer
+    filterset_class = NetworkFilterSet
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+
+    def get_queryset(self):
+        relation_subquery = Triple.objects.filter(Q(subj=OuterRef("pk"))|Q(obj=OuterRef("pk"))).annotate(
+                other_id=Case(
+                    When(subj=OuterRef("pk"), then="obj"),
+                    default="subj")).values("other_id")
+        return RootObject.objects_inheritance.select_subclasses().annotate(related_to=ArraySubquery(relation_subquery))

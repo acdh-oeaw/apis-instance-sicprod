@@ -216,3 +216,20 @@ class PlaceSerializer(SicprodSerializer):
 class SalarySerializer(SicprodSerializer):
     class Meta:
         fields = ["id", "name", "start_date_written", "end_date_written", "typ", "repetitionType"]
+
+
+class NetworkSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
+    related_to = serializers.SerializerMethodField()
+
+    def get_name(self, obj) -> str:
+        return str(obj)
+
+    def get_type(self, obj) -> str:
+        content_type = ContentType.objects.get_for_model(obj)
+        return content_type.name
+
+    def get_related_to(self, obj) -> [int]:
+        return sorted(set(obj.related_to))
