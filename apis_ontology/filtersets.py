@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE, AbstractEntityFilterSetForm
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from collections import OrderedDict
+from apis_core.apis_entities.utils import get_entity_classes
+from functools import cache
 
 
 SICPROD_FILTERS_EXCLUDE = ABSTRACT_ENTITY_FILTERS_EXCLUDE + ["metadata", "deprecated_name"]
@@ -212,3 +214,26 @@ class InstitutionApiFilterSet(FacetFilterSetMixin, InstitutionFilterSet):
 
 class EventApiFilterSet(FacetFilterSetMixin, LegacyStuffMixinFilterSet):
     pass
+
+
+@cache
+def get_entity_natural_keys():
+    entity_classes = get_entity_classes()
+    content_types = [ContentType.objects.get_for_model(entity_class) for entity_class in entity_classes]
+    content_types = [f"{content_type.app_label}.{content_type.name}" for content_type in content_types]
+    return content_types
+
+
+class EntityFilter(django_filters.MultipleChoiceFilter):
+    def filter(self, qs, value):
+        if not value:
+            value = get_entity_natural_keys()
+        q = Q()
+        for entity in value:
+            entity = entity.split(".")[1]
+            q |= Q(**{f"{entity}__isnull": False})
+        return qs.filter(q)
+
+
+class NetworkFilterSet(django_filters.rest_framework.FilterSet):
+    entities = EntityFilter(choices=list(zip(get_entity_natural_keys(), get_entity_natural_keys())))
