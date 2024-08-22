@@ -5,6 +5,8 @@ from auditlog.models import LogEntry
 from apis_bibsonomy.models import Reference
 from apis_ontology.serializers import iiif_titles, get_folio
 from functools import cache
+import django_tables2 as tables
+from django.utils.html import format_html
 
 
 class UserAuditLog(LoginRequiredMixin, ListView):
@@ -35,11 +37,29 @@ def scanfile(ref):
     return f"<a href='https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/{normtitle}/{folio}.jpg'>{normtitle}/{folio}</a>"
 
 
-class ReferenceScanFail(LoginRequiredMixin, ListView):
+class ReferenceFailTable(tables.Table):
+    ref = tables.Column(empty_values=())
+    scanfile = tables.Column(empty_values=())
+    on = tables.Column(empty_values=())
+
+    def render_on(self, record):
+        obj = record.referenced_object
+        rep = str(obj).replace("<", "").replace(">","")
+        return format_html(f"<a href='{obj.get_absolute_url()}'>{rep}</a>")
+
+    def render_ref(self, record):
+        return str(record)
+
+    def render_scanfile(self, record):
+        return format_html(scanfile(record))
+
+
+class ReferenceScanFail(LoginRequiredMixin, tables.SingleTableView):
     template_name = "failingreferences.html"
+    table_class = ReferenceFailTable
 
     def get_queryset(self, *args, **kwargs):
         refs = Reference.objects.all()
         refs = [ref for ref in refs if scanfolderexists(ref)]
-        refs = [(ref, scanfile(ref)) for ref in refs if not scanfileexists(ref)]
+        refs = [ref for ref in refs if not scanfileexists(ref)]
         return refs
