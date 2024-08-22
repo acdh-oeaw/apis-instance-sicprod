@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  {{ object_list | length }}
+  <ul>
+  {% for object, folio in object_list %}
+  <li><a href="{% url "apis_bibsonomy:referencedetail" object.id %}">{{ object }}</a> {{ folio|safe }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

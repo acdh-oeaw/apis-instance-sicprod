@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from apis_ontology.api_views import ListEntityRelations, SicprodModelViewSet, Network
-from apis_ontology.views import UserAuditLog
+from apis_ontology.views import UserAuditLog, ReferenceScanFail
 
 urlpatterns += [path("", include("django_acdhch_functions.urls")),]
 
@@ -18,3 +18,5 @@ urlpatterns.insert(0, path("apis/api/<contenttype:contenttype>/", include(router
 urlpatterns += [path("auditlog", UserAuditLog.as_view()),]
 
 urlpatterns += [path("apis/api/network", Network.as_view(), name="network")]
+
+urlpatterns += [path("apis/failingreferences", ReferenceScanFail.as_view(), name="referencescanfail")]
