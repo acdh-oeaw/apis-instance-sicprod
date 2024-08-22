@@ -21,7 +21,7 @@ def iiif_titles():
 
 
 def get_folio(obj):
-    folio = ""
+    folio = obj.folio
     if obj.folio:
         if match := FOLIOPATTERN.match(obj.folio):
             cleanfolio = match["cleanfolio"]
