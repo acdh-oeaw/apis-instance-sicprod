@@ -45,9 +45,12 @@ class ReferenceFailTable(tables.Table):
     on = tables.Column(empty_values=())
 
     def render_on(self, record):
-        obj = record.referenced_object
-        rep = str(obj).replace("<", "").replace(">","")
-        return format_html(f"<a href='{obj.get_absolute_url()}'>{rep}</a>")
+        try:
+            obj = record.referenced_object
+            rep = str(obj).replace("<", "").replace(">","")
+            return format_html(f"<a href='{obj.get_absolute_url()}'>{rep}</a>")
+        except Exception:
+            return "Referenced object does not exist."
 
     def render_ref(self, record):
         return str(record)
