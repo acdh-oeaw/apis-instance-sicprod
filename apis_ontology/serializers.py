@@ -14,6 +14,7 @@ import roman
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
 FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).*$")
 ROMANPATTERN = re.compile(r"^(?P<romanfirst>[C|X|L|I|V]{1,9})(?P<rectoverso>[r|v])")
+PAGEPATTERN = re.compile(r"^(?P<page>\d{1,3}).*$")
 
 
 @cache
@@ -24,6 +25,19 @@ def iiif_titles():
 
 def get_folio(obj):
     folio = obj.folio
+    # some references use pages
+    if page := obj.pages_start:
+        if page % 2 == 0:
+            # 7 (H) uses pages, but they files are named using recto/verso
+            if "7 (H)" in obj.bibtexjson["title"]:
+                return f"{page:03d}v-{page+1:03d}r"
+            else:
+                return f"{page:03d}-{page+1:03d}"
+        else:
+            if "7 (H)" in obj.bibtexjson["title"]:
+                return f"{page-1:03d}v-{page:03d}r"
+            else:
+                return f"{page-1:03d}-{page:03d}"
     if obj.folio:
         if match := ROMANPATTERN.match(obj.folio):
             romanfirst = match["romanfirst"]
@@ -41,6 +55,14 @@ def get_folio(obj):
                 folio = f"{nr-1:03d}v-{nr:03d}r"
             if cleanfolio.endswith("v"):
                 folio = f"{nr:03d}v-{nr+1:03d}r"
+            return folio
+        if match := PAGEPATTERN.match(obj.folio):
+            page = int(match["page"])
+            if page % 2 == 0:
+                folio = f"{page:03d}-{page+1:03d}"
+            else:
+                folio = f"{page-1:03d}-{page:03d}"
+            return folio
     return folio
 
 
