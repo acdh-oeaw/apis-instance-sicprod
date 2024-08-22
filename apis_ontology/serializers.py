@@ -9,9 +9,11 @@ from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 from functools import cache
+import roman
 
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
-FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).?$")
+FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).*$")
+ROMANPATTERN = re.compile(r"^(?P<romanfirst>[C|X|L|I|V]{1,9})(?P<rectoverso>[r|v])")
 
 
 @cache
@@ -23,6 +25,15 @@ def iiif_titles():
 def get_folio(obj):
     folio = obj.folio
     if obj.folio:
+        if match := ROMANPATTERN.match(obj.folio):
+            romanfirst = match["romanfirst"]
+            try:
+                number = roman.fromRoman(romanfirst)
+            except roman.InvalidRomanNumeralError:
+                return f"Invalid roman numeral: {obj.folio}"
+            if match["rectoverso"] == "r":
+                number -= 1
+            return  f"{roman.toRoman(number)}v-{roman.toRoman(number+1)}r"
         if match := FOLIOPATTERN.match(obj.folio):
             cleanfolio = match["cleanfolio"]
             nr = int(cleanfolio[:-1])
