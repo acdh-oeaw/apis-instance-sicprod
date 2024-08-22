@@ -15,8 +15,10 @@ class UserAuditLog(LoginRequiredMixin, ListView):
 
 
 def scanfolderexists(ref):
-    normtitle = ref.bibtexjson["title"].replace(" ", "_").replace("(", "").replace(")", "")
-    return normtitle in iiif_titles()
+    if "title" in ref.bibtexjson:
+        normtitle = ref.bibtexjson["title"].replace(" ", "_").replace("(", "").replace(")", "")
+        return normtitle in iiif_titles()
+    return False
 
 
 @cache
