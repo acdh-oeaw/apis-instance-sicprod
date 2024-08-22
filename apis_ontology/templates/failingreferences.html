@@ -1,12 +1,9 @@
 {% extends "base.html" %}
+{% load django_tables2 %}
 
 {% block content %}
 <div class="container">
   {{ object_list | length }}
-  <ul>
-  {% for object, folio in object_list %}
-  <li><a href="{% url "apis_bibsonomy:referencedetail" object.id %}">{{ object }}</a> {{ folio|safe }}</li>
-  {% endfor %}
-  </ul>
+  {% render_table table %}
 </div>
 {% endblock content %}
