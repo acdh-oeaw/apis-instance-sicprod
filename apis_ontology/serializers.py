@@ -9,7 +9,6 @@ from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 from functools import cache
-import roman
 
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
 FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).*$")
@@ -19,51 +18,47 @@ PAGEPATTERN = re.compile(r"^(?P<page>\d{1,3}).*$")
 
 @cache
 def iiif_titles():
+    full_dict = {}
     titles = requests.get("https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/", headers={"Accept": "application/json"})
-    return titles.json()
+    for title in titles.json():
+        full_dict[title] = requests.get(f"https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/{title}", headers={"Accept": "application/json"}).json()
+    return full_dict
+
+
+def normalize_title(title: str) -> str:
+    return title.replace(" ", "_").replace("(", "").replace(")", "")
+
+
+NUMBER = re.compile(r"(?P<number>\d+)")
 
 
 def get_folio(obj):
-    folio = obj.folio
-    # some references use pages
+    title = normalize_title(obj.bibtexjson["title"])
     if page := obj.pages_start:
-        if page % 2 == 0:
-            # 7 (H) uses pages, but they files are named using recto/verso
-            if "7 (H)" in obj.bibtexjson["title"]:
-                return f"{page:03d}v-{page+1:03d}r"
-            else:
-                return f"{page:03d}-{page+1:03d}"
-        else:
-            if "7 (H)" in obj.bibtexjson["title"]:
-                return f"{page-1:03d}v-{page:03d}r"
-            else:
-                return f"{page-1:03d}-{page:03d}"
+        page = f"{page:03d}"
     if obj.folio:
-        if match := ROMANPATTERN.match(obj.folio):
-            romanfirst = match["romanfirst"]
-            try:
-                number = roman.fromRoman(romanfirst)
-            except roman.InvalidRomanNumeralError:
-                return f"Invalid roman numeral: {obj.folio}"
-            if match["rectoverso"] == "r":
-                number -= 1
-            return  f"{roman.toRoman(number)}v-{roman.toRoman(number+1)}r"
-        if match := FOLIOPATTERN.match(obj.folio):
-            cleanfolio = match["cleanfolio"]
-            nr = int(cleanfolio[:-1])
-            if cleanfolio.endswith("r"):
-                folio = f"{nr-1:03d}v-{nr:03d}r"
-            if cleanfolio.endswith("v"):
-                folio = f"{nr:03d}v-{nr+1:03d}r"
-            return folio
-        if match := PAGEPATTERN.match(obj.folio):
-            page = int(match["page"])
-            if page % 2 == 0:
-                folio = f"{page:03d}-{page+1:03d}"
-            else:
-                folio = f"{page-1:03d}-{page:03d}"
-            return folio
-    return folio
+        page = obj.folio
+        if "-" in obj.folio:
+            page = obj.folio.split("-")[0]
+        if "–" in obj.folio:
+            page = obj.folio.split("–")[0]
+        if page:
+            if match := NUMBER.match(page):
+                page = match["number"]
+        if page.endswith("v") or page.endswith("r"):
+            page = page[:-1]
+        try:
+            page = int(page)
+            page = f"{page:03d}"
+        except Exception:
+            pass
+    if page:
+        matches = [scanfile for scanfile in iiif_titles()[title] if page in scanfile]
+        if matches:
+            return matches[0]
+    print(obj.folio)
+    print(page)
+    return None
 
 
 class FixDateMixin:
@@ -125,8 +120,8 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     def get_scandata(self, obj) -> dict:
         scandata = {}
         bibtex = json.loads(obj.bibtex)
-        title = bibtex["title"].replace(" ", "_").replace("(", "").replace(")", "")
-        if title in iiif_titles():
+        title = normalize_title(bibtex["title"])
+        if title in iiif_titles().keys():
             scandata["title"] = title
             folio = get_folio(obj)
             scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
