@@ -24,7 +24,7 @@ def scanfolder(ref):
 
 
 class ReferenceFailTable(tables.Table):
-    ref = tables.Column(empty_values=())
+    ref = tables.TemplateColumn('<a href="{% url "apis_bibsonomy:referenceupdate" record.id %}">{{ record }}</a>')
     folder = tables.Column(empty_values=())
     on = tables.Column(empty_values=())
 
@@ -35,9 +35,6 @@ class ReferenceFailTable(tables.Table):
             return format_html(f"<a href='{obj.get_absolute_url()}'>{rep}</a>")
         except Exception:
             return "Referenced object does not exist."
-
-    def render_ref(self, record):
-        return str(record)
 
     def render_folder(self, record):
         return format_html(scanfolder(record))
