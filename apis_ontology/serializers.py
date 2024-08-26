@@ -95,12 +95,11 @@ class SimpleObjectSerializer(serializers.Serializer):
 
 
 class SimplifiedReferenceSerializer(serializers.ModelSerializer):
-    scan_path = serializers.SerializerMethodField()
     scandata = serializers.SerializerMethodField()
 
     class Meta:
         model = Reference
-        fields = ["pages_start", "pages_end", "folio", "scan_path", "notes", "scandata"]
+        fields = ["pages_start", "pages_end", "folio", "notes", "scandata"]
 
     def get_fields(self):
         fields = super().get_fields()
@@ -110,12 +109,6 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_bibtex(self, obj):
         return json.loads(obj.bibtex)
-
-    def get_scan_path(self, obj) -> str:
-        bibtex = json.loads(obj.bibtex)
-        folder = bibtex["title"].replace(" ", "_")
-        filename = get_folio(obj)
-        return f"{folder}/{filename}.jpg"
 
     def get_scandata(self, obj) -> dict:
         scandata = {}
