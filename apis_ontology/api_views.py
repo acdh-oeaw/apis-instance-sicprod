@@ -109,4 +109,4 @@ class Network(ListAPIView):
                 other_id=Case(
                     When(subj=OuterRef("pk"), then="obj"),
                     default="subj")).values("other_id")
-        return RootObject.objects_inheritance.select_subclasses().annotate(related_to=ArraySubquery(relation_subquery))
+        return RootObject.objects_inheritance.select_subclasses().annotate(related_to=ArraySubquery(relation_subquery)).distinct()
