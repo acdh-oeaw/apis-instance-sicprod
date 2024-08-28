@@ -252,5 +252,5 @@ class NetworkSerializer(serializers.Serializer):
         content_type = ContentType.objects.get_for_model(obj)
         return content_type.name
 
-    def get_related_to(self, obj) -> [int]:
+    def get_related_to(self, obj) -> list[int]:
         return sorted(set(obj.related_to))
