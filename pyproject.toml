@@ -13,7 +13,7 @@ apis-core = { git = "https://github.com/acdh-oeaw/apis-core-rdf.git", tag = "v0.
 apis-bibsonomy = "0.11.0"
 apis-acdhch-default-settings = "1.0.0"
 psycopg2 = "^2.9.6"
-django-acdhch-functions = "^0.1.2"
+django-acdhch-functions = "^0.1.4"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
 roman = "^4.2"
