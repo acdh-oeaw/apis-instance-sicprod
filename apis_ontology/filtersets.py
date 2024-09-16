@@ -58,7 +58,8 @@ class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields = OrderedDict(self.fields)
-        self.fields.move_to_end("name", False)
+        if "name" in self.fields:
+            self.fields.move_to_end("name", False)
         if "columns" in self.fields:
             self.fields.move_to_end("columns", False)
 
