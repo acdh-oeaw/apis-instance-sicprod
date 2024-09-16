@@ -62,7 +62,9 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
             res = list(model.objects.filter(triple_set_from_subj__obj__in=queryset).distinct().annotate(count=Count("id")))
             res += list(model.objects.filter(triple_set_from_obj__subj__in=queryset).distinct().annotate(count=Count("id")))
             for obj in res:
-                name = obj.name
+                name = getattr(obj, "name", None)
+                if relation_content_type.name == "place":
+                    name = obj.label
                 if relation_content_type.name == "person":
                     name = f"{obj.first_name} {obj.name}"
                 if obj.id in facets[facetname].keys():
