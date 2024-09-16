@@ -4,6 +4,7 @@ from apis_core.apis_entities.models import AbstractEntity
 from apis_core.core.models import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
+from apis_core.apis_entities.abc import E53_Place
 
 from auditlog.registry import auditlog
 
@@ -63,21 +64,22 @@ class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
         ordering = ["name"]
 
 
-class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, E53_Place, AbstractEntity):
     """
     Orte in SiCProD, Subklasse von crm:E53_Place.
     Generated from model xml
     """
-    _default_search_fields = ["name", "alternative_label"]
-    name = models.CharField(max_length=255, verbose_name="Name", blank=True)
+    _default_search_fields = ["label", "alternative_label"]
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name für einen Ort.")
     TYPE_CHOICES = (("Stadt", "Stadt"), ("Dorf/Nachbarschaft/Gemein/Siedlung/Weiler", "Dorf/Nachbarschaft/Gemein/Siedlung/Weiler"), ("Burg/Schloss", "Burg/Schloss"), ("Land/Herrschaftskomplex", "Land/Herrschaftskomplex"), ("Landschaft/Region", "Landschaft/Region"), ("Lehen", "Lehen"), ("Haus/Hof", "Haus/Hof"), ("Gericht", "Gericht"), ("Kloster", "Kloster"), ("Gewässer", "Gewässer"), ("Grundherrschaft", "Grundherrschaft"), ("Hofmark", "Hofmark"), ("Tal", "Tal"), ("Berg", "Berg"), ("Bergrevier", "Bergrevier"), ("Pflege", "Pflege"), ("(Land-)Vogtei", "(Land-)Vogtei"), ("Propstei", "Propstei"), )
     type = models.CharField(max_length=41, choices=TYPE_CHOICES, blank=True, verbose_name = "Typ", help_text = "Art des Ortes.")
-    latitude = models.FloatField(null=True, blank=True, verbose_name = "Breitengrad", help_text = "Breitengrad des Ortes. Bei Polygonen wird die Mitte verwendet.")
-    longitude = models.FloatField(null=True, blank=True, verbose_name = "Längengrad", help_text = "Längengrad des Ortes. Bei Polygonen wird die Mitte verwendet.")
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["label"]
+
+
+    def __str__(self):
+        return self.label
 
 
 class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):

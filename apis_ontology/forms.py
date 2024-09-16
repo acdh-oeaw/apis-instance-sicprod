@@ -50,7 +50,7 @@ class PersonForm(LegacyStuffMixinForm):
 
 
 class PlaceForm(LegacyStuffMixinForm):
-    field_order = ["name", "type", "latitude", "longitude", "status", "collection"]
+    field_order = ["label", "type", "latitude", "longitude", "status", "collection"]
 
 
 class InstitutionForm(LegacyStuffMixinForm):
