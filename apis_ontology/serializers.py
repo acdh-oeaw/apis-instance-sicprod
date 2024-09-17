@@ -9,6 +9,7 @@ from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 from functools import cache
+from apis_ontology.models import Salary
 
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
 FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).*$")
@@ -63,6 +64,9 @@ def get_folio(obj):
 
 class FixDateMixin:
     def fix_date(self, date):
+        """
+        replace YYYY-MM-DD with YYYY.MM.DD format
+        """
         if date:
             if match := DATEPATTERN.search(date):
                 date = date[:match.span()[0]] + match["day"] + "." + match["month"] + "." + match["year"] + date[match.span()[1]:]
@@ -70,11 +74,21 @@ class FixDateMixin:
 
     def to_representation(self, instance):
         """Convert `date` representation."""
-        fields = ["start_date_written", "end_date_written"]
+        written_date_fields = ["start_date_written", "end_date_written"]
         ret = super().to_representation(instance)
-        for field in fields:
+        for field in written_date_fields:
             if ret.get(field, None):
                 ret[field] = self.fix_date(ret[field])
+        # if we are working with a relation that relates
+        # to a salary, make the date fields only return the year
+        if isinstance(instance, TempTriple):
+            if isinstance(instance.subj, Salary) or isinstance(instance.obj, Salary):
+                if start_date := getattr(instance, "start_date"):
+                    ret["start_date"] = str(start_date.year)
+                    ret["start_date_written"] = str(start_date.year)
+                if end_date := getattr(instance, "end_date"):
+                    ret["end_date"] = str(end_date.year)
+                    ret["end_date_written"] = str(end_date.year)
         return ret
 
 
