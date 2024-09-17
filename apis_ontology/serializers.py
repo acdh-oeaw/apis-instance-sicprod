@@ -172,7 +172,7 @@ class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
         return SimplifiedReferenceSerializer(references, many=True).data
 
 
-class LegacyStuffMixinSerializer(GenericHyperlinkedModelSerializer):
+class SicprodMixinSerializer(GenericHyperlinkedModelSerializer):
     class Meta:
         fields = ["name"]
 
