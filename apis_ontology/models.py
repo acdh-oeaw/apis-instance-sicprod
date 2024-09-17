@@ -35,7 +35,6 @@ class LegacyStuffMixin(models.Model):
 class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Person, eine Subklasse von crm:E21_Person.
-    Generated from model xml
     """
     _default_search_fields = ["first_name", "name", "alternative_label"]
     first_name = models.CharField(max_length=1024, blank=True, null=True, verbose_name = "Vorname", help_text = "Vorname der Person.")
@@ -54,7 +53,6 @@ class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
 class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Eine Funktion kann von einer Person an einer Institution oder einem Hof ausgeübt werden kann.
-    Generated from model xml
     """
     _default_search_fields = ["name", "alternative_label"]
     name = models.CharField(max_length=255, verbose_name="Name", blank=True)
@@ -67,7 +65,6 @@ class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
 class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, E53_Place, AbstractEntity):
     """
     Orte in SiCProD, Subklasse von crm:E53_Place.
-    Generated from model xml
     """
     _default_search_fields = ["label", "alternative_label"]
     alternative_label = models.TextField(blank=True, null=True, verbose_name = "Alternativer Name", help_text = "Alternativer Name für einen Ort.")
@@ -85,7 +82,6 @@ class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, E53_Place, Abstract
 class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Institution, Subklasse von crm:E74_Group. Wird für alle Institutionen benutzt die kein Hof sind
-    Generated from model xml
     """
     _default_search_fields = ["name", "alternative_label"]
     name = models.CharField(max_length=255, verbose_name="Name", blank=True)
@@ -100,7 +96,6 @@ class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntit
 class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Ereignis, Subklasse von crm:E5_Event.
-    Generated from model xml
     """
     _default_search_fields = ["name", "alternative_label"]
     name = models.CharField(max_length=255, verbose_name="Name", blank=True)
@@ -115,7 +110,6 @@ class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
 class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
     """
     Ein Gehalt ist die Menge an Geld die eine Person als Gegenleistung erhalten hat. Das Gehalt muss keine wiederkehrende Zahlung sein.
-    Generated from model xml
     """
     _default_search_fields = ["name"]
     name = models.CharField(max_length=255, verbose_name="Name", blank=True)
