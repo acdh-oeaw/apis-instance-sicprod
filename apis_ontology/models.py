@@ -9,7 +9,8 @@ from apis_core.apis_entities.abc import E53_Place
 from auditlog.registry import auditlog
 
 
-class LegacyStuffMixin(models.Model):
+class SicprodMixin(models.Model):
+    """ A mixin providing generic fields and functionality for all Sicprod Models """
     review = review = models.BooleanField(default=False, help_text="Should be set to True, if the data record holds up quality standards.")
     status = models.CharField(max_length=100, blank=True)
     references = models.TextField(blank=True, null=True)
@@ -32,7 +33,7 @@ class LegacyStuffMixin(models.Model):
         return SkosCollection.objects.filter(id__in=sccos)
 
 
-class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Person(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
     """
     Person, eine Subklasse von crm:E21_Person.
     """
@@ -50,7 +51,7 @@ class Person(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
         return "{}, {} (ID: {})".format(self.name, self.first_name, self.id)
 
 
-class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Function(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
     """
     Eine Funktion kann von einer Person an einer Institution oder einem Hof ausgeübt werden kann.
     """
@@ -62,7 +63,7 @@ class Function(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
         ordering = ["name"]
 
 
-class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, E53_Place, AbstractEntity):
+class Place(VersionMixin, SicprodMixin, LegacyDateMixin, E53_Place, AbstractEntity):
     """
     Orte in SiCProD, Subklasse von crm:E53_Place.
     """
@@ -79,7 +80,7 @@ class Place(VersionMixin, LegacyStuffMixin, LegacyDateMixin, E53_Place, Abstract
         return self.label
 
 
-class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Institution(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Institution, Subklasse von crm:E74_Group. Wird für alle Institutionen benutzt die kein Hof sind
     """
@@ -93,7 +94,7 @@ class Institution(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntit
         ordering = ["name"]
 
 
-class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Event(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
     """
     SiCProD Ereignis, Subklasse von crm:E5_Event.
     """
@@ -107,7 +108,7 @@ class Event(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
         ordering = ["name"]
 
 
-class Salary(VersionMixin, LegacyStuffMixin, LegacyDateMixin, AbstractEntity):
+class Salary(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
     """
     Ein Gehalt ist die Menge an Geld die eine Person als Gegenleistung erhalten hat. Das Gehalt muss keine wiederkehrende Zahlung sein.
     """

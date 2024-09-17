@@ -64,7 +64,7 @@ class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
             self.fields.move_to_end("columns", False)
 
 
-class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
+class SicprodMixinFilterSet(AbstractEntityFilterSet):
     collection = django_filters.ModelMultipleChoiceFilter(
         queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
         label="Collections",
@@ -81,7 +81,7 @@ class LegacyStuffMixinFilterSet(AbstractEntityFilterSet):
         form = SicprodLegacyStuffFilterSetForm
 
 
-class SalaryFilterSet(LegacyStuffMixinFilterSet):
+class SalaryFilterSet(SicprodMixinFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["typ"].method = filter_empty_string
@@ -89,14 +89,14 @@ class SalaryFilterSet(LegacyStuffMixinFilterSet):
         self.filters["typ"].extra["required"] = False
 
 
-class FunctionFilterSet(LegacyStuffMixinFilterSet):
+class FunctionFilterSet(SicprodMixinFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["name"].method = name_alternative_name_filter
         self.filters["name"].label = "Name or alternative name"
 
 
-class PlaceFilterSet(LegacyStuffMixinFilterSet):
+class PlaceFilterSet(SicprodMixinFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["type"].method = filter_empty_string
@@ -108,8 +108,8 @@ PERSON_FILTERS_EXCLUDE = SICPROD_FILTERS_EXCLUDE
 PERSON_FILTERS_EXCLUDE.remove("status")
 
 
-class PersonFilterSet(LegacyStuffMixinFilterSet):
-    class Meta(LegacyStuffMixinFilterSet.Meta):
+class PersonFilterSet(SicprodMixinFilterSet):
+    class Meta(SicprodMixinFilterSet.Meta):
         exclude = PERSON_FILTERS_EXCLUDE
 
     def __init__(self, *args, **kwargs):
@@ -121,7 +121,7 @@ class PersonFilterSet(LegacyStuffMixinFilterSet):
         self.filters["gender"].extra["required"] = False
 
 
-class InstitutionFilterSet(LegacyStuffMixinFilterSet):
+class InstitutionFilterSet(SicprodMixinFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["name"].method = name_alternative_name_filter
@@ -213,7 +213,7 @@ class InstitutionApiFilterSet(FacetFilterSetMixin, InstitutionFilterSet):
     pass
 
 
-class EventApiFilterSet(FacetFilterSetMixin, LegacyStuffMixinFilterSet):
+class EventApiFilterSet(FacetFilterSetMixin, SicprodMixinFilterSet):
     pass
 
 

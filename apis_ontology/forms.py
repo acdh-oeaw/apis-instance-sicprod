@@ -11,7 +11,7 @@ class MyModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 from apis_core.generic.forms.widgets import NewlineSeparatedListWidget
 
 
-class LegacyStuffMixinForm(GenericModelForm):
+class SicprodMixinForm(GenericModelForm):
     collections = MyModelMultipleChoiceField(queryset=SkosCollection.objects.filter(parent=SkosCollection.objects.get(name="sicprod")), required=False)
 
     class Meta(GenericModelForm.Meta):
@@ -41,29 +41,29 @@ class LegacyStuffMixinForm(GenericModelForm):
         return obj
 
 
-class PersonForm(LegacyStuffMixinForm):
+class PersonForm(SicprodMixinForm):
     field_order = ["first_name", "name", "start_date_written", "end_date_written", "status", "collection", "gender", "alternative_label"]
 
-    class Meta(LegacyStuffMixinForm.Meta):
+    class Meta(SicprodMixinForm.Meta):
         model = Person
         exclude = ["published", "deprecated_name"]
 
 
-class PlaceForm(LegacyStuffMixinForm):
+class PlaceForm(SicprodMixinForm):
     field_order = ["label", "type", "latitude", "longitude", "status", "collection"]
 
 
-class InstitutionForm(LegacyStuffMixinForm):
+class InstitutionForm(SicprodMixinForm):
     field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
 
 
-class EventForm(LegacyStuffMixinForm):
+class EventForm(SicprodMixinForm):
     field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
 
 
-class FunctionForm(LegacyStuffMixinForm):
+class FunctionForm(SicprodMixinForm):
     field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
 
 
-class SalaryForm(LegacyStuffMixinForm):
+class SalaryForm(SicprodMixinForm):
     field_order = ["name", "start_date_written", "end_date_written", "kind", "status", "collection"]
