@@ -17,6 +17,7 @@ django-acdhch-functions = "^0.1.4"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
 roman = "^4.2"
+django-grouper = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

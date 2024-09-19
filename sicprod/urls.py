@@ -20,3 +20,5 @@ urlpatterns += [path("auditlog", UserAuditLog.as_view()),]
 urlpatterns += [path("apis/api/network", Network.as_view(), name="network")]
 
 urlpatterns += [path("apis/failingreferences", ReferenceScanFail.as_view(), name="referencescanfail")]
+
+urlpatterns += [path("", include("django_grouper.urls"))]
