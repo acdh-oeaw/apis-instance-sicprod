@@ -104,7 +104,7 @@ class SimpleObjectSerializer(serializers.Serializer):
     type = serializers.SerializerMethodField(method_name="get_type")
 
     def get_name(self, obj):
-        if hasattr(obj, "first_name") and hasattr(obj, "name"):
+        if getattr(obj, "first_name", None) and getattr(obj, "name", None):
             return f"{obj.first_name} {obj.name}"
         if hasattr(obj, "name"):
             return obj.name
