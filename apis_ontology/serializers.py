@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import requests
 from rest_framework import serializers
@@ -11,6 +12,8 @@ from drf_spectacular.types import OpenApiTypes
 from functools import cache
 from apis_ontology.models import Salary
 
+logger = logging.getLogger(__name__)
+
 DATEPATTERN = re.compile(r"(?P<year>\d\d\d\d)-(?P<month>\d\d)-(?P<day>\d\d)")
 FOLIOPATTERN = re.compile(r"^(?P<cleanfolio>\d{1,3}[r|v]).*$")
 ROMANPATTERN = re.compile(r"^(?P<romanfirst>[C|X|L|I|V]{1,9})(?P<rectoverso>[r|v])")
@@ -20,9 +23,12 @@ PAGEPATTERN = re.compile(r"^(?P<page>\d{1,3}).*$")
 @cache
 def iiif_titles():
     full_dict = {}
-    titles = requests.get("https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/", headers={"Accept": "application/json"})
-    for title in titles.json():
-        full_dict[title] = requests.get(f"https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/{title}", headers={"Accept": "application/json"}).json()
+    try:
+        titles = requests.get("https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/", headers={"Accept": "application/json"})
+        for title in titles.json():
+            full_dict[title] = requests.get(f"https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/{title}", headers={"Accept": "application/json"}).json()
+    except Exception as e:
+        logger.error(e)
     return full_dict
 
 
