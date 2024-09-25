@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-import requests
+import pathlib
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
 from apis_core.apis_relations.models import TempTriple
@@ -9,7 +9,6 @@ from django.contrib.contenttypes.models import ContentType
 from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
-from functools import cache
 from apis_ontology.models import Salary
 
 logger = logging.getLogger(__name__)
@@ -20,16 +19,9 @@ ROMANPATTERN = re.compile(r"^(?P<romanfirst>[C|X|L|I|V]{1,9})(?P<rectoverso>[r|v
 PAGEPATTERN = re.compile(r"^(?P<page>\d{1,3}).*$")
 
 
-@cache
 def iiif_titles():
-    full_dict = {}
-    try:
-        titles = requests.get("https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/", headers={"Accept": "application/json"})
-        for title in titles.json():
-            full_dict[title] = requests.get(f"https://iiif.acdh-dev.oeaw.ac.at/images/sicprod/{title}", headers={"Accept": "application/json"}).json()
-    except Exception as e:
-        logger.error(e)
-    return full_dict
+    data = json.loads(pathlib.Path("data/iiif.json").read_text())
+    return data
 
 
 def normalize_title(title: str) -> str:
