@@ -37,20 +37,21 @@ def get_folio(obj):
         page = f"{page:03d}"
     if obj.folio:
         page = obj.folio
-        if "-" in obj.folio:
-            page = obj.folio.split("-")[0]
         if "–" in obj.folio:
             page = obj.folio.split("–")[0]
-        if page:
-            if match := NUMBER.match(page):
-                page = match["number"]
-        if page.endswith("v") or page.endswith("r"):
-            page = page[:-1]
+        suffix = ""
+        if page.endswith("v"):
+            suffix = "v"
+            pagenr = page[:-1]
+        if page.endswith("r"):
+            suffix = "r"
+            pagenr = page[:-1]
         try:
-            page = int(page)
-            page = f"{page:03d}"
+            pagenr = int(pagenr)
+            page = f"{pagenr:03d}"
         except Exception:
             pass
+        page += suffix
     if page:
         matches = [scanfile for scanfile in iiif_titles()[title] if page in scanfile]
         if matches:
