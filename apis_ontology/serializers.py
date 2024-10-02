@@ -130,8 +130,11 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
         title = normalize_title(bibtex["title"])
         if title in iiif_titles().keys():
             scandata["title"] = title
-            folio = get_folio(obj)
-            scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
+            try:
+                folio = get_folio(obj)
+                scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
+            except Exception as e:
+                print(str(obj) + ": " + str(e))
         return scandata
 
 
