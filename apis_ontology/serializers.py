@@ -54,7 +54,7 @@ def get_folio(obj):
         except Exception:
             pass
     if page:
-        matches = [scanfile for scanfile in iiif_titles()[title] if page in scanfile]
+        matches = [scanfile for scanfile in iiif_titles()[title] if str(page) in scanfile]
         if matches:
             return matches[0]
     print(obj.folio)
