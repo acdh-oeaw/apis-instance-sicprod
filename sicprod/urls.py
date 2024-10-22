@@ -5,8 +5,6 @@ from rest_framework import routers
 from apis_ontology.api_views import ListEntityRelations, SicprodModelViewSet, Network
 from apis_ontology.views import UserAuditLog, ReferenceScanFail
 
-urlpatterns += [path("", include("django_acdhch_functions.urls")),]
-
 urlpatterns += [path("apis/api/<contenttype:contenttype>/<int:pk>/relations", ListEntityRelations.as_view(), name="relationslist")]
 
 # We override the generic ModelViewSet URIs using a custom ModelViewSet
