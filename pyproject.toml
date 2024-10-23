@@ -15,7 +15,6 @@ apis-acdhch-default-settings = "1.4.0"
 psycopg2 = "^2.9.6"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
-roman = "^4.2"
 django-grouper = "^0.2.0"
 
 [build-system]
