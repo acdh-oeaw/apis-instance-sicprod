@@ -15,6 +15,7 @@ from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef
 from django.db.models import Case, When
 from apis_ontology.filtersets import NetworkFilterSet
+from apis_ontology.models import Salary
 import time
 
 
@@ -82,7 +83,8 @@ class ListEntityRelations(ListAPIView):
         contenttype = self.kwargs["contenttype"]
         pk = self.kwargs["pk"]
         obj = get_object_or_404(contenttype.model_class(), pk=pk)
-        return TempTriple.objects.filter(Q(subj=obj)|Q(obj=obj)).prefetch_related("subj", "obj", "prop")
+        exclude_salaries = Salary.objects.exclude(typ__in=["Sold", "Provision", "Sonstiges"])
+        return TempTriple.objects.filter(Q(subj=obj)|Q(obj=obj)).exclude(Q(subj__in=exclude_salaries)|Q(obj__in=exclude_salaries)).prefetch_related("subj", "obj", "prop")
 
     def get_serializer_context(self):
         contenttype = self.kwargs["contenttype"]
