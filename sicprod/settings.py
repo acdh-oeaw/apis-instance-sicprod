@@ -13,10 +13,8 @@ APIS_BIBSONOMY = [{
    'API key': os.environ.get('APIS_BIBSONOMY_PASSWORD'),
    'group': '4853010'
 }]
-APIS_BIBSONOMY_FIELDS = ['self']
 
 DEBUG = True
-DEV_VERSION = False
 
 LANGUAGE_CODE = "de"
 
@@ -71,28 +69,6 @@ APIS_LIST_VIEWS_ALLOWED = True
 APIS_LIST_VIEW_OBJECT_FILTER = apis_list_view_object_filter
 
 REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    'formatters': {
-       'verbose': {
-           'format': '%(asctime)s %(name)-6s %(levelname)-8s %(message)s',
-       },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "DEBUG",
-    },
-}
-
-LOG_LIST_NOSTAFF_EXCLUDE_APP_LABELS = ["reversion", "admin", "sessions", "auth"]
 
 APIS_ENTITIES = {
         "Event": {"relations_per_page": 1000},
