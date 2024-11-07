@@ -11,7 +11,7 @@ packages = [{include = "apis_ontology"}]
 python = "^3.11"
 apis-core = { git = "https://github.com/acdh-oeaw/apis-core-rdf.git", tag = "v0.28.0" }
 apis-bibsonomy = "0.11.0"
-apis-acdhch-default-settings = "1.4.0"
+apis-acdhch-default-settings = "1.5.0"
 psycopg2 = "^2.9.6"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
