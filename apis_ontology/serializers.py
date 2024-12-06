@@ -122,11 +122,11 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_bibtex(self, obj):
-        return json.loads(obj.bibtex)
+        return obj.get_bibtex
 
     def get_scandata(self, obj) -> dict:
         scandata = {}
-        bibtex = json.loads(obj.bibtex)
+        bibtex = obj.get_bibtex
         title = normalize_title(bibtex["title"])
         if title in iiif_titles().keys():
             scandata["title"] = title
