@@ -8,7 +8,7 @@ from apis_core.apis_relations.models import TempTriple
 from apis_core.generic.api_views import ModelViewSet
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
-from apis_core.utils.helpers import get_content_types_with_allowed_relation_from
+from apis_core.apis_relations.utils import get_content_types_with_allowed_relation_from
 from apis_core.apis_metainfo.models import RootObject
 from apis_core.apis_relations.models import Triple
 from django.contrib.postgres.expressions import ArraySubquery
