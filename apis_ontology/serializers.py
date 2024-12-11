@@ -32,7 +32,7 @@ NUMBER = re.compile(r"(?P<number>\d+)")
 
 
 def get_folio(obj):
-    title = normalize_title(obj.bibtexjson["title"])
+    title = normalize_title(obj.get_bibtex["title"])
     if page := obj.pages_start:
         page = f"{page:03d}"
     if obj.folio:
