@@ -127,14 +127,15 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
     def get_scandata(self, obj) -> dict:
         scandata = {}
         bibtex = obj.get_bibtex
-        title = normalize_title(bibtex["title"])
-        if title in iiif_titles().keys():
-            scandata["title"] = title
-            try:
-                folio = get_folio(obj)
-                scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
-            except Exception as e:
-                print(str(obj) + ": " + str(e))
+        if bibtex:
+            title = normalize_title(bibtex["title"])
+            if title in iiif_titles().keys():
+                scandata["title"] = title
+                try:
+                    folio = get_folio(obj)
+                    scandata["pages"] = folio or f"{obj.pages_start}-{obj.pages_end}"
+                except Exception as e:
+                    print(str(obj) + ": " + str(e))
         return scandata
 
 
