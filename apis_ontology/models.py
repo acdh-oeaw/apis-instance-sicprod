@@ -129,3 +129,863 @@ auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
 auditlog.register(Event, serialize_data=True)
 auditlog.register(Salary, serialize_data=True)
+
+
+from apis_core.relations.models import Relation
+from django_interval.fields import FuzzyDateParserField
+
+
+class Bewohnt(VersionMixin, Relation):
+    _legacy_property_id = 1
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "bewohnt"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat als Bewohner"
+
+
+class Besitzt(VersionMixin, Relation):
+    _legacy_property_id = 2
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "besitzt"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist im Besitz von"
+
+
+class HatKorrespondenzMit(VersionMixin, Relation):
+    _legacy_property_id = 3
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Korrespondenz mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Korrespondenz mit"
+
+
+class HatFamilienbeziehungZu(VersionMixin, Relation):
+    _legacy_property_id = 4
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Familienbeziehung zu"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Familienbeziehung zu"
+
+
+class HatEheMit(VersionMixin, Relation):
+    _legacy_property_id = 5
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Ehe mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Ehe mit"
+
+
+class Empfiehlt(VersionMixin, Relation):
+    _legacy_property_id = 7
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "empfiehlt"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird empfohlen von"
+
+
+class HatGeschaeftsbeziehungZu(VersionMixin, Relation):
+    _legacy_property_id = 8
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Geschäftsbeziehung zu"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Geschäftsbeziehung zu"
+
+
+class IstMitgliedVon(VersionMixin, Relation):
+    _legacy_property_id = 9
+    subj_model = Person
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Mitglied von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Mitglied"
+
+
+class NimmtTeilAn(VersionMixin, Relation):
+    _legacy_property_id = 10
+    subj_model = Person
+    obj_model = Event
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "nimmt teil an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat als Teilnehmer"
+
+
+class WirdAusbezahltAnPerson(VersionMixin, Relation):
+    _legacy_property_id = 11
+    subj_model = Salary
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "wird ausbezahlt an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "erhält"
+
+
+class IstAn(VersionMixin, Relation):
+    _legacy_property_id = 12
+    subj_model = Function
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Funktion"
+
+
+class WirdAusgeuebtVon(VersionMixin, Relation):
+    _legacy_property_id = 13
+    subj_model = Function
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "wird ausgeübt von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Funktion inne"
+
+
+class IstTeilVon(VersionMixin, Relation):
+    _legacy_property_id = 14
+    subj_model = Place
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Teil von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat als Teil"
+
+
+class InstitutionFuehrtDurch(VersionMixin, Relation):
+    _legacy_property_id = 15
+    subj_model = Institution
+    obj_model = Salary
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "führt durch"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird durchgeführt von"
+
+
+class IstBruderSchwesterVon(VersionMixin, Relation):
+    _legacy_property_id = 143
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Bruder/Schwester von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Bruder/Schwester von"
+
+
+class IstKindVon(VersionMixin, Relation):
+    _legacy_property_id = 144
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Kind von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Elternteil von"
+
+
+class PersonWeistAn(VersionMixin, Relation):
+    _legacy_property_id = 145
+    subj_model = Person
+    obj_model = Salary
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "weist an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird angewiesen von"
+
+
+class IstGeborenIn(VersionMixin, Relation):
+    _legacy_property_id = 146
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist geboren in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Geburtsort von"
+
+
+class IstGestorbenIn(VersionMixin, Relation):
+    _legacy_property_id = 147
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist gestorben in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Sterbeort von"
+
+
+class GingHervorAus(VersionMixin, Relation):
+    _legacy_property_id = 148
+    subj_model = Function
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ging hervor aus"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "war Vorgänger von"
+
+
+class IstUntergeordnet(VersionMixin, Relation):
+    _legacy_property_id = 149
+    subj_model = Function
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist untergeordnet"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat untergeordnete Funktion"
+
+
+class IstGelegenIn(VersionMixin, Relation):
+    _legacy_property_id = 150
+    subj_model = Institution
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist gelegen in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "inkludiert"
+
+
+class FindetStattIn(VersionMixin, Relation):
+    _legacy_property_id = 151
+    subj_model = Event
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "findet statt in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Austragungsort von"
+
+
+class WirdAusbezahltAnFunction(VersionMixin, Relation):
+    _legacy_property_id = 152
+    subj_model = Salary
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "wird ausbezahlt an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "erhält"
+
+
+class IstTaetigIn(VersionMixin, Relation):
+    _legacy_property_id = 473
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist tätig in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Tätigkeitsort von"
+
+
+class HaeltSichAufIn(VersionMixin, Relation):
+    _legacy_property_id = 474
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hält sich auf in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Aufenthaltsort von"
+
+
+class IstVormundVon(VersionMixin, Relation):
+    _legacy_property_id = 475
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Vormund von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Mündel von"
+
+
+class IstTaetigAn(VersionMixin, Relation):
+    _legacy_property_id = 476
+    subj_model = Person
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist tätig an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat tätige Person"
+
+
+class IstPfruendnerVon(VersionMixin, Relation):
+    _legacy_property_id = 477
+    subj_model = Person
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist Pfründner von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Pfründner"
+
+
+class AusgeuebtIn(VersionMixin, Relation):
+    _legacy_property_id = 478
+    subj_model = Function
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ausgeübt in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Ausübungsort von"
+
+
+class IstImDienstVon(VersionMixin, Relation):
+    _legacy_property_id = 1978
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist im Dienst von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "beschäftigt"
+
+
+class HatHeimatortIn(VersionMixin, Relation):
+    _legacy_property_id = 2421
+    subj_model = Person
+    obj_model = Place
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Heimatort in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist Heimatort von"
+
+
+class IstVerpfaendetAn(VersionMixin, Relation):
+    _legacy_property_id = 2422
+    subj_model = Institution
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist verpfändet an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "besitzt als Pfand"
+
+
+class GehoertZu(VersionMixin, Relation):
+    _legacy_property_id = 2423
+    subj_model = Institution
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "gehört zu"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "zuständig für"
+
+
+class InstitutionWeistAn(VersionMixin, Relation):
+    _legacy_property_id = 2424
+    subj_model = Institution
+    obj_model = Salary
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "weist an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird angewiesen von"
+
+
+class WirdAngewiesenVon(VersionMixin, Relation):
+    _legacy_property_id = 2425
+    subj_model = Salary
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "wird angewiesen von"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "weist an"
+
+
+class VerkauftBesitzAn(VersionMixin, Relation):
+    _legacy_property_id = 2455
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "verkauft Besitz an"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "kauft Besitz von"
+
+
+class HatStreitMit(VersionMixin, Relation):
+    _legacy_property_id = 2456
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "hat Streit mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat Streit mit"
+
+
+class FuehrtDurch(VersionMixin, Relation):
+    _legacy_property_id = 3760
+    subj_model = [Function, Person]
+    obj_model = Salary
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "führt durch"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird durchgeführt von"
+
+
+class NimmtEntgegen(VersionMixin, Relation):
+    _legacy_property_id = 3761
+    subj_model = [Function, Person]
+    obj_model = Salary
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "nimmt entgegen"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird entgegengenommen von"
+
+
+class BuergtFuer(VersionMixin, Relation):
+    _legacy_property_id = 4290
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "bürgt für"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "hat als Bürgen"
+
+
+class IstMoeglicherweiseIdentischMit(VersionMixin, Relation):
+    _legacy_property_id = 4578
+    subj_model = Person
+    obj_model = Person
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist möglicherweise identisch mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist möglicherweise identisch mit"
+
+
+class StehtInVerbindungMit(VersionMixin, Relation):
+    _legacy_property_id = 6846
+    subj_model = Institution
+    obj_model = Institution
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "steht in Verbindung mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "steht in Verbindung mit"
+
+
+class IstVerbundenMit(VersionMixin, Relation):
+    _legacy_property_id = 6861
+    subj_model = Function
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist verbunden mit"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist verbunden mit"
+
+
+class IstMoeglicherweiseSpezifiziertAls(VersionMixin, Relation):
+    _legacy_property_id = 6865
+    subj_model = Function
+    obj_model = Function
+
+    legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "ist möglicherweise spezifiziert als"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "ist möglicherweise verallgemeinert als"
+
