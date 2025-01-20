@@ -6,9 +6,7 @@ from rest_framework import pagination
 from apis_ontology.serializers import TempTripleSerializer, NetworkSerializer
 from apis_core.apis_relations.models import TempTriple
 from apis_core.generic.api_views import ModelViewSet
-from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
-from apis_core.apis_relations.utils import get_content_types_with_allowed_relation_from
 from apis_core.apis_metainfo.models import RootObject
 from apis_core.apis_relations.models import Triple
 from django.contrib.postgres.expressions import ArraySubquery
@@ -16,6 +14,7 @@ from django.db.models import OuterRef
 from django.db.models import Case, When
 from apis_ontology.filtersets import NetworkFilterSet
 from apis_ontology.models import Salary
+from apis_core.relations.models import Relation
 import time
 
 
@@ -31,6 +30,15 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
         response.data.update(self.facets)
         response.data = dict(sorted(response.data.items()))
         return response
+
+    def get_pretty_object_name(self, obj: object) -> str:
+        match type(obj).__name__:
+            case "Person":
+                return f"{obj.first_name} {obj.name}"
+            case "Place":
+                return obj.label
+            case _:
+                return getattr(obj, "name", None)
 
     def calculate_facets(self, queryset):
         facets = {"start": None,
@@ -54,24 +62,27 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
                 facets["end"] = max(end_date.year, facets["end"], key=lambda x: x or 1300)
 
         content_type = ContentType.objects.get_for_model(queryset.model)
-        relation_content_types = get_content_types_with_allowed_relation_from(content_type)
 
-        for relation_content_type in relation_content_types:
-            facetname = "relation_" + relation_content_type.name
-            facets[facetname] = {}
-            model = relation_content_type.model_class()
-            res = list(model.objects.filter(triple_set_from_subj__obj__in=queryset).distinct().annotate(count=Count("id")))
-            res += list(model.objects.filter(triple_set_from_obj__subj__in=queryset).distinct().annotate(count=Count("id")))
-            for obj in res:
-                name = getattr(obj, "name", None)
-                if relation_content_type.name == "place":
-                    name = obj.label
-                if relation_content_type.name == "person":
-                    name = f"{obj.first_name} {obj.name}"
-                if obj.id in facets[facetname].keys():
-                    facets[facetname][obj.id]["count"] += obj.count
-                else:
-                    facets[facetname][obj.id] = {"name": name, "count": obj.count}
+        obj_rels = Relation.objects.filter(subj_content_type=content_type)
+        subj_rels = Relation.objects.filter(obj_content_type=content_type)
+
+        for relation in obj_rels:
+            facetname = "relation_" + relation.obj_content_type.name
+            if facetname not in facets:
+                facets[facetname] = {}
+            count = facets[facetname].get(relation.obj_object_id, {}).get("count", 0)
+            facets[facetname][relation.obj_object_id] = {"name": self.get_pretty_object_name(relation.obj), "count": count+1}
+        for relation in subj_rels:
+            facetname = "relation_" + relation.subj_content_type.name
+            if facetname not in facets:
+                facets[facetname] = {}
+            count = facets[facetname].get(relation.subj_object_id, {}).get("count", 0)
+            facets[facetname][relation.subj_object_id] = {"name": self.get_pretty_object_name(relation.subj), "count": count+1}
+
+        for facet in facets.keys():
+            if facet.startswith("relation_"):
+                facets[facet] = dict(sorted(facets[facet].items()))
+
         print("end calculate facets")
         return {"facets": facets}
 
