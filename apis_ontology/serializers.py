@@ -4,7 +4,7 @@ import re
 import pathlib
 from rest_framework import serializers
 from apis_core.generic.serializers import GenericHyperlinkedModelSerializer
-from apis_core.apis_relations.models import TempTriple
+from apis_core.relations.models import Relation
 from django.contrib.contenttypes.models import ContentType
 from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
@@ -74,19 +74,19 @@ class FixDateMixin:
 
     def to_representation(self, instance):
         """Convert `date` representation."""
-        written_date_fields = ["start_date_written", "end_date_written"]
+        written_date_fields = ["start", "end"]
         ret = super().to_representation(instance)
         for field in written_date_fields:
             if ret.get(field, None):
                 ret[field] = self.fix_date(ret[field])
         # if we are working with a relation that relates
         # to a salary, make the date fields only return the year
-        if isinstance(instance, TempTriple):
+        if isinstance(instance, Relation):
             if isinstance(instance.subj, Salary) or isinstance(instance.obj, Salary):
-                if start_date := getattr(instance, "start_date"):
+                if start_date := getattr(instance, "start_date_sort"):
                     ret["start_date"] = str(start_date.year)
                     ret["start_date_written"] = str(start_date.year)
-                if end_date := getattr(instance, "end_date"):
+                if end_date := getattr(instance, "end_date_sort"):
                     ret["end_date"] = str(end_date.year)
                     ret["end_date_written"] = str(end_date.year)
         return ret
@@ -139,10 +139,12 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
         return scandata
 
 
-class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
-    class Meta:
-        model = TempTriple
-        fields = ['start_date_written', 'end_date_written', 'start_date', 'end_date', 'notes']
+class RelationSerializer(FixDateMixin, serializers.Serializer):
+    start_date_written = serializers.CharField(source="start")
+    end_date_written = serializers.CharField(source="end")
+    start_date = serializers.CharField(source="start_date_sort")
+    end_date = serializers.CharField(source="end_date_sort")
+    notes = serializers.CharField()
 
     def get_fields(self):
         fields = super().get_fields()
@@ -166,8 +168,8 @@ class TempTripleSerializer(FixDateMixin, serializers.ModelSerializer):
 
     def get_name(self, obj):
         if self.context["obj"] == obj.obj:
-            return obj.prop.name_reverse
-        return obj.prop.name_forward
+            return obj.reverse_name()
+        return obj.name()
 
     @extend_schema_field(SimplifiedReferenceSerializer(many=True))
     def get_references(self, obj):
@@ -189,8 +191,9 @@ class SicprodSerializer(FixDateMixin, GenericHyperlinkedModelSerializer):
         return fields
 
     def get_relation_types(self, obj) -> list[str]:
-        forward_relations = TempTriple.objects.filter(subj=obj).prefetch_related("subj", "obj")
-        reverse_relations = TempTriple.objects.filter(obj=obj).prefetch_related("subj", "obj")
+        content_type = ContentType.objects.get_for_model(obj)
+        forward_relations = Relation.objects.filter(subj_content_type=content_type, subj_object_id=obj.id).prefetch_related("subj", "obj")
+        reverse_relations = Relation.objects.filter(obj_content_type=content_type, obj_object_id=obj.id).prefetch_related("subj", "obj")
         relations = set()
         for relation in forward_relations:
             reltype = ContentType.objects.get_for_model(relation.obj).model
