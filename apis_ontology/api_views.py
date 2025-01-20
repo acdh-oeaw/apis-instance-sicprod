@@ -3,8 +3,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework import pagination
-from apis_ontology.serializers import TempTripleSerializer, NetworkSerializer
-from apis_core.apis_relations.models import TempTriple
+from apis_ontology.serializers import RelationSerializer, NetworkSerializer
 from apis_core.generic.api_views import ModelViewSet
 from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_metainfo.models import RootObject
@@ -88,14 +87,13 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
 
 
 class ListEntityRelations(ListAPIView):
-    serializer_class = TempTripleSerializer
+    serializer_class = RelationSerializer
 
     def get_queryset(self):
         contenttype = self.kwargs["contenttype"]
         pk = self.kwargs["pk"]
-        obj = get_object_or_404(contenttype.model_class(), pk=pk)
         exclude_salaries = Salary.objects.exclude(typ__in=["Sold", "Provision", "Sonstiges"])
-        return TempTriple.objects.filter(Q(subj=obj)|Q(obj=obj)).exclude(Q(subj__in=exclude_salaries)|Q(obj__in=exclude_salaries)).prefetch_related("subj", "obj", "prop")
+        return Relation.objects.filter(Q(subj_content_type=contenttype, subj_object_id=pk)|Q(obj_content_type=contenttype, obj_object_id=pk)).exclude(Q(subj_object_id__in=exclude_salaries)|Q(obj_object_id__in=exclude_salaries)).select_subclasses()
 
     def get_serializer_context(self):
         contenttype = self.kwargs["contenttype"]
