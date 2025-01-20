@@ -3,7 +3,6 @@ import os
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 APIS_BASE_URI = "https://sicprod.acdh.oeaw.ac.at/"
 
 APIS_BIBSONOMY = [{
