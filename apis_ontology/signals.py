@@ -1,4 +1,4 @@
-from apis_core.apis_entities.signals import post_merge_with
+from apis_core.generic.signals import post_merge_with
 from apis_core.apis_metainfo.signals import post_duplicate
 
 from django.dispatch import receiver
