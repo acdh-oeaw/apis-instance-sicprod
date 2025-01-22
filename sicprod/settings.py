@@ -25,6 +25,7 @@ INSTALLED_APPS += ["apis_core.history"]
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["auditlog"]
 INSTALLED_APPS += ["django_grouper"]
+INSTALLED_APPS += ["apis_acdhch_django_auditlog"]
 PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
