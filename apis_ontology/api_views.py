@@ -7,8 +7,6 @@ from apis_ontology.serializers import RelationSerializer, NetworkSerializer
 from apis_core.generic.api_views import ModelViewSet
 from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_metainfo.models import RootObject
-from apis_core.apis_relations.models import Triple
-from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import OuterRef
 from django.db.models import Case, When
 from apis_ontology.filtersets import NetworkFilterSet
@@ -118,8 +116,4 @@ class Network(ListAPIView):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
 
     def get_queryset(self):
-        relation_subquery = Triple.objects.filter(Q(subj=OuterRef("pk"))|Q(obj=OuterRef("pk"))).annotate(
-                other_id=Case(
-                    When(subj=OuterRef("pk"), then="obj"),
-                    default="subj")).values("other_id")
-        return RootObject.objects_inheritance.select_subclasses().annotate(related_to=ArraySubquery(relation_subquery)).distinct()
+        return RootObject.objects_inheritance.select_subclasses().distinct()
