@@ -1,15 +1,8 @@
-from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from auditlog.models import LogEntry
 from apis_bibsonomy.models import Reference
 from apis_ontology.serializers import iiif_titles, get_folio, normalize_title
 import django_tables2 as tables
 from django.utils.html import format_html
-
-
-class UserAuditLog(LoginRequiredMixin, ListView):
-    def get_queryset(self, *args, **kwargs):
-        return LogEntry.objects.filter(actor=self.request.user)
 
 
 def scanfolderexists(ref):
