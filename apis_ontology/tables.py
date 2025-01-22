@@ -1,6 +1,7 @@
 import django_tables2 as tables
-from django_tables2.utils import A
 from apis_core.apis_entities.tables import AbstractEntityTable
+from apis_core.relations.tables import RelationsListTable
+from apis_core.generic.tables import CustomTemplateColumn
 
 
 class FunctionTable(AbstractEntityTable):
@@ -18,3 +19,16 @@ class PersonTable(AbstractEntityTable):
 
     name = tables.LinkColumn()
     first_name = tables.LinkColumn()
+
+
+class ReferenceColumn(CustomTemplateColumn):
+    template_name = "columns/reference.html"
+
+
+class SicprodMixinRelationsTable(RelationsListTable):
+    start = tables.Column(order_by="start_date_sort")
+    end = tables.Column(order_by="end_date_sort")
+    reference = ReferenceColumn()
+
+    class Meta(RelationsListTable.Meta):
+        per_page = 1000
