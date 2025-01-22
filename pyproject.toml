@@ -16,6 +16,7 @@ psycopg2 = "^2.9.6"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
 django-grouper = "^0.2.0"
+apis-acdhch-django-auditlog = "^0.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
