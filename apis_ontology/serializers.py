@@ -10,6 +10,7 @@ from apis_bibsonomy.models import Reference
 from drf_spectacular.utils import extend_schema_field
 from drf_spectacular.types import OpenApiTypes
 from apis_ontology.models import Salary
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -274,4 +275,6 @@ class NetworkSerializer(serializers.Serializer):
         return content_type.name
 
     def get_related_to(self, obj) -> list[int]:
-        return sorted(set(obj.related_to))
+        rel = Relation.objects.filter(Q(obj_object_id=obj.id)|Q(subj_object_id=obj.id)).values_list("subj_object_id", "obj_object_id")
+        rel = {item for sublist in rel for item in sublist if item != obj.id}
+        return sorted(rel)
