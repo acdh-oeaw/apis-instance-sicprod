@@ -82,6 +82,7 @@ APIS_ENTITIES = {
 INSTALLED_APPS += ["corsheaders"]
 MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware"] + MIDDLEWARE
 MIDDLEWARE = ["django.middleware.gzip.GZipMiddleware"] + MIDDLEWARE
+MIDDLEWARE = ["apis_core.core.middleware.MaintenanceMiddleware"] + MIDDLEWARE
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "https://sicprod-frontend.acdh-ch-dev.oeaw.ac.at", "https://sicprod.acdh.oeaw.ac.at"]
 
 SPECTACULAR_SETTINGS["DEFAULT_GENERATOR_CLASS"] = 'apis_ontology.generators.SicprodCustomSchemaGenerator'
