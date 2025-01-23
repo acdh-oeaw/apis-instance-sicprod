@@ -1,5 +1,4 @@
-from apis_core.generic.signals import post_merge_with
-from apis_core.apis_metainfo.signals import post_duplicate
+from apis_core.generic.signals import post_merge_with, post_duplicate
 
 from django.dispatch import receiver
 #from django.db.models.signals import m2m_changed
