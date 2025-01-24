@@ -60,21 +60,21 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
 
         content_type = ContentType.objects.get_for_model(queryset.model)
 
-        obj_rels = Relation.objects.filter(subj_content_type=content_type)
-        subj_rels = Relation.objects.filter(obj_content_type=content_type)
+        #obj_rels = Relation.objects.filter(subj_content_type=content_type)
+        #subj_rels = Relation.objects.filter(obj_content_type=content_type)
 
-        for relation in obj_rels:
-            facetname = "relation_" + relation.obj_content_type.name
-            if facetname not in facets:
-                facets[facetname] = {}
-            count = facets[facetname].get(relation.obj_object_id, {}).get("count", 0)
-            facets[facetname][relation.obj_object_id] = {"name": self.get_pretty_object_name(relation.obj), "count": count+1}
-        for relation in subj_rels:
-            facetname = "relation_" + relation.subj_content_type.name
-            if facetname not in facets:
-                facets[facetname] = {}
-            count = facets[facetname].get(relation.subj_object_id, {}).get("count", 0)
-            facets[facetname][relation.subj_object_id] = {"name": self.get_pretty_object_name(relation.subj), "count": count+1}
+        #for relation in obj_rels:
+        #    facetname = "relation_" + relation.obj_content_type.name
+        #    if facetname not in facets:
+        #        facets[facetname] = {}
+        #    count = facets[facetname].get(relation.obj_object_id, {}).get("count", 0)
+        #    facets[facetname][relation.obj_object_id] = {"name": self.get_pretty_object_name(relation.obj), "count": count+1}
+        #for relation in subj_rels:
+        #    facetname = "relation_" + relation.subj_content_type.name
+        #    if facetname not in facets:
+        #        facets[facetname] = {}
+        #    count = facets[facetname].get(relation.subj_object_id, {}).get("count", 0)
+        #    facets[facetname][relation.subj_object_id] = {"name": self.get_pretty_object_name(relation.subj), "count": count+1}
 
         for facet in facets.keys():
             if facet.startswith("relation_"):
