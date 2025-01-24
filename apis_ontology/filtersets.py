@@ -7,6 +7,7 @@ from apis_core.collections.models import SkosCollection, SkosCollectionContentOb
 from collections import OrderedDict
 from apis_core.apis_entities.utils import get_entity_classes
 from functools import cache
+from apis_core.relations.models import Relation
 
 
 SICPROD_FILTERS_EXCLUDE = ABSTRACT_ENTITY_FILTERS_EXCLUDE + ["metadata", "deprecated_name"]
@@ -179,7 +180,9 @@ class FacetFilter(django_filters.CharFilter):
         if not value:
             return qs
         if self.field_name.startswith("relation_"):
-            return qs.filter(Q(triple_set_from_obj__subj__in=value)|Q(triple_set_from_subj__obj__in=value)).distinct()
+            rels = list(Relation.objects.filter(subj_object_id__in=value).values_list("obj_object_id", flat=True))
+            rels += list(Relation.objects.filter(obj_object_id__in=value).values_list("subj_object_id", flat=True))
+            return qs.filter(pk__in=rels).distinct()
         else:
             return qs.filter(**{f"{self.field_name}__in": value})
 
