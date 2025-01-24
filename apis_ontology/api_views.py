@@ -63,13 +63,15 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
         for ct in targets:
             facetname = "relation_" + ct.name
             facets[facetname] = {}
-            rels = list(Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).values_list("obj_object_id", flat=True))
-            rels += list(Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).values_list("subj_object_id", flat=True))
-            instances = ct.model_class().objects.filter(pk__in=rels)
+            rels_fwd = Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).values("obj_object_id", "subj_object_id")
+            rels_bkw = Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).values("subj_object_id", "obj_object_id")
+            related_ids = [x["obj_object_id"] for x in rels_fwd] + [x["subj_object_id"] for x in rels_bkw]
+            instances = ct.model_class().objects.filter(pk__in=related_ids)
 
             for obj in instances:
+                related_ids = [x["obj_object_id"] for x in rels_fwd if x["subj_object_id"] == obj.id] + [x["subj_object_id"] for x in rels_bkw if x["obj_object_id"] == obj.id]
                 name = self.get_pretty_object_name(obj)
-                facets[facetname][obj.id] = {"name": name, "count": rels.count(obj.id)}
+                facets[facetname][obj.id] = {"name": name, "count": len(set(related_ids))}
 
         for facet in facets.keys():
             if facet.startswith("relation_"):
