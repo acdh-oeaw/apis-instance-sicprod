@@ -29,7 +29,9 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
     def get_pretty_object_name(self, obj: object) -> str:
         match type(obj).__name__:
             case "Person":
-                return f"{obj.first_name} {obj.name}"
+                if obj.first_name:
+                    return f"{obj.first_name} {obj.name}"
+                return f"{obj.name}"
             case "Place":
                 return obj.label
             case _:
