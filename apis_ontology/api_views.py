@@ -5,13 +5,11 @@ from rest_framework.generics import ListAPIView
 from rest_framework import pagination
 from apis_ontology.serializers import RelationSerializer, NetworkSerializer
 from apis_core.generic.api_views import ModelViewSet
-from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_metainfo.models import RootObject
-from django.db.models import OuterRef
-from django.db.models import Case, When
 from apis_ontology.filtersets import NetworkFilterSet
 from apis_ontology.models import Salary
 from apis_core.relations.models import Relation
+from apis_core.relations.templatetags.relations import get_relation_targets_from
 import time
 
 
@@ -58,23 +56,18 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
             if end_date := getattr(obj, "end_date", None):
                 facets["end"] = max(end_date.year, facets["end"], key=lambda x: x or 1300)
 
-        content_type = ContentType.objects.get_for_model(queryset.model)
+        targets = get_relation_targets_from(queryset.first())
 
-        #obj_rels = Relation.objects.filter(subj_content_type=content_type)
-        #subj_rels = Relation.objects.filter(obj_content_type=content_type)
+        for ct in targets:
+            facetname = "relation_" + ct.name
+            facets[facetname] = {}
+            rels = list(Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).values_list("obj_object_id", flat=True))
+            rels += list(Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).values_list("subj_object_id", flat=True))
+            instances = ct.model_class().objects.filter(pk__in=rels)
 
-        #for relation in obj_rels:
-        #    facetname = "relation_" + relation.obj_content_type.name
-        #    if facetname not in facets:
-        #        facets[facetname] = {}
-        #    count = facets[facetname].get(relation.obj_object_id, {}).get("count", 0)
-        #    facets[facetname][relation.obj_object_id] = {"name": self.get_pretty_object_name(relation.obj), "count": count+1}
-        #for relation in subj_rels:
-        #    facetname = "relation_" + relation.subj_content_type.name
-        #    if facetname not in facets:
-        #        facets[facetname] = {}
-        #    count = facets[facetname].get(relation.subj_object_id, {}).get("count", 0)
-        #    facets[facetname][relation.subj_object_id] = {"name": self.get_pretty_object_name(relation.subj), "count": count+1}
+            for obj in instances:
+                name = self.get_pretty_object_name(obj)
+                facets[facetname][obj.id] = {"name": name, "count": rels.count(obj.id)}
 
         for facet in facets.keys():
             if facet.startswith("relation_"):
