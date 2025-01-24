@@ -1,5 +1,5 @@
 import django_filters
-from django.db.models import Q
+from django.db.models import Q, F
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework import pagination
@@ -63,13 +63,14 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
         for ct in targets:
             facetname = "relation_" + ct.name
             facets[facetname] = {}
-            rels_fwd = Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).values("obj_object_id", "subj_object_id")
-            rels_bkw = Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).values("subj_object_id", "obj_object_id")
-            related_ids = [x["obj_object_id"] for x in rels_fwd] + [x["subj_object_id"] for x in rels_bkw]
+            rels_fwd = Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).annotate(f=F("subj_object_id"), t=F("obj_object_id")).values("t", "f")
+            rels_bkw = Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).annotate(f=F("obj_object_id"), t=F("subj_object_id")).values("t", "f")
+            rels = rels_fwd | rels_bkw
+            related_ids = [x["t"] for x in rels]
             instances = ct.model_class().objects.filter(pk__in=related_ids)
 
             for obj in instances:
-                related_ids = [x["obj_object_id"] for x in rels_fwd if x["subj_object_id"] == obj.id] + [x["subj_object_id"] for x in rels_bkw if x["obj_object_id"] == obj.id]
+                related_ids = [x["f"] for x in rels if x["t"] == obj.id]
                 name = self.get_pretty_object_name(obj)
                 facets[facetname][obj.id] = {"name": name, "count": len(set(related_ids))}
 
