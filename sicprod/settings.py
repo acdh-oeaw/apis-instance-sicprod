@@ -20,7 +20,6 @@ LANGUAGE_CODE = "de"
 INSTALLED_APPS += ["apis_bibsonomy"]
 INSTALLED_APPS = ["apis_core.relations"] + INSTALLED_APPS
 INSTALLED_APPS.remove("apis_ontology")
-INSTALLED_APPS.remove("apis_core.apis_relations")
 INSTALLED_APPS = ["apis_ontology"] + INSTALLED_APPS
 INSTALLED_APPS += ["apis_core.collections"]
 INSTALLED_APPS += ["apis_core.history"]
