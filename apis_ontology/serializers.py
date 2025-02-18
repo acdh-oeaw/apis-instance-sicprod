@@ -93,10 +93,10 @@ class FixDateMixin:
         return ret
 
 
-class SimpleObjectSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.SerializerMethodField(method_name="get_name")
-    type = serializers.SerializerMethodField(method_name="get_type")
+class SicprodSimpleObjectSerializer(serializers.Serializer):
+    id: int = serializers.IntegerField()
+    name: str = serializers.SerializerMethodField(method_name="get_name")
+    type: str = serializers.SerializerMethodField(method_name="get_type")
 
     def get_name(self, obj):
         if getattr(obj, "first_name", None) and getattr(obj, "name", None):
@@ -161,11 +161,11 @@ class RelationSerializer(FixDateMixin, serializers.Serializer):
             return True
         return False
 
-    @extend_schema_field(SimpleObjectSerializer())
+    @extend_schema_field(SicprodSimpleObjectSerializer())
     def get_to(self, obj):
         if self.context["obj"] == obj.obj:
-            return SimpleObjectSerializer(obj.subj).data
-        return SimpleObjectSerializer(obj.obj).data
+            return SicprodSimpleObjectSerializer(obj.subj).data
+        return SicprodSimpleObjectSerializer(obj.obj).data
 
     def get_name(self, obj):
         if self.context["obj"] == obj.obj:
