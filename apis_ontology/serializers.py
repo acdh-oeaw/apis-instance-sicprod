@@ -143,9 +143,9 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
 class RelationSerializer(FixDateMixin, serializers.Serializer):
     start_date_written = serializers.CharField(source="start")
     end_date_written = serializers.CharField(source="end")
-    start_date = serializers.CharField(source="start_date_sort")
-    end_date = serializers.CharField(source="end_date_sort")
-    notes = serializers.CharField()
+    start_date = serializers.CharField(source="start_date_sort", allow_null=True)
+    end_date = serializers.CharField(source="end_date_sort", allow_null=True)
+    notes = serializers.CharField(allow_null=True)
 
     def get_fields(self):
         fields = super().get_fields()
