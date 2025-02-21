@@ -11,7 +11,7 @@ packages = [{include = "apis_ontology"}]
 python = "^3.11"
 apis-core-rdf = "0.37.2"
 apis-bibsonomy = "0.13.1"
-apis-acdhch-default-settings = "2.1.0"
+apis-acdhch-default-settings = "2.2.2"
 psycopg2 = "^2.9.6"
 django-cors-headers = "^4"
 django-auditlog = "^3.0.0"
