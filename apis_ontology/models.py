@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from apis_core.apis_entities.models import AbstractEntity
-from apis_core.core.models import LegacyDateMixin
+from .legacydatemixin import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.abc import E53_Place
