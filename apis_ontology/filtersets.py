@@ -2,7 +2,8 @@ import django_filters
 from django.db.models import Q
 from django import forms
 from django.contrib.contenttypes.models import ContentType
-from apis_core.apis_entities.filtersets import AbstractEntityFilterSet, ABSTRACT_ENTITY_FILTERS_EXCLUDE, AbstractEntityFilterSetForm
+from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
+from apis_core.generic.forms import GenericFilterSetForm
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from collections import OrderedDict
 from apis_core.apis_entities.utils import get_entity_classes
@@ -10,6 +11,7 @@ from functools import cache
 from apis_core.relations.models import Relation
 
 
+ABSTRACT_ENTITY_FILTERS_EXCLUDE = ["review", "start_date", "start_start_date", "start_end_date", "end_date", "end_start_date", "end_end_date", "notes", "text", "published", "status", "references"]
 SICPROD_FILTERS_EXCLUDE = ABSTRACT_ENTITY_FILTERS_EXCLUDE + ["metadata", "deprecated_name"]
 
 
@@ -53,7 +55,7 @@ def collection_method_exclude(queryset, name, value):
     return queryset
 
 
-class SicprodLegacyStuffFilterSetForm(AbstractEntityFilterSetForm):
+class SicprodLegacyStuffFilterSetForm(GenericFilterSetForm):
     columns_exclude = SICPROD_FILTERS_EXCLUDE
 
     def __init__(self, *args, **kwargs):
