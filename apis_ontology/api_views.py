@@ -1,6 +1,8 @@
 import django_filters
 from django.db.models import Q, F
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
 from rest_framework import pagination
 from apis_ontology.serializers import RelationSerializer, NetworkSerializer
@@ -106,6 +108,10 @@ class SicprodModelViewSet(ModelViewSet):
     """
 
     pagination_class = InjectFacetPagination
+
+    @method_decorator(cache_page(60 * 60 * 2))
+    def list(self, request, contenttype, format=None):
+        return super().list(request, contenttype, format)
 
 
 class Network(ListAPIView):
