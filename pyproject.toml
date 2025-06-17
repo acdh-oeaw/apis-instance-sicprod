@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "apis-core-rdf==0.42.6",
+    "apis-core-rdf==0.48.1",
     "apis-bibsonomy==0.13.1",
     "apis-acdhch-default-settings==2.6.0",
     "psycopg2>=2.9,<3.0",
