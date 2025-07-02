@@ -27,10 +27,11 @@ class SicprodMixin(models.Model):
         return "(ID: {})".format(self.id)
 
     def sicprod_collections(self):
-        parent = SkosCollection.objects.get(name="sicprod")
-        content_type = ContentType.objects.get_for_model(self)
-        sccos = SkosCollectionContentObject.objects.filter(collection__parent=parent, content_type=content_type, object_id=self.pk).values_list("collection")
-        return SkosCollection.objects.filter(id__in=sccos)
+        my_sccos = SkosCollection.objects.by_instance(instance=self)
+        sicprod_c = SkosCollection.objects.get(name="sicprod")
+        collection_c_t = ContentType.objects.get_for_model(SkosCollection)
+        sccos = SkosCollectionContentObject.objects.filter(collection=sicprod_c, content_type=collection_c_t)
+        return my_sccos.filter(id__in=[scco.content_object.id for scco in sccos])
 
 
 class Person(VersionMixin, SicprodMixin, LegacyDateMixin, AbstractEntity):
