@@ -68,17 +68,6 @@ class SicprodLegacyStuffFilterSetForm(GenericFilterSetForm):
 
 
 class SicprodMixinFilterSet(AbstractEntityFilterSet):
-    collection = django_filters.ModelMultipleChoiceFilter(
-        queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
-        label="Collections",
-        method=collection_method,
-    )
-    collection_exclude = django_filters.ModelMultipleChoiceFilter(
-        queryset=SkosCollection.objects.filter(parent__name="sicprod").order_by("name"),
-        label="Collections Exclude",
-        method=collection_method_exclude,
-    )
-
     class Meta(AbstractEntityFilterSet.Meta):
         exclude = SICPROD_FILTERS_EXCLUDE
         form = SicprodLegacyStuffFilterSetForm
