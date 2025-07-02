@@ -14,7 +14,7 @@ dependencies = [
     "django-cors-headers>=4.0,<=5.0",
     "django-auditlog>=3.0.0,<=4.0",
     "django-grouper==0.2.0",
-    "apis-acdhch-django-auditlog==0.2.0",
+    "apis-acdhch-django-auditlog==0.2.1",
     "django-interval==0.2.5",
 ]
 
