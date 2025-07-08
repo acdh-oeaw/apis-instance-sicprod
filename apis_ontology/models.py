@@ -858,7 +858,7 @@ class HatStreitMit(VersionMixin, Relation):
 
 class FuehrtDurch(VersionMixin, Relation):
     _legacy_property_id = 3760
-    subj_model = [Function, Person]
+    subj_model = Person
     obj_model = Salary
 
     legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
@@ -894,7 +894,7 @@ class FunktionFuehrtDurch(VersionMixin, Relation):
 
 class NimmtEntgegen(VersionMixin, Relation):
     _legacy_property_id = 3761
-    subj_model = [Function, Person]
+    subj_model = Person
     obj_model = Salary
 
     legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
