@@ -875,12 +875,46 @@ class FuehrtDurch(VersionMixin, Relation):
         return "wird durchgeführt von"
 
 
+class FunktionFuehrtDurch(VersionMixin, Relation):
+    subj_model = Function
+    obj_model = Salary
+
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "führt durch"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird durchgeführt von"
+
+
 class NimmtEntgegen(VersionMixin, Relation):
     _legacy_property_id = 3761
     subj_model = [Function, Person]
     obj_model = Salary
 
     legacy_relation_id = models.IntegerField(null=True, blank=True, editable=False)
+    start = FuzzyDateParserField(null=True, blank=True)
+    end = FuzzyDateParserField(null=True, blank=True)
+    notes = models.TextField(blank=True, null=True)
+
+    @classmethod
+    def name(self) -> str:
+        return "nimmt entgegen"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "wird entgegengenommen von"
+
+
+class FunktionNimmtEntgegen(VersionMixin, Relation):
+    subj_model = Function
+    obj_model = Salary
+
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
