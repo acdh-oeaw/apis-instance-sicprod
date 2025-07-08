@@ -5,6 +5,8 @@ from .legacydatemixin import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.abc import E53_Place
+from apis_core.relations.models import Relation
+from django_interval.fields import FuzzyDateParserField
 
 from auditlog.registry import auditlog
 
@@ -130,10 +132,6 @@ auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
 auditlog.register(Event, serialize_data=True)
 auditlog.register(Salary, serialize_data=True)
-
-
-from apis_core.relations.models import Relation
-from django_interval.fields import FuzzyDateParserField
 
 
 class Bewohnt(VersionMixin, Relation):
