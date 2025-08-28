@@ -13,3 +13,5 @@ jobs:
   deploy:
     uses: acdh-oeaw/prosnet-workflows/.github/workflows/deploy-apis-instance.yml@v0.5.0
     secrets: inherit
+    with:
+      apis-base-container-ref: "birger/build-base"
