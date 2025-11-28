@@ -23,6 +23,7 @@ INSTALLED_APPS = ["apis_ontology"] + INSTALLED_APPS
 INSTALLED_APPS += ["simple_history"]
 INSTALLED_APPS += ["django_grouper"]
 INSTALLED_APPS += ["django_interval"]
+INSTALLED_APPS += ["apis_core.uris"]
 PROJECT_METADATA = {
         "matomo_url": "https://matomo.acdh.oeaw.ac.at/",
         "matomo_id": 242
