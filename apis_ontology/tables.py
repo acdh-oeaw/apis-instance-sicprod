@@ -1,16 +1,15 @@
 import django_tables2 as tables
-from apis_core.apis_entities.tables import AbstractEntityTable
 from apis_core.relations.tables import RelationsListTable
-from apis_core.generic.tables import CustomTemplateColumn
+from apis_core.generic.tables import CustomTemplateColumn, GenericTable
 
 
-class FunctionTable(AbstractEntityTable):
+class FunctionTable(GenericTable):
     class Meta:
         fields = ["alternative_label"]
         sequence = ("desc", "...", "view", "edit", "noduplicate", "delete")
 
 
-class PersonTable(AbstractEntityTable):
+class PersonTable(GenericTable):
     class Meta:
         fields = ["name", "first_name", "start_date_written", "end_date_written", "alternative_label", "status"]
         exclude = ["desc"]
