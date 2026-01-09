@@ -30,7 +30,7 @@ PROJECT_METADATA = {
 }
 
 BIBSONOMY_REFERENCE_SIMILARITY = ['bibs_url', 'pages_start', 'pages_end', 'folio']
-ROOT_URLCONF = "sicprod.urls"
+ROOT_URLCONF = "apis_ontology.urls"
 
 
 #####################
