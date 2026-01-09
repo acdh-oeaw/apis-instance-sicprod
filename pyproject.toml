@@ -5,7 +5,7 @@ description = "APIS Instance SiCProD"
 authors = [{ name = "Birger Schacht", email = "birger.schacht@oeaw.ac.at"}]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "Django~=5.2",
     "apis-core-rdf==0.56.4",
