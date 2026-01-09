@@ -144,6 +144,9 @@ class Bewohnt(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "bewohnt"
@@ -162,6 +165,9 @@ class Besitzt(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -182,6 +188,9 @@ class HatKorrespondenzMit(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "hat Korrespondenz mit"
@@ -200,6 +209,9 @@ class HatFamilienbeziehungZu(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -220,6 +232,9 @@ class HatEheMit(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "hat Ehe mit"
@@ -238,6 +253,9 @@ class Empfiehlt(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -258,6 +276,9 @@ class HatGeschaeftsbeziehungZu(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "hat Geschäftsbeziehung zu"
@@ -276,6 +297,9 @@ class IstMitgliedVon(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -296,6 +320,9 @@ class NimmtTeilAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "nimmt teil an"
@@ -314,6 +341,9 @@ class WirdAusbezahltAnPerson(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -334,6 +364,9 @@ class IstAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist an"
@@ -352,6 +385,9 @@ class WirdAusgeuebtVon(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -372,6 +408,9 @@ class IstTeilVon(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist Teil von"
@@ -390,6 +429,9 @@ class InstitutionFuehrtDurch(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -410,6 +452,9 @@ class IstBruderSchwesterVon(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist Bruder/Schwester von"
@@ -428,6 +473,9 @@ class IstKindVon(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -448,6 +496,9 @@ class PersonWeistAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "weist an"
@@ -466,6 +517,9 @@ class IstGeborenIn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -486,6 +540,9 @@ class IstGestorbenIn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist gestorben in"
@@ -504,6 +561,9 @@ class GingHervorAus(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -524,6 +584,9 @@ class IstUntergeordnet(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist untergeordnet"
@@ -542,6 +605,9 @@ class IstGelegenIn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -562,6 +628,9 @@ class FindetStattIn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "findet statt in"
@@ -580,6 +649,9 @@ class WirdAusbezahltAnFunction(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -600,6 +672,9 @@ class IstTaetigIn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist tätig in"
@@ -618,6 +693,9 @@ class HaeltSichAufIn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -638,6 +716,9 @@ class IstVormundVon(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist Vormund von"
@@ -656,6 +737,9 @@ class IstTaetigAn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -676,6 +760,9 @@ class IstPfruendnerVon(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist Pfründner von"
@@ -694,6 +781,9 @@ class AusgeuebtIn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -714,6 +804,9 @@ class IstImDienstVon(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist im Dienst von"
@@ -732,6 +825,9 @@ class HatHeimatortIn(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -752,6 +848,9 @@ class IstVerpfaendetAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist verpfändet an"
@@ -770,6 +869,9 @@ class GehoertZu(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -790,6 +892,9 @@ class InstitutionWeistAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "weist an"
@@ -808,6 +913,9 @@ class WirdAngewiesenVon(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -828,6 +936,9 @@ class VerkauftBesitzAn(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "verkauft Besitz an"
@@ -846,6 +957,9 @@ class HatStreitMit(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -866,6 +980,9 @@ class FuehrtDurch(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "führt durch"
@@ -878,6 +995,9 @@ class FuehrtDurch(VersionMixin, Relation):
 class FunktionFuehrtDurch(VersionMixin, Relation):
     subj_model = Function
     obj_model = Salary
+
+    class Meta:
+        ordering = ["pk"]
 
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
@@ -902,6 +1022,9 @@ class NimmtEntgegen(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "nimmt entgegen"
@@ -914,6 +1037,9 @@ class NimmtEntgegen(VersionMixin, Relation):
 class FunktionNimmtEntgegen(VersionMixin, Relation):
     subj_model = Function
     obj_model = Salary
+
+    class Meta:
+        ordering = ["pk"]
 
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
@@ -938,6 +1064,9 @@ class BuergtFuer(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "bürgt für"
@@ -956,6 +1085,9 @@ class IstMoeglicherweiseIdentischMit(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
@@ -976,6 +1108,9 @@ class StehtInVerbindungMit(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "steht in Verbindung mit"
@@ -995,6 +1130,9 @@ class IstVerbundenMit(VersionMixin, Relation):
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["pk"]
+
     @classmethod
     def name(self) -> str:
         return "ist verbunden mit"
@@ -1013,6 +1151,9 @@ class IstMoeglicherweiseSpezifiziertAls(VersionMixin, Relation):
     start = FuzzyDateParserField(null=True, blank=True)
     end = FuzzyDateParserField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["pk"]
 
     @classmethod
     def name(self) -> str:
