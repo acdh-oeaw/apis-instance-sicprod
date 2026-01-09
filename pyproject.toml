@@ -10,7 +10,7 @@ dependencies = [
     "Django~=5.2",
     "apis-core-rdf==0.56.4",
     "apis-bibsonomy==0.13.2",
-    "apis-acdhch-default-settings==2.12.1",
+    "apis-acdhch-default-settings==2.16.0",
     "psycopg2>=2.9,<3.0",
     "django-cors-headers>=4.0,<=5.0",
     "django-auditlog>=3.0.0,<=4.0",
