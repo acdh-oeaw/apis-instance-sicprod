@@ -1,3 +1,4 @@
+from itertools import chain
 import django_filters
 from django.db.models import Q, F
 from django.shortcuts import get_object_or_404
@@ -67,7 +68,7 @@ class InjectFacetPagination(pagination.LimitOffsetPagination):
             facets[facetname] = {}
             rels_fwd = Relation.objects.filter(obj_content_type=ct.id, subj_object_id__in=queryset).annotate(f=F("subj_object_id"), t=F("obj_object_id")).values("t", "f")
             rels_bkw = Relation.objects.filter(subj_content_type=ct.id, obj_object_id__in=queryset).annotate(f=F("obj_object_id"), t=F("subj_object_id")).values("t", "f")
-            rels = rels_fwd | rels_bkw
+            rels = list(chain(rels_fwd, rels_bkw))
             related_ids = [x["t"] for x in rels]
             instances = ct.model_class().objects.filter(pk__in=related_ids)
 
