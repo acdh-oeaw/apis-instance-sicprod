@@ -8,7 +8,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "Django~=5.2",
-    "apis-core-rdf==0.56.4",
+    "apis-core-rdf==0.57.4",
     "apis-bibsonomy==0.13.2",
     "apis-acdhch-default-settings==2.15.0",
     "psycopg2>=2.9,<3.0",
