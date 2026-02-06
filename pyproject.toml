@@ -16,7 +16,7 @@ dependencies = [
     "django-auditlog>=3.0.0,<=4.0",
     "django-grouper==0.2.0",
     "apis-acdhch-django-auditlog==0.3.0",
-    "django-interval==0.2.5",
+    "django-interval==0.5.3",
 ]
 
 [build-system]
