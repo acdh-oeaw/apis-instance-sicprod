@@ -2,13 +2,13 @@
 {% block content %}
     <div class="container mt-3">
         <ul>
-            {% for group, ids in groups.items %}
+            {% for cluster, entries in groups.items %}
                 <li>
-                    {{ group }}
+                    {{ cluster }}
 		    <p>
-                      {{ ids|length }} occurences
-		      {% for id in ids %}
-		      <a href="{% url "apis_core:generic:detail" content_type id %}">{{ id }}</a>,
+                      {{ entries|length }} occurences
+		      {% for entry in entries %}
+		      <a href="{% url "apis_core:generic:detail" content_type entry.pk %}">{{ entry.pk }}</a>,
 		      {% endfor %}
 		    </p>
                 </li>
