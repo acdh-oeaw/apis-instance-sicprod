@@ -6,14 +6,14 @@ from apis_core.generic.tables import CustomTemplateColumn, GenericTable
 class FunctionTable(GenericTable):
     class Meta:
         fields = ["alternative_label"]
-        sequence = ("desc", "...", "view", "edit", "noduplicate", "delete")
+        sequence = ("desc", "...", "actions")
 
 
 class PersonTable(GenericTable):
     class Meta:
         fields = ["name", "first_name", "start_date_written", "end_date_written", "alternative_label", "status"]
         exclude = ["desc"]
-        sequence = ("...", "view", "edit", "noduplicate", "delete")
+        sequence = ("...", "actions")
         order_by = ("name", "first_name")
 
     name = tables.LinkColumn()
