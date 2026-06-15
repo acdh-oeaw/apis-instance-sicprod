@@ -5,13 +5,14 @@ from .legacydatemixin import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.abc import E53_Place
+from apis_core.entities.abc import Entity
 from apis_core.relations.models import Relation
 from django_interval.fields import FuzzyDateParserField
 
 from auditlog.registry import auditlog
 
 
-class SicprodMixin(models.Model):
+class SicprodMixin(Entity, models.Model):
     """ A mixin providing generic fields and functionality for all Sicprod Models """
     review = review = models.BooleanField(default=False, help_text="Should be set to True, if the data record holds up quality standards.")
     status = models.CharField(max_length=100, blank=True)
