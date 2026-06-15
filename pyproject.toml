@@ -7,15 +7,12 @@ license = "MIT"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "Django~=5.2",
     "apis-core-rdf==0.63.1",
     "apis-bibsonomy==0.13.3",
     "apis-acdhch-default-settings==2.20.0",
     "psycopg2>=2.9,<3.0",
     "django-cors-headers>=4.0,<=5.0",
-    "django-auditlog>=3.0.0,<=4.0",
     "django-grouper==0.4.0",
-    "apis-acdhch-django-auditlog==0.3.0",
     "django-interval==0.5.4",
 ]
 
