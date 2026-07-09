@@ -2,7 +2,7 @@ import django_filters
 from django.db.models import Q
 from django import forms
 from django.contrib.contenttypes.models import ContentType
-from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
+from apis_core.entities.filtersets import EntityFilterSet
 from apis_core.generic.forms import GenericFilterSetForm
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from collections import OrderedDict
@@ -67,8 +67,8 @@ class SicprodLegacyStuffFilterSetForm(GenericFilterSetForm):
             self.fields.move_to_end("columns", False)
 
 
-class SicprodMixinFilterSet(AbstractEntityFilterSet):
-    class Meta(AbstractEntityFilterSet.Meta):
+class SicprodMixinFilterSet(EntityFilterSet):
+    class Meta(EntityFilterSet.Meta):
         exclude = SICPROD_FILTERS_EXCLUDE
         form = SicprodLegacyStuffFilterSetForm
 
@@ -120,8 +120,8 @@ class InstitutionFilterSet(SicprodMixinFilterSet):
 
 
 # Those are simply there to remove the `metadata` which is a JSONField and makes the django-filter throw up
-class SicprodVersionFilterSet(AbstractEntityFilterSet):
-    class Meta(AbstractEntityFilterSet.Meta):
+class SicprodVersionFilterSet(EntityFilterSet):
+    class Meta(EntityFilterSet.Meta):
         exclude = SICPROD_FILTERS_EXCLUDE
 
 
