@@ -4,7 +4,7 @@ from apis_core.apis_entities.models import AbstractEntity
 from .legacydatemixin import LegacyDateMixin
 from apis_core.collections.models import SkosCollection, SkosCollectionContentObject
 from apis_core.history.models import VersionMixin
-from apis_core.apis_entities.abc import E53_Place
+from apis_core.entities.abc import E53_Place
 from apis_core.entities.abc import Entity
 from apis_core.relations.models import Relation
 from django_interval.fields import FuzzyDateParserField
