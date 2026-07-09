@@ -19,6 +19,4 @@ urlpatterns += [path("apis/failingreferences", ReferenceScanFail.as_view(), name
 
 urlpatterns += [path("", include("django_grouper.urls"))]
 
-urlpatterns += [path("", include("apis_acdhch_django_auditlog.urls"))]
-
 urlpatterns += [path("", include("django_interval.urls"))]
