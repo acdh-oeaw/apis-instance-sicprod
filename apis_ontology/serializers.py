@@ -33,7 +33,7 @@ NUMBER = re.compile(r"(?P<number>\d+)")
 
 
 def get_folio(obj):
-    title = normalize_title(obj.get_bibtex["title"])
+    title = normalize_title(obj.zoteroentry.bibtex["title"])
     if page := obj.pages_start:
         page = f"{page:03d}"
     if obj.folio:
@@ -123,11 +123,11 @@ class SimplifiedReferenceSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_bibtex(self, obj):
-        return obj.get_bibtex
+        return obj.zoteroentry.bibtex
 
     def get_scandata(self, obj) -> dict:
         scandata = {}
-        bibtex = obj.get_bibtex
+        bibtex = obj.zoteroentry.bibtex
         if bibtex:
             title = normalize_title(bibtex["title"])
             if title in iiif_titles().keys():
