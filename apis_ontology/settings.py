@@ -13,8 +13,6 @@ APIS_BIBSONOMY = [{
    'group': '4853010'
 }]
 
-DEBUG = True
-
 LANGUAGE_CODE = "de"
 
 INSTALLED_APPS += ["apis_bibsonomy"]
